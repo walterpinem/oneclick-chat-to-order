@@ -16,7 +16,7 @@ Formerly known as "OneClick WhatsApp Order", **OneClick Chat to Order** makes it
 
 [![OneClick Chat to Order Tutorial](https://img.youtube.com/vi/LuURM5vZyB8/0.jpg)](https://www.youtube.com/watch?v=LuURM5vZyB8)
 
-> **Want to see it live?** [Try it yourself!](https://johndoe.me/projects/oneclick/)
+> **Want to see it live?** [Try it yourself!](https://walterpinem.me/projects/oneclick/)
 
 ## ✨ Revolutionary Features
 
@@ -91,7 +91,7 @@ Formerly known as "OneClick WhatsApp Order", **OneClick Chat to Order** makes it
 - [General Documentation](https://www.onlinestorekit.com/docs/octo/)
 - [Developer Documentation](https://www.onlinestorekit.com/docs/octo/developer-documentation/)
 - [Indonesian Documentation](https://www.seniberpikir.com/oneclick-whatsapp-order-woocommerce/)
-- [International Documentation](https://johndoe.me/projects/oneclick-chat-to-order/)
+- [International Documentation](https://walterpinem.me/projects/oneclick-chat-to-order/)
 
 ## ❓ FAQ
 
@@ -101,7 +101,7 @@ Yes! OneClick Chat to Order is completely free to use for unlimited sites. All f
 
 ### Can I use multiple WhatsApp numbers?
 
-Absolutely! You can create unlimited WhatsApp numbers and assign them to different product pages, store sections, categories, or departments. [Learn more](https://johndoe.me/projects/oneclick-chat-to-order-mutiple-numbers-feature/)
+Absolutely! You can create unlimited WhatsApp numbers and assign them to different product pages, store sections, categories, or departments. [Learn more](https://walterpinem.me/projects/oneclick-chat-to-order-mutiple-numbers-feature/)
 
 ### What's new in the Force wa.me URL option?
 
@@ -119,7 +119,7 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 
 For support and feature requests:
 
-- [John Doe Projects Support](https://johndoe.me/projects/contact/)
+- [Walter Pinem Projects Support](https://walterpinem.me/projects/contact/)
 - [Online Store Kit Support](https://www.onlinestorekit.com/support/)
 - [Plugin Support Forums](https://wordpress.org/support/plugin/oneclick-chat-to-order/)
 
@@ -172,7 +172,7 @@ This project is licensed under the GPLv3 or later - see the [LICENSE](http://www
 
 ## 👨‍💻 Contributors
 
-- **John Doe** - _Initial work_ - [johndoe](https://github.com/johndoe)
+- **Walter Pinem** - _Initial work_ - [walterpinem](https://github.com/walterpinem)
 
 ## 💝 Support the Project
 
@@ -185,7 +185,7 @@ If you find this plugin helpful, consider supporting its development:
 - [WordPress Plugin Page](https://wordpress.org/plugins/oneclick-chat-to-order/)
 - [Official Website](https://www.onlinestorekit.com/oneclick-chat-to-order/)
 - [GitHub Repository](https://github.com/yourusername/oneclick-chat-to-order)
-- [Demo Site](https://johndoe.me/projects/oneclick/)
+- [Demo Site](https://walterpinem.me/projects/oneclick/)
 
 ---
 
