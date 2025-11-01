@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wpml-config>
+    <!-- OneClick Chat to Order WPML Configuration -->
+    <!-- This file defines which plugin elements should be translated by WPML -->
+
+    <!-- Plugin Options Translation -->
+    <admin-texts>
+        <!-- Basic Configuration Options -->
+        <key name="wa_order_option_message">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_text_button">
+            <key name="*" />
+        </key>
+
+        <!-- Text Labels for WhatsApp Messages -->
+        <key name="wa_order_option_quantity_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_price_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_url_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_total_amount_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_total_discount_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_payment_method_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_thank_you_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_tax_label">
+            <key name="*" />
+        </key>
+
+        <!-- Backend Order Details -->
+        <key name="wa_order_option_custom_message_backend_order_details">
+            <key name="*" />
+        </key>
+
+        <!-- GDPR Options -->
+        <key name="wa_order_gdpr_message">
+            <key name="*" />
+        </key>
+
+        <!-- Floating Button Options -->
+        <key name="wa_order_floating_message">
+            <key name="*" />
+        </key>
+        <key name="wa_order_floating_tooltip">
+            <key name="*" />
+        </key>
+        <key name="wa_order_floating_source_url_label">
+            <key name="*" />
+        </key>
+
+        <!-- Shortcode Options -->
+        <key name="wa_order_shortcode_message">
+            <key name="*" />
+        </key>
+        <key name="wa_order_shortcode_text_button">
+            <key name="*" />
+        </key>
+
+        <!-- Cart Page Options -->
+        <key name="wa_order_option_cart_custom_message">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_cart_button_text">
+            <key name="*" />
+        </key>
+
+        <!-- Thank You Page Options -->
+        <key name="wa_order_option_custom_thank_you_title">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_subtitle">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_button_text">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_custom_message">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_order_number_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_thank_you_order_summary_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_thank_you_payment_link_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_thank_you_view_order_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_customer_details_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_total_products_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_coupon_label">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_thank_you_shipping_label">
+            <key name="*" />
+        </key>
+
+        <!-- Shop Page Options -->
+        <key name="wa_order_option_button_text_shop_loop">
+            <key name="*" />
+        </key>
+        <key name="wa_order_option_custom_message_shop_loop">
+            <key name="*" />
+        </key>
+    </admin-texts>
+
+    <!-- Custom Post Types Translation -->
+    <post-types>
+        <!-- WhatsApp Numbers Custom Post Type -->
+        <post-type translate="1">wa-order-numbers</post-type>
+    </post-types>
+
+    <!-- Custom Fields Translation -->
+    <custom-fields>
+        <!-- Product-specific WhatsApp Settings -->
+        <custom-field action="translate">_wa_order_button_text</custom-field>
+        <custom-field action="translate">_wa_order_custom_message</custom-field>
+
+        <!-- WhatsApp Number Post Meta (copy to translations) -->
+        <custom-field action="copy">wa_order_phone_number_input</custom-field>
+        <custom-field action="copy">_wa_order_phone_number_check</custom-field>
+        <custom-field action="copy">_wa_order_phone_number</custom-field>
+        <custom-field action="copy">_hide_wa_button</custom-field>
+        <custom-field action="copy">_hide_atc_button</custom-field>
+        <custom-field action="copy">_force_show_atc_button</custom-field>
+    </custom-fields>
+
+    <!-- Shortcodes Translation -->
+    <shortcodes>
+        <!-- OneClick Chat to Order Shortcodes -->
+        <shortcode>
+            <tag>wa-order</tag>
+            <attributes>
+                <attribute>button</attribute>
+                <attribute>message</attribute>
+            </attributes>
+        </shortcode>
+
+        <shortcode>
+            <tag>waorder</tag>
+            <attributes>
+                <attribute>button</attribute>
+                <attribute>message</attribute>
+            </attributes>
+        </shortcode>
+
+        <shortcode>
+            <tag>oneclick</tag>
+            <attributes>
+                <attribute>text</attribute>
+                <attribute>message</attribute>
+            </attributes>
+        </shortcode>
+    </shortcodes>
+
+    <!-- Language Configuration -->
+    <language-switcher-settings>
+        <!-- Show language switcher on WhatsApp number pages -->
+        <key name="wa-order-numbers">
+            <key name="*" />
+        </key>
+    </language-switcher-settings>
+
+    <!-- Taxonomy Translation (if any custom taxonomies are added in future) -->
+    <taxonomies>
+        <!-- Currently no custom taxonomies, but ready for future expansion -->
+    </taxonomies>
+
+    <!-- Built-in Fields Translation -->
+    <built-in-fields>
+        <!-- Translate post titles for WhatsApp numbers -->
+        <field type="post" translate="1">post_title</field>
+        <field type="post" translate="0">post_name</field>
+        <field type="post" translate="1">post_content</field>
+        <field type="post" translate="1">post_excerpt</field>
+    </built-in-fields>
+</wpml-config>
