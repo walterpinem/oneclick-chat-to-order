@@ -4,7 +4,7 @@
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-10.0.4%2B-purple.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777BB4.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPLv3-red.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
-[![Version](https://img.shields.io/badge/Version-1.0.9-green.svg)](https://github.com/yourusername/oneclick-chat-to-order)
+[![Version](https://img.shields.io/badge/Version-1.1.1-green.svg)](https://github.com/yourusername/oneclick-chat-to-order)
 
 Transform your WooCommerce store with seamless WhatsApp integration. Enable customers to order products instantly via WhatsApp with enhanced features.
 
