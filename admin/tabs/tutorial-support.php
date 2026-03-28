@@ -74,8 +74,8 @@ if (!defined('ABSPATH')) {
             </tr>
             <tr>
                 <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/projects/tools/')); ?>" title="<?php esc_attr_e('65+ Free Online Tools', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('65+ Free Online Tools', 'oneclick-wa-order'); ?></a></td>
+                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/projects/tools/')); ?>" title="<?php esc_attr_e('75+ Free Online Tools', 'oneclick-wa-order'); ?>" target="_blank">
+                        <?php esc_html_e('75+ Free Online Tools', 'oneclick-wa-order'); ?></a></td>
             </tr>
             <tr>
                 <td class="tg-kiyi">

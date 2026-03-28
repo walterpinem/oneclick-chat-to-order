@@ -36,7 +36,8 @@ if (!function_exists('add_action') || !function_exists('get_option')) {
 				'WordPress Loading Error',
 				array('response' => 500)
 			);
-		} else {
+		}
+		else {
 			// Fallback for when wp_die is not available
 			header('HTTP/1.1 500 Internal Server Error');
 			echo '<h1>Error</h1><p>WordPress functions are not available. Please ensure WordPress is properly loaded.</p>';
@@ -63,24 +64,24 @@ function wa_order_add_button_to_cart_page()
 	// Cart functionality handled by WC()->cart calls below
 	// Load the setting values
 	$options = array(
-		'whatsapp_number'     => apply_filters('wa_order_filter_whatsapp_number_cart', get_option('wa_order_selected_wa_number_cart', '')),
-		'cart_button_text'    => apply_filters('wa_order_filter_cart_button_text', get_option('wa_order_option_cart_button_text', 'Complete Order via WhatsApp')),
-		'custom_message'      => apply_filters('wa_order_filter_cart_custom_message', get_option('wa_order_option_cart_custom_message', 'Hello, I want to purchase the item(s) below:')),
-		'price_label'         => apply_filters('wa_order_filter_cart_price_label', get_option('wa_order_option_price_label')),
-		'url_label'           => apply_filters('wa_order_filter_cart_url_label', get_option('wa_order_option_url_label')),
-		'thanks_label'        => apply_filters('wa_order_filter_cart_thank_you_label', get_option('wa_order_option_thank_you_label', 'Thank You!')),
-		'total_label'         => apply_filters('wa_order_filter_cart_total_label', get_option('wa_order_option_total_amount_label', 'Total')),
-		'target'              => apply_filters('wa_order_filter_cart_target', get_option('wa_order_option_cart_open_new_tab')),
-		'remove_product_url'  => apply_filters('wa_order_filter_cart_remove_product_url', get_option('wa_order_option_cart_hide_product_url')),
-		'quantity_label'      => apply_filters('wa_order_filter_cart_quantity_label', get_option('wa_order_option_quantity_label', 'Quantity')),
-		'include_variation'   => apply_filters('wa_order_filter_cart_include_variation', get_option('wa_order_option_cart_enable_variations')),
-		'include_tax'         => apply_filters('wa_order_filter_cart_include_tax', get_option('wa_order_option_cart_include_tax')),
-		'tax_label'           => apply_filters('wa_order_filter_cart_tax_label', get_option('wa_order_option_tax_label', 'Tax')),
-		'coupon_label'        => apply_filters('wa_order_filter_cart_coupon_label', get_option('wa_order_option_custom_thank_you_coupon_label', 'Coupon')),
+		'whatsapp_number' => apply_filters('wa_order_filter_whatsapp_number_cart', get_option('wa_order_selected_wa_number_cart', '')),
+		'cart_button_text' => apply_filters('wa_order_filter_cart_button_text', get_option('wa_order_option_cart_button_text', 'Complete Order via WhatsApp')),
+		'custom_message' => apply_filters('wa_order_filter_cart_custom_message', get_option('wa_order_option_cart_custom_message', 'Hello, I want to purchase the item(s) below:')),
+		'price_label' => apply_filters('wa_order_filter_cart_price_label', get_option('wa_order_option_price_label')),
+		'url_label' => apply_filters('wa_order_filter_cart_url_label', get_option('wa_order_option_url_label')),
+		'thanks_label' => apply_filters('wa_order_filter_cart_thank_you_label', get_option('wa_order_option_thank_you_label', 'Thank You!')),
+		'total_label' => apply_filters('wa_order_filter_cart_total_label', get_option('wa_order_option_total_amount_label', 'Total')),
+		'target' => apply_filters('wa_order_filter_cart_target', get_option('wa_order_option_cart_open_new_tab')),
+		'remove_product_url' => apply_filters('wa_order_filter_cart_remove_product_url', get_option('wa_order_option_cart_hide_product_url')),
+		'quantity_label' => apply_filters('wa_order_filter_cart_quantity_label', get_option('wa_order_option_quantity_label', 'Quantity')),
+		'include_variation' => apply_filters('wa_order_filter_cart_include_variation', get_option('wa_order_option_cart_enable_variations')),
+		'include_tax' => apply_filters('wa_order_filter_cart_include_tax', get_option('wa_order_option_cart_include_tax')),
+		'tax_label' => apply_filters('wa_order_filter_cart_tax_label', get_option('wa_order_option_tax_label', 'Tax')),
+		'coupon_label' => apply_filters('wa_order_filter_cart_coupon_label', get_option('wa_order_option_custom_thank_you_coupon_label', 'Coupon')),
 	);
 
-	$whatsapp_number	= $options['whatsapp_number'];
-	$postid				= get_page_by_path($whatsapp_number, OBJECT, 'wa-order-numbers');
+	$whatsapp_number = $options['whatsapp_number'];
+	$postid = get_page_by_path($whatsapp_number, OBJECT, 'wa-order-numbers');
 	if (!$postid) {
 		return;
 	}
@@ -88,32 +89,33 @@ function wa_order_add_button_to_cart_page()
 	if (!$phonenumb) {
 		return;
 	}
-	$items				= WC()->cart->get_cart();
-	$cart_button_text	= $options['cart_button_text'];
-	$custom_message		= $options['custom_message'];
-	$message			= urlencode($custom_message);
+	$items = WC()->cart->get_cart();
+	$cart_button_text = $options['cart_button_text'];
+	$custom_message = $options['custom_message'];
+	$message = urlencode($custom_message);
 	// Currency and quantity label handled inline where needed
 	foreach ($items as $item) {
-		$_product		= wc_get_product($item['product_id']);
-		$product_name	= apply_filters('wa_order_filter_cart_product_name', $_product->get_name(), $_product);
-		$qty			= $item['quantity'];
-		$price			= $item['line_subtotal'];
-		$format_price	= apply_filters('wa_order_filter_cart_price', html_entity_decode(wp_strip_all_tags(wc_price($price))), $price, $_product);
-		$product_url	= apply_filters('wa_order_filter_cart_product_url', get_post_permalink($item['product_id']), $_product);
-		$total_amount	= wc_price(WC()->cart->get_cart_total());
-		$price_label	= !empty($options['price_label']) ? $options['price_label'] : 'Price';
-		$url_label		= !empty($options['url_label']) ? $options['url_label'] : 'URL';
-		$thanks_label	= $options['thanks_label'];
-		$total_label	= $options['total_label'];
-		$target			= $options['target'];
+		$_product = wc_get_product($item['product_id']);
+		$product_name = apply_filters('wa_order_filter_cart_product_name', $_product->get_name(), $_product);
+		$qty = $item['quantity'];
+		$price = $item['line_subtotal'];
+		$format_price = apply_filters('wa_order_filter_cart_price', html_entity_decode(wp_strip_all_tags(wc_price($price))), $price, $_product);
+		$product_url = apply_filters('wa_order_filter_cart_product_url', get_post_permalink($item['product_id']), $_product);
+		$total_amount = wc_price(WC()->cart->get_cart_total());
+		$price_label = !empty($options['price_label']) ? $options['price_label'] : 'Price';
+		$url_label = !empty($options['url_label']) ? $options['url_label'] : 'URL';
+		$thanks_label = $options['thanks_label'];
+		$total_label = $options['total_label'];
+		$target = $options['target'];
 		$removeproductURL = $options['remove_product_url'];
-		$message		.= urlencode("\r\n\r\n" . $qty . "x - *" . $product_name . "*");
+		$message .= urlencode("\r\n\r\n" . $qty . "x - *" . $product_name . "*");
 		$include_variation = $options['include_variation'];
 		if ($item['variation_id'] > 0 && $_product->is_type('variable') && $include_variation === 'yes') {
 			$variations = wc_get_formatted_variation($item['variation'], false);
 			$variation = str_replace(array('<dl class="variation"><dt>', "</dt><dd>", "</dd><dt>", "</dd></dl>"), array('', " ", "\r\n", ""), $variations);
 			$message .= urlencode("\r\n" . ucwords($variation) . "");
-		} else {
+		}
+		else {
 			$message .= "";
 		}
 		// Add price information
@@ -126,8 +128,8 @@ function wa_order_add_button_to_cart_page()
 	}
 	// Subtotal
 	$subtotal_label = esc_html__('Subtotal:', 'woocommerce');
-	$subtotal		= apply_filters('wa_order_filter_cart_subtotal', WC()->cart->get_cart_subtotal());
-	$message		.= urlencode("\r\n\r\n*" . $subtotal_label . "* " . html_entity_decode(wp_strip_all_tags($subtotal)) . "");
+	$subtotal = apply_filters('wa_order_filter_cart_subtotal', WC()->cart->get_cart_subtotal());
+	$message .= urlencode("\r\n\r\n*" . $subtotal_label . "* " . html_entity_decode(wp_strip_all_tags($subtotal)) . "");
 
 	// Check if the cart contains non-virtual, non-downloadable products and shipping is calculated
 	$customer = WC()->session->get('customer');
@@ -147,15 +149,16 @@ function wa_order_add_button_to_cart_page()
 		if ($is_shipping_applicable || $customer['calculated_shipping'] && !empty($customer['address']) && !empty($customer['city']) && !empty($customer['state'])) {
 
 			if (WC()->cart->show_shipping()) {
-				$shipping_address	= wa_order_get_shipping_address(WC()->cart->get_customer());
-				$address			= html_entity_decode($shipping_address);
-				$ship_label			= __('Shipping:', 'woocommerce');
-				$message			.= urlencode("\n\n*" . $ship_label . "*\r\n");
-				$message			.= urlencode("" . $address . "\r\n");
+				$shipping_address = wa_order_get_shipping_address(WC()->cart->get_customer());
+				$address = html_entity_decode($shipping_address);
+				$ship_label = __('Shipping:', 'woocommerce');
+				$message .= urlencode("\n\n*" . $ship_label . "*\r\n");
+				$message .= urlencode("" . $address . "\r\n");
 			}
 		}
-	} else {
-		$message			.= urlencode("\r\n");
+	}
+	else {
+		$message .= urlencode("\r\n");
 	}
 	// Shipping method details
 	$shipping_package = WC()->session->get('shipping_for_package_0'); // Check if shipping rates exist
@@ -200,8 +203,9 @@ function wa_order_add_button_to_cart_page()
 				$subtotal_message = html_entity_decode(wp_strip_all_tags($subtotal_minus_discount_formatted));
 				$message .= urlencode("*" . __('Discount', 'oneclick-wa-order') . ":* \r\n" . html_entity_decode(wp_strip_all_tags(wc_price($numeric_subtotal))) . " - " . $discount_format . " = " . $subtotal_message);
 
-				// For Percentage Discounts
-			} elseif ($coupon->is_type('percent')) {
+			// For Percentage Discounts
+			}
+			elseif ($coupon->is_type('percent')) {
 				$discount_percent = $coupon->get_amount(); // Get percentage
 				$numeric_subtotal = WC()->cart->subtotal_ex_tax;
 
@@ -235,14 +239,14 @@ function wa_order_add_button_to_cart_page()
 	$total_amount = wp_kses_data(WC()->cart->get_total());
 	$message .= urlencode("\r\n*" . $total_label . ":* " . html_entity_decode($total_amount));
 	$message .= urlencode("\r\n\r\n" . $thanks_label);
-	$button_url			 = apply_filters('wa_order_filter_cart_button_url', wa_order_the_url($phonenumb, urldecode($message)), $phonenumb, $message); // phpcs:ignore WordPress.Security.EscapeOutput.
-	$cart_button_text	 = apply_filters('wa_order_filter_cart_button_text_final', $options['cart_button_text']);
-	$target				 = apply_filters('wa_order_filter_cart_button_target', $options['target']);
+	$button_url = apply_filters('wa_order_filter_cart_button_url', wa_order_the_url($phonenumb, urldecode($message)), $phonenumb, $message); // phpcs:ignore WordPress.Security.EscapeOutput.
+	$cart_button_text = apply_filters('wa_order_filter_cart_button_text_final', $options['cart_button_text']);
+	$target = apply_filters('wa_order_filter_cart_button_target', $options['target']);
 ?>
 	<div class="wc-proceed-to-checkout">
-		<a id="sendbtn" href="<?php echo $button_url;  // phpcs:ignore WordPress.Security.
-								?>" target="<?php echo esc_attr($target); ?>" class="wa-order-checkout checkout-button button wa-cart-button">
-			<?php echo esc_html($cart_button_text);  ?>
+		<a id="sendbtn" href="<?php echo $button_url; // phpcs:ignore WordPress.Security.
+?>" target="<?php echo esc_attr($target); ?>" class="wa-order-checkout checkout-button button wa-cart-button">
+			<?php echo esc_html($cart_button_text); ?>
 		</a>
 	</div>
 
@@ -267,12 +271,15 @@ function wa_order_add_button_to_cart_page()
 	</style>
 <?php
 }
-// Add cart button - keep original single button approach
+
+// ── Classic Cart Support ──
+// Hook for the classic WooCommerce cart shortcode ([woocommerce_cart]).
+// These hooks only fire when the Cart page uses the legacy shortcode widget.
 if (get_option('wa_order_option_add_button_to_cart', 'yes') === 'yes') {
 	add_action('woocommerce_after_cart_totals', 'wa_order_add_button_to_cart_page', 1);
 }
 
-// Hide the Proceed to Checkout button
+// Hide the Proceed to Checkout button (Classic Cart)
 function wa_order_remove_proceed_to_checkout_button()
 {
 	$hide_checkout_button = apply_filters('wa_order_filter_cart_hide_checkout_button', get_option('wa_order_option_cart_hide_checkout'));
@@ -281,3 +288,145 @@ function wa_order_remove_proceed_to_checkout_button()
 	}
 }
 add_action('woocommerce_before_cart', 'wa_order_remove_proceed_to_checkout_button', 1);
+
+// ── WooCommerce Block Cart Support ──
+// Since WooCommerce 8.3, the default Cart page uses the Gutenberg-based Cart block.
+// Classic WooCommerce hooks (woocommerce_after_cart_totals, woocommerce_proceed_to_checkout)
+// do NOT fire on the Block Cart. The Block Cart is rendered by React on the client side,
+// so we inject the WhatsApp button via wp_footer JavaScript after React hydration,
+// and hide the checkout button via wp_head CSS.
+// @since 1.1.1
+
+/**
+ * Inject WhatsApp button via wp_footer for Block Cart (JavaScript approach).
+ *
+ * This is the primary injection method for the Block Cart. After React hydrates
+ * the Cart block, this script finds the checkout button container and appends
+ * the WhatsApp button after it. Uses MutationObserver as insurance against
+ * React rendering that occurs after DOMContentLoaded.
+ *
+ * @since 1.1.1
+ */
+function wa_order_cart_block_footer_script()
+{
+	// Only run on the Cart page
+	if (!is_cart()) {
+		return;
+	}
+
+	// Capture the WhatsApp button HTML
+	ob_start();
+	wa_order_add_button_to_cart_page();
+	$wa_button_html = ob_get_clean();
+
+	if (empty(trim($wa_button_html))) {
+		return;
+	}
+
+	// Encode the HTML for safe embedding in JavaScript
+	$encoded_html = wp_json_encode($wa_button_html);
+	if (!$encoded_html) {
+		return;
+	}
+?>
+	<script>
+	(function() {
+		var waButtonHTML = <?php echo $encoded_html; // phpcs:ignore WordPress.Security.EscapeOutput ?>;
+		var waButtonId = 'wa-order-block-cart-button';
+
+		function injectWAButton() {
+			// Don't inject twice
+			if (document.getElementById(waButtonId)) {
+				return true;
+			}
+
+			// Find the Block Cart checkout button area
+			var checkoutBtn = document.querySelector('.wc-block-cart__submit-button');
+			if (!checkoutBtn) {
+				// Fallback selector for different WC versions
+				checkoutBtn = document.querySelector('.wp-block-woocommerce-proceed-to-checkout-block');
+			}
+
+			if (checkoutBtn) {
+				var container = checkoutBtn.closest('.wc-block-cart__submit-container') || checkoutBtn.parentElement;
+				if (container) {
+					var wrapper = document.createElement('div');
+					wrapper.id = waButtonId;
+					wrapper.innerHTML = waButtonHTML;
+					container.parentElement.insertBefore(wrapper, container.nextSibling);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		// Try immediately (in case React already rendered)
+		if (document.readyState === 'complete' || document.readyState === 'interactive') {
+			if (!injectWAButton()) {
+				// React might not have rendered yet — use MutationObserver
+				var observer = new MutationObserver(function(mutations, obs) {
+					if (injectWAButton()) {
+						obs.disconnect();
+					}
+				});
+				observer.observe(document.body, { childList: true, subtree: true });
+				// Safety timeout: disconnect observer after 10 seconds
+				setTimeout(function() { observer.disconnect(); }, 10000);
+			}
+		} else {
+			document.addEventListener('DOMContentLoaded', function() {
+				if (!injectWAButton()) {
+					var observer = new MutationObserver(function(mutations, obs) {
+						if (injectWAButton()) {
+							obs.disconnect();
+						}
+					});
+					observer.observe(document.body, { childList: true, subtree: true });
+					setTimeout(function() { observer.disconnect(); }, 10000);
+				}
+			});
+		}
+	})();
+	</script>
+	<?php
+}
+
+if (get_option('wa_order_option_add_button_to_cart', 'yes') === 'yes') {
+	add_action('wp_footer', 'wa_order_cart_block_footer_script');
+}
+
+/**
+ * Hide the Proceed to Checkout button on the WooCommerce Block Cart.
+ *
+ * Outputs CSS via wp_head that hides the Block Cart's checkout button
+ * (`.wc-block-cart__submit-button`) when the "Hide Proceed to Checkout button?"
+ * setting is enabled. This complements the Classic Cart's remove_action() approach.
+ *
+ * @since 1.1.1
+ */
+function wa_order_cart_block_hide_checkout_button()
+{
+	// Only output on the Cart page
+	if (!is_cart()) {
+		return;
+	}
+
+	$hide_checkout_button = apply_filters(
+		'wa_order_filter_cart_hide_checkout_button',
+		get_option('wa_order_option_cart_hide_checkout')
+	);
+
+	if ($hide_checkout_button === 'yes') {
+?>
+		<style>
+			/* Hide Block Cart Proceed to Checkout button — OneClick Chat to Order */
+			.wc-block-cart__submit-button:not(.wa-cart-button),
+			.wp-block-woocommerce-proceed-to-checkout-block > .wc-block-components-checkout-place-order-button,
+			.wp-block-woocommerce-proceed-to-checkout-block > a.wc-block-cart__submit-button {
+				display: none !important;
+			}
+		</style>
+		<?php
+	}
+}
+add_action('wp_head', 'wa_order_cart_block_hide_checkout_button');

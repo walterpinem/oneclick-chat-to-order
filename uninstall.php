@@ -44,10 +44,7 @@ function wa_order_delete_all_plugin_data()
     // Delete transients and cache
     wa_order_delete_transients_and_cache();
 
-    // Log the cleanup (if WP_DEBUG is enabled)
-    if (defined('WP_DEBUG') && WP_DEBUG) {
-        error_log('[OneClick Chat to Order] All plugin data has been deleted during uninstall.');
-    }
+
 }
 
 /**

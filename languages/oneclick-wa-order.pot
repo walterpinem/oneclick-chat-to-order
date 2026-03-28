@@ -1,43 +1,43 @@
-# Copyright (C) 2025 Walter Pinem
+# Copyright (C) 2026 Walter Pinem
 # This file is distributed under the GPL-3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: OneClick Chat to Order 1.0.8\n"
+"Project-Id-Version: OneClick Chat to Order 1.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/oneclick-whatsapp-order\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-03T10:20:59+00:00\n"
+"POT-Creation-Date: 2026-03-27T23:25:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: oneclick-wa-order\n"
 
 #. Plugin Name of the plugin
-#: C:\laragon\www\ocwc\wp-content\plugins\oneclick-whatsapp-order\whatsapp-order.php
-#: admin/wa-admin-page.php:436
-#: whatsapp-order.php:142
+#: whatsapp-order.php
+#: admin/wa-admin-page.php:444
+#: whatsapp-order.php:145
 msgid "OneClick Chat to Order"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: C:\laragon\www\ocwc\wp-content\plugins\oneclick-whatsapp-order\whatsapp-order.php
+#: whatsapp-order.php
 msgid "https://www.onlinestorekit.com/oneclick-chat-to-order/"
 msgstr ""
 
 #. Description of the plugin
-#: C:\laragon\www\ocwc\wp-content\plugins\oneclick-whatsapp-order\whatsapp-order.php
+#: whatsapp-order.php
 msgid "Make it easy for your customers to order via WhatsApp chat through a single button click with detailing information about a product including custom message. OneClick Chat to Order button can be displayed on a single product page and as a floating button. GDPR-ready!"
 msgstr ""
 
 #. Author of the plugin
-#: C:\laragon\www\ocwc\wp-content\plugins\oneclick-whatsapp-order\whatsapp-order.php
+#: whatsapp-order.php
 msgid "Walter Pinem"
 msgstr ""
 
 #. Author URI of the plugin
-#: C:\laragon\www\ocwc\wp-content\plugins\oneclick-whatsapp-order\whatsapp-order.php
+#: whatsapp-order.php
 msgid "https://walterpinem.com/"
 msgstr ""
 
@@ -174,6 +174,7 @@ msgstr ""
 
 #. translators: 1: "set it here" link, 2: "Learn more" link
 #: admin/tabs/button-config.php:31
+#, php-format
 msgid "Make sure that you have added at least one WhatsApp number to dismiss the admin notice. Please %1$sset it here%2$s to get started. %3$sLearn more%4$s."
 msgstr ""
 
@@ -313,7 +314,7 @@ msgstr ""
 #: admin/tabs/shop-page.php:60
 #: admin/tabs/thanks-page.php:45
 #: includes/multiple-numbers.php:31
-#: includes/multiple-numbers.php:71
+#: includes/multiple-numbers.php:89
 msgid "WhatsApp Number"
 msgstr ""
 
@@ -326,6 +327,7 @@ msgstr ""
 #: admin/tabs/generate-shortcode.php:280
 #: admin/tabs/shop-page.php:75
 #: admin/tabs/thanks-page.php:60
+#, php-format
 msgid "WhatsApp number is %1$srequired%2$s. Please set it on the %3$sNumbers%4$s tab."
 msgstr ""
 
@@ -404,6 +406,7 @@ msgstr ""
 
 #. translators: 1. example custom message wrapped in <code> tag
 #: admin/tabs/button-config.php:250
+#, php-format
 msgid "Fill this form with a custom message, e.g. %1$sHello, I want to buy:%2$s"
 msgstr ""
 
@@ -458,6 +461,7 @@ msgstr ""
 
 #. translators: 2. closing </a> tag
 #: admin/tabs/button-config.php:299
+#, php-format
 msgid "The following option is only for the output message you'll receive on WhatsApp. To hide some elements, please go to the %1$sDisplay Options%2$s tab."
 msgstr ""
 
@@ -614,6 +618,7 @@ msgstr ""
 
 #. translators: 4. closing </strong> tag
 #: admin/tabs/cart-button.php:32
+#, php-format
 msgid "Add custom WhatsApp button on %1$sCart%2$s page right under the %3$sProceed to Checkout%4$s button."
 msgstr ""
 
@@ -641,6 +646,7 @@ msgstr ""
 
 #. translators: 1. <code> tag for "Proceed to Checkout"
 #: admin/tabs/cart-button.php:102
+#, php-format
 msgid "This will only display WhatsApp button and hide the %1$sProceed to Checkout%2$s button"
 msgstr ""
 
@@ -654,6 +660,7 @@ msgstr ""
 
 #. translators: 1. <code> tag for the example message
 #: admin/tabs/cart-button.php:132
+#, php-format
 msgid "Enter custom message, e.g. %1$sHello, I want to purchase the item(s) below:%2$s"
 msgstr ""
 
@@ -960,6 +967,7 @@ msgstr ""
 
 #. translators: 1. example custom message
 #: admin/tabs/display-option.php:577
+#, php-format
 msgid "Enter custom message, %1$se.g. Hello, I'd like to follow up on your order.%2$s"
 msgstr ""
 
@@ -988,6 +996,7 @@ msgstr ""
 
 #. translators: 1. example message for custom input
 #: admin/tabs/floating-button.php:89
+#, php-format
 msgid "Enter custom message, e.g. %1$sHello, I need to know more about%2$s"
 msgstr ""
 
@@ -1009,6 +1018,7 @@ msgstr ""
 
 #. translators: 1. example label for the source page URL
 #: admin/tabs/floating-button.php:118
+#, php-format
 msgid "Add a label for the source page URL. %1$se.g. From URL:%2$s"
 msgstr ""
 
@@ -1174,7 +1184,7 @@ msgid "All other options will be pulled from the Single Product Page settings un
 msgstr ""
 
 #: admin/tabs/generate-shortcode.php:31
-#: admin/wa-admin-page.php:441
+#: admin/wa-admin-page.php:449
 msgid "Basic"
 msgstr ""
 
@@ -1312,6 +1322,7 @@ msgstr ""
 
 #. translators: 4. closing </strong> tag
 #: admin/tabs/shop-page.php:32
+#, php-format
 msgid "Add custom WhatsApp button on %1$sShop%2$s page or product loop page right under / besides the %3$sAdd to Cart%4$s button."
 msgstr ""
 
@@ -1325,6 +1336,7 @@ msgstr ""
 
 #. translators: 2. closing </code> tag
 #: admin/tabs/shop-page.php:104
+#, php-format
 msgid "This will only display the WhatsApp button and hide the %1$sAdd to Cart%2$s button."
 msgstr ""
 
@@ -1338,6 +1350,7 @@ msgstr ""
 
 #. translators: 2. closing </code> tag
 #: admin/tabs/shop-page.php:135
+#, php-format
 msgid "Enter custom message, e.g. %1$sHello, I want to purchase:%2$s"
 msgstr ""
 
@@ -1583,11 +1596,13 @@ msgstr ""
 
 #. translators: 1. opening <strong> tag
 #: admin/tabs/tutorial-support.php:27
+#, php-format
 msgid "%1$sOneClick Chat to Order%2$s is Waiting for Your Feedback"
 msgstr ""
 
 #. translators: 3. closing <a> tag
 #: admin/tabs/tutorial-support.php:40
+#, php-format
 msgid "%1$sOneClick Chat to Order%2$s is my second plugin and it's open source. I acknowledge that there are still a lot to fix, here and there, that's why I really need your feedback. Let's get in touch and show some love by %3$sleaving a review%4$s."
 msgstr ""
 
@@ -1626,7 +1641,7 @@ msgstr ""
 
 #: admin/tabs/tutorial-support.php:77
 #: admin/tabs/tutorial-support.php:78
-msgid "65+ Free Online Tools"
+msgid "75+ Free Online Tools"
 msgstr ""
 
 #: admin/tabs/tutorial-support.php:82
@@ -1817,80 +1832,81 @@ msgstr ""
 msgid "You will not be left alone. My complete documentation or tutorial will always help and support all your needs to get started. Watch tutorial videos."
 msgstr ""
 
-#: admin/wa-admin-page.php:439
+#: admin/wa-admin-page.php:447
 msgid "Welcome"
 msgstr ""
 
-#: admin/wa-admin-page.php:440
+#: admin/wa-admin-page.php:448
 msgid "Numbers"
 msgstr ""
 
-#: admin/wa-admin-page.php:442
+#: admin/wa-admin-page.php:450
 msgid "Shop"
 msgstr ""
 
-#: admin/wa-admin-page.php:443
+#: admin/wa-admin-page.php:451
 msgid "Cart"
 msgstr ""
 
-#: admin/wa-admin-page.php:444
+#: admin/wa-admin-page.php:452
 msgid "Checkout"
 msgstr ""
 
-#: admin/wa-admin-page.php:445
+#: admin/wa-admin-page.php:453
 msgid "Floating"
 msgstr ""
 
-#: admin/wa-admin-page.php:446
+#: admin/wa-admin-page.php:454
 msgid "Display"
 msgstr ""
 
-#: admin/wa-admin-page.php:447
+#: admin/wa-admin-page.php:455
 msgid "GDPR"
 msgstr ""
 
-#: admin/wa-admin-page.php:448
+#: admin/wa-admin-page.php:456
 msgid "Shortcode"
 msgstr ""
 
-#: admin/wa-admin-page.php:449
+#: admin/wa-admin-page.php:457
 msgid "Add-ons"
 msgstr ""
 
-#: admin/wa-admin-page.php:450
+#: admin/wa-admin-page.php:458
 msgid "Support"
 msgstr ""
 
-#: admin/wa-admin-page.php:458
 #: admin/wa-admin-page.php:466
-#: admin/wa-admin-page.php:477
-#: admin/wa-admin-page.php:486
-#: admin/wa-admin-page.php:496
-#: admin/wa-admin-page.php:505
-#: admin/wa-admin-page.php:514
-#: admin/wa-admin-page.php:523
-#: admin/wa-admin-page.php:532
-#: admin/wa-admin-page.php:543
-#: admin/wa-admin-page.php:552
-#: admin/wa-admin-page.php:561
+#: admin/wa-admin-page.php:474
+#: admin/wa-admin-page.php:485
+#: admin/wa-admin-page.php:494
+#: admin/wa-admin-page.php:504
+#: admin/wa-admin-page.php:513
+#: admin/wa-admin-page.php:522
+#: admin/wa-admin-page.php:531
+#: admin/wa-admin-page.php:540
+#: admin/wa-admin-page.php:551
+#: admin/wa-admin-page.php:560
+#: admin/wa-admin-page.php:569
 msgid "Error: Settings file not found."
 msgstr ""
 
-#: admin/wa-admin-page.php:576
+#: admin/wa-admin-page.php:584
 msgid "To keep this plugin free, I spent cups of coffee building it. If you love it and find it super helpful for your business, you can always"
 msgstr ""
 
-#: admin/wa-admin-page.php:579
+#: admin/wa-admin-page.php:587
 msgid "Buy Me a Coffee"
 msgstr ""
 
-#: includes/buttons/wa-order-cart-page.php:201
-#: includes/buttons/wa-order-cart-page.php:221
+#: includes/buttons/wa-order-cart-page.php:204
+#: includes/buttons/wa-order-cart-page.php:225
 msgid "Discount"
 msgstr ""
 
 #. Translators: %s is the product title
 #: includes/buttons/wa-order-shop-archive.php:51
+#, php-format
 msgid "Complete order on WhatsApp to buy %s"
 msgstr ""
 
@@ -1903,72 +1919,75 @@ msgstr ""
 msgid "Add WhatsApp Number"
 msgstr ""
 
-#: includes/multiple-numbers.php:53
+#: includes/multiple-numbers.php:71
 msgid "Set a Number"
 msgstr ""
 
-#: includes/multiple-numbers.php:74
+#: includes/multiple-numbers.php:92
 msgid "e.g. 6281234567890"
 msgstr ""
 
-#: includes/multiple-numbers.php:76
+#: includes/multiple-numbers.php:94
 msgid "Enter number including country code, e.g. 6281234567890"
 msgstr ""
 
-#: includes/multiple-numbers.php:85
+#: includes/multiple-numbers.php:103
 msgid "Click here to return to Global Settings page."
 msgstr ""
 
-#: includes/multiple-numbers.php:131
-#: includes/multiple-numbers.php:132
-#: includes/multiple-numbers.php:134
+#: includes/multiple-numbers.php:149
+#: includes/multiple-numbers.php:150
+#: includes/multiple-numbers.php:152
 msgid "WhatsApp Number updated."
 msgstr ""
 
-#: includes/multiple-numbers.php:133
+#: includes/multiple-numbers.php:151
 msgid "WhatsApp Number deleted."
 msgstr ""
 
 #. translators: %s: date and time of the revision
-#: includes/multiple-numbers.php:136
+#: includes/multiple-numbers.php:154
+#, php-format
 msgid "WhatsApp Number restored to revision from %s"
 msgstr ""
 
-#: includes/multiple-numbers.php:137
+#: includes/multiple-numbers.php:155
 msgid "WhatsApp Number successfully added."
 msgstr ""
 
-#: includes/multiple-numbers.php:138
+#: includes/multiple-numbers.php:156
 msgid "WhatsApp Number saved."
 msgstr ""
 
-#: includes/multiple-numbers.php:139
+#: includes/multiple-numbers.php:157
 msgid "WhatsApp Number submitted."
 msgstr ""
 
 #. translators: %s: date and time of the scheduled publication
-#: includes/multiple-numbers.php:142
+#: includes/multiple-numbers.php:160
+#, php-format
 msgid "WhatsApp Number scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: includes/multiple-numbers.php:143
+#: includes/multiple-numbers.php:161
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/multiple-numbers.php:145
+#: includes/multiple-numbers.php:163
 msgid "WhatsApp Number draft updated."
 msgstr ""
 
-#: includes/multiple-numbers.php:191
+#: includes/multiple-numbers.php:233
 msgid "OneClick Chat to Order requires a WhatsApp Number to be set!"
 msgstr ""
 
-#: includes/multiple-numbers.php:205
+#: includes/multiple-numbers.php:247
 msgid "OneClick Chat to Order requires a WhatsApp number to be set! Please add a valid and active WhatsApp number."
 msgstr ""
 
 #. translators: %1$s and %2$s are the placeholders for the links
 #: includes/wa-button.php:35
+#, php-format
 msgid "%1$s Important! %2$s With %3$sOneClick Chat to Order%4$s, you can now set multiple WhatsApp numbers. Please %5$sset it here%6$s to get started. %7$sLearn more%8$s. %9$sDismiss%10$s."
 msgstr ""
 
@@ -2032,49 +2051,62 @@ msgstr ""
 msgid "Force Show Add to Cart button?"
 msgstr ""
 
-#: whatsapp-order.php:143
+#: whatsapp-order.php:146
 msgid "requires"
 msgstr ""
 
-#: whatsapp-order.php:144
+#: whatsapp-order.php:147
 msgid "WooCommerce plugin."
 msgstr ""
 
-#: whatsapp-order.php:145
+#: whatsapp-order.php:148
 msgid "Please install and activate it."
 msgstr ""
 
-#: whatsapp-order.php:167
+#: whatsapp-order.php:170
 msgid "Settings"
 msgstr ""
 
-#: whatsapp-order.php:181
+#: whatsapp-order.php:184
 msgid "Buy Me a Coffee ☕"
 msgstr ""
 
-#: whatsapp-order.php:388
+#: whatsapp-order.php:391
 msgid "OneClick Chat to Order requires WordPress 5.3 or higher."
 msgstr ""
 
-#: whatsapp-order.php:389
-#: whatsapp-order.php:399
-#: whatsapp-order.php:409
+#: whatsapp-order.php:392
+#: whatsapp-order.php:402
+#: whatsapp-order.php:412
 msgid "Plugin Activation Error"
 msgstr ""
 
-#: whatsapp-order.php:398
+#: whatsapp-order.php:401
 msgid "OneClick Chat to Order requires PHP 7.4 or higher."
 msgstr ""
 
-#: whatsapp-order.php:408
+#: whatsapp-order.php:411
 msgid "OneClick Chat to Order requires WooCommerce to be installed and activated."
 msgstr ""
 
+#: whatsapp-order.php:621
+msgid "OneClick Chat to Order has been updated!"
+msgstr ""
+
+#: whatsapp-order.php:622
+msgid "Your settings have been automatically preserved. We recommend verifying your configuration on each tab."
+msgstr ""
+
+#: whatsapp-order.php:624
+msgid "Review Settings →"
+msgstr ""
+
 #. translators: 1: plugin name, 2: 5-star review link
-#: whatsapp-order.php:638
+#: whatsapp-order.php:836
+#, php-format
 msgid "Enjoyed %1$s? Please leave a %2$s rating. I really appreciate your support!"
 msgstr ""
 
-#: whatsapp-order.php:640
+#: whatsapp-order.php:838
 msgid "5 stars"
 msgstr ""

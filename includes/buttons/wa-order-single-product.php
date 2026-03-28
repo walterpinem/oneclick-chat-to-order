@@ -139,7 +139,7 @@ function wa_order_add_button_plugin()
 	$force_fullwidth = apply_filters('wa_order_filter_force_fullwidth', $options_manager->get_option('wa_order_single_force_fullwidth', 'no'));
 	$button_fullwidth_class = ($force_fullwidth === 'yes') ? 'wa-order-fullwidth' : '';
 	$button_fullwidth_style = ($force_fullwidth === 'yes') ? 'style="width:100%;display:block;"' : '';
-	// Get link type setting - use direct get_option for debugging
+	// Get link type setting
 	$link_type = apply_filters('wa_order_filter_link_type', get_option('wa_order_single_product_link_type', 'link'));
 
 	// Get button position to determine if we should use single_add_to_cart_button class

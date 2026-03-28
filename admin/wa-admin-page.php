@@ -52,6 +52,14 @@ function wa_order_sanitize_array($input)
     }
     return [];
 }
+
+// Sanitization callback for checkbox fields
+// Returns 'yes' if checked, empty string if not
+// Since version 1.0.5
+function sanitize_checkbox($input)
+{
+    return ($input === 'yes') ? 'yes' : '';
+}
 // Sanitization callback function for WP color picker
 // Since version 1.0.5
 function wa_order_sanitize_rgba_color($color)
@@ -221,7 +229,7 @@ function wa_order_get_settings()
             'wa_order_option_cart_button_text' => 'sanitize_text_field',
             'wa_order_option_cart_hide_checkout' => 'sanitize_checkbox',
             'wa_order_option_cart_hide_product_url' => 'sanitize_checkbox',
-            'wa_order_option_cart_open_new_tab' => 'sanitize_checkbox',
+            'wa_order_option_cart_open_new_tab' => 'sanitize_text_field',
             'wa_order_option_cart_enable_variations' => 'sanitize_checkbox',
             'wa_order_option_cart_include_tax' => 'sanitize_checkbox'
         ],

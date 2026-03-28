@@ -183,9 +183,9 @@ if (!defined('ABSPATH')) {
                     <label class="wa_order_price_label" for="wa_order_remove_price"><b><?php esc_html_e('Position', 'oneclick-wa-order'); ?></b></label>
                 </th>
                 <td>
-                    <input type="radio" name="wa_order_bshdw_position" value="outline" <?php checked('outline', get_option('wa_order_bshdw_position'), true); ?>>
+                    <input type="radio" name="wa_order_bshdw_position" value="outline" <?php checked('outline', get_option('wa_order_bshdw_position', 'outline'), true); ?>>
                     <?php esc_html_e('Outline', 'oneclick-wa-order'); ?>
-                    <input type="radio" name="wa_order_bshdw_position" value="inset" <?php checked('inset', get_option('wa_order_bshdw_position'), true); ?>>
+                    <input type="radio" name="wa_order_bshdw_position" value="inset" <?php checked('inset', get_option('wa_order_bshdw_position', 'outline'), true); ?>>
                     <?php esc_html_e('Inset', 'oneclick-wa-order'); ?>
                 </td>
             </tr>
@@ -195,9 +195,9 @@ if (!defined('ABSPATH')) {
                     <label class="wa_order_price_label" for="wa_order_remove_price"><b><?php esc_html_e('Hover Position', 'oneclick-wa-order'); ?></b></label>
                 </th>
                 <td>
-                    <input type="radio" name="wa_order_bshdw_position_hover" value="outline" <?php checked('outline', get_option('wa_order_bshdw_position_hover'), true); ?>>
+                    <input type="radio" name="wa_order_bshdw_position_hover" value="outline" <?php checked('outline', get_option('wa_order_bshdw_position_hover', 'outline'), true); ?>>
                     <?php esc_html_e('Outline', 'oneclick-wa-order'); ?>
-                    <input type="radio" name="wa_order_bshdw_position_hover" value="inset" <?php checked('inset', get_option('wa_order_bshdw_position_hover'), true); ?>>
+                    <input type="radio" name="wa_order_bshdw_position_hover" value="inset" <?php checked('inset', get_option('wa_order_bshdw_position_hover', 'outline'), true); ?>>
                     <?php esc_html_e('Inset', 'oneclick-wa-order'); ?>
                 </td>
             </tr>

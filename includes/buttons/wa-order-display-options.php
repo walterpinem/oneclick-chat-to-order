@@ -154,8 +154,8 @@ function wa_order_display_options_std_box_shadow()
 	$bshdw_p_hov    = esc_attr(get_option('wa_order_bshdw_position_hover', ''));
 
 	// Determine the box shadow style
-	$box_shadow_style = ($bshdw_p === 'outline') ? '' : 'inset';
-	$box_shadow_style_hov = ($bshdw_p_hov === 'outline') ? '' : 'inset';
+	$box_shadow_style		= ($bshdw_p === 'outline') ? '' : 'inset';
+	$box_shadow_style_hov	= ($bshdw_p_hov === 'outline') ? '' : 'inset';
 
 	// Output CSS for box shadow
 	?>

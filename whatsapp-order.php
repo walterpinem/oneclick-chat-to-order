@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
  * Plugin Name:       OneClick Chat to Order
  * Plugin URI:        https://www.onlinestorekit.com/oneclick-chat-to-order/
  * Description:       Make it easy for your customers to order via WhatsApp chat through a single button click with detailing information about a product including custom message. OneClick Chat to Order button can be displayed on a single product page and as a floating button. GDPR-ready!
- * Version:           1.0.9
+ * Version:           1.1.1
  * Author:            Walter Pinem
  * Author URI:        https://walterpinem.com/
  * Developer:         Walter Pinem | Online Store Kit
@@ -23,9 +23,9 @@ if (!defined('ABSPATH')) {
  * Requires PHP:      7.4
  *
  * WC requires at least: 8.2
- * WC tested up to: 10.3.4
+ * WC tested up to: 10.6.1
  *
- * Copyright: © 2019 - 2025 Walter Pinem.
+ * Copyright: © 2019 - 2026 Walter Pinem.
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
@@ -431,8 +431,203 @@ function wa_order_clear_all_caches()
     $options_manager = wa_order_get_options_manager();
     $options_manager->clear_all_cache();
 
-    wa_order_log_error('All plugin caches cleared');
+    // wa_order_log_error('All plugin caches cleared'); // Debug only
 }
+
+/**
+ * Database migration system for safe upgrades across 40k+ installs.
+ * Runs once per version bump, tracked via wa_order_db_version.
+ *
+ * @since 1.1.1
+ */
+function wa_order_run_migrations()
+{
+    $current_db_version = get_option('wa_order_db_version', '0');
+    $target_db_version  = '1.1.1';
+
+    // Skip if already migrated
+    if (version_compare($current_db_version, $target_db_version, '>=')) {
+        return;
+    }
+
+    // Migration 1.1.1: Repair checkbox options corrupted by missing sanitize_checkbox()
+    wa_order_migrate_repair_checkboxes();
+
+    // Mark migration complete
+    update_option('wa_order_db_version', $target_db_version);
+
+    // Show one-time admin notice
+    set_transient('wa_order_migration_notice', true, 0);
+
+    // wa_order_log_error('Migration completed to DB version ' . $target_db_version); // Debug only
+}
+add_action('admin_init', 'wa_order_run_migrations');
+
+/**
+ * Repair checkbox options that were corrupted by the undefined sanitize_checkbox() callback.
+ *
+ * Strategy: For each settings group, we check "companion" non-checkbox options
+ * (button text, custom messages, phone numbers) that would only have values if
+ * the user actively configured that tab. If companions have values, we know
+ * the user intended to enable that feature, so we safely restore the checkbox.
+ *
+ * Rules:
+ * - If the checkbox already has value 'yes' → skip (not corrupted)
+ * - If companion options are populated → restore to 'yes'
+ * - If no companions have values → leave as-is (user never configured this)
+ *
+ * @since 1.1.1
+ */
+function wa_order_migrate_repair_checkboxes()
+{
+    $repairs_made = 0;
+
+    // ── Single Product Button ──
+    // If button text or custom message is set, user intended to enable the button
+    if (wa_order_has_companion_values(array(
+        'wa_order_option_text_button',
+        'wa_order_option_message',
+        'wa_order_selected_wa_number_single_product'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_enable_single_product');
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_target', '_blank');
+    }
+
+    // ── Cart Page ──
+    if (wa_order_has_companion_values(array(
+        'wa_order_option_cart_button_text',
+        'wa_order_option_cart_custom_message',
+        'wa_order_selected_wa_number_cart'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_add_button_to_cart');
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_cart_open_new_tab', '_blank');
+    }
+
+    // ── Thank You Page ──
+    if (wa_order_has_companion_values(array(
+        'wa_order_option_custom_thank_you_button_text',
+        'wa_order_option_custom_thank_you_custom_message',
+        'wa_order_selected_wa_number_thanks'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_enable_button_thank_you');
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_custom_thank_you_open_new_tab', '_blank');
+    }
+
+    // ── Shop Page ──
+    if (wa_order_has_companion_values(array(
+        'wa_order_option_button_text_shop_loop',
+        'wa_order_option_custom_message_shop_loop',
+        'wa_order_selected_wa_number_shop'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_enable_button_shop_loop');
+        $repairs_made += wa_order_repair_checkbox('wa_order_option_shop_loop_open_new_tab', '_blank');
+    }
+
+    // ── Floating Button ──
+    if (wa_order_has_companion_values(array(
+        'wa_order_floating_message',
+        'wa_order_selected_wa_number_floating',
+        'wa_order_floating_tooltip'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_floating_button');
+        $repairs_made += wa_order_repair_checkbox('wa_order_floating_target', '_blank');
+        $repairs_made += wa_order_repair_checkbox('wa_order_floating_tooltip_enable');
+    }
+
+    // ── GDPR ──
+    if (wa_order_has_companion_values(array(
+        'wa_order_gdpr_message',
+        'wa_order_gdpr_privacy_page'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_gdpr_status_enable');
+    }
+
+    // ── Shortcode ──
+    if (wa_order_has_companion_values(array(
+        'wa_order_shortcode_message',
+        'wa_order_shortcode_text_button',
+        'wa_order_selected_wa_number_shortcode'
+    ))) {
+        $repairs_made += wa_order_repair_checkbox('wa_order_shortcode_target', '_blank');
+    }
+
+    // ── Display Options: These are "hide" checkboxes — only repair if the
+    //    corresponding feature is enabled (proven above). We DON'T blindly
+    //    restore "hide" toggles because a false value means "show" which is
+    //    the safe/expected default. ──
+
+    // wa_order_log_error('Checkbox migration complete. Repairs made: ' . $repairs_made); // Debug only
+}
+
+/**
+ * Check if any of the given companion option names have a non-empty value.
+ *
+ * @param array $option_names List of option names to check.
+ * @return bool True if at least one companion has a value.
+ */
+function wa_order_has_companion_values($option_names)
+{
+    foreach ($option_names as $name) {
+        $value = get_option($name);
+        if (!empty($value)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Repair a single checkbox option if it appears corrupted.
+ *
+ * @param string $option_name  The option to repair.
+ * @param string $expected_val The value the checkbox should have when checked. Default 'yes'.
+ * @return int 1 if repaired, 0 if skipped.
+ */
+function wa_order_repair_checkbox($option_name, $expected_val = 'yes')
+{
+    $current = get_option($option_name);
+
+    // Already has the correct value — not corrupted
+    if ($current === $expected_val) {
+        return 0;
+    }
+
+    // Value exists in DB but is corrupted (false, empty string, etc.)
+    // Restore it to the expected value
+    update_option($option_name, $expected_val);
+    // wa_order_log_error('Repaired checkbox option: ' . $option_name . ' → ' . $expected_val); // Debug only
+    return 1;
+}
+
+/**
+ * Show a one-time admin notice after migration completes.
+ *
+ * @since 1.1.1
+ */
+function wa_order_migration_admin_notice()
+{
+    if (!get_transient('wa_order_migration_notice')) {
+        return;
+    }
+
+    // Only show to administrators
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    $settings_url = admin_url('admin.php?page=wa-order&tab=welcome');
+    printf(
+        '<div class="notice notice-info is-dismissible"><p><strong>%s</strong> %s <a href="%s">%s</a></p></div>',
+        esc_html__('OneClick Chat to Order has been updated!', 'oneclick-wa-order'),
+        esc_html__('Your settings have been automatically preserved. We recommend verifying your configuration on each tab.', 'oneclick-wa-order'),
+        esc_url($settings_url),
+        esc_html__('Review Settings →', 'oneclick-wa-order')
+    );
+
+    // Delete so it only shows once
+    delete_transient('wa_order_migration_notice');
+}
+add_action('admin_notices', 'wa_order_migration_admin_notice');
 
 // A function to dynamically generate WhatsApp URL
 // Optimized in version 1.0.8 for better performance
@@ -524,7 +719,7 @@ function wa_order_get_shipping_address($customer)
 function wa_order_enqueue_scripts()
 {
     if (is_product()) {
-        wp_enqueue_script('wa-order-single-product', plugin_dir_url(__FILE__) . 'assets/js/single-product.js', array('jquery'), '1.1', true); // Bump version to clear cache
+        wp_enqueue_script('wa-order-single-product', plugin_dir_url(__FILE__) . 'assets/js/single-product.js', array('jquery'), OCTO_VERSION, true);
     }
 }
 add_action('wp_enqueue_scripts', 'wa_order_enqueue_scripts');
@@ -658,6 +853,6 @@ function wa_order_deactivation_cleanup()
     wa_order_clear_all_caches();
 
     // Log deactivation
-    wa_order_log_error('Plugin deactivated and caches cleared');
+    // wa_order_log_error('Plugin deactivated and caches cleared'); // Debug only
 }
 register_deactivation_hook(__FILE__, 'wa_order_deactivation_cleanup');

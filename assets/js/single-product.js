@@ -3,11 +3,11 @@
     function disableAjaxOnWaButtons() {
         if (initialized) return; // Skip if already run
         initialized = true;
-        console.log('WA Order: Searching for buttons...');
+
 
         // Target standard WA button
         $('.wa-order-button.single_add_to_cart_button').each(function() {
-            console.log('WA Order: Found standard button, setting up handler');
+
             $(this).off('click'); // Unbind existing handlers (WooCommerce/Woodmart)
             $(this).on('click', function(e) {
                 e.preventDefault(); // Prevent any default form submit/AJAX
@@ -18,7 +18,7 @@
                 if (href) {
                     // redirect logic
                 } else {
-                    console.warn('WA Order: No href found for button');
+
                 }
                 if (target === '_blank') {
                     window.open(href, '_blank');
@@ -30,7 +30,7 @@
 
         // Target GDPR WA button
         $('.gdpr_wa_button_input.single_add_to_cart_button').each(function() {
-            console.log('WA Order: Found GDPR button, setting up handler');
+
             $(this).off('click'); // Unbind existing handlers
             $(this).on('click', function(e) {
                 if (!$(this).prop('disabled')) {
@@ -40,7 +40,7 @@
                     var href = link.attr('href');
                     var target = link.attr('target');
                     if (href) {
-                        console.log('WA Order: GDPR button clicked - redirecting to ' + href + ' with target ' + target);
+    
                         if (target === '_blank') {
                             window.open(href, '_blank');
                         } else {

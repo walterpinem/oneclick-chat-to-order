@@ -37,7 +37,25 @@ function wa_order_multiple_numbers()
       'publicly_queryable' => false,
       'has_archive' => false,
       'rewrite' => array('slug' => 'waon', 'with_front' => false),
-      'supports' => array('title')
+      'supports' => array('title'),
+      'capability_type' => 'post',
+      'capabilities' => array(
+        'edit_post' => 'manage_options',
+        'read_post' => 'manage_options',
+        'delete_post' => 'manage_options',
+        'edit_posts' => 'manage_options',
+        'edit_others_posts' => 'manage_options',
+        'publish_posts' => 'manage_options',
+        'read_private_posts' => 'manage_options',
+        'delete_posts' => 'manage_options',
+        'delete_private_posts' => 'manage_options',
+        'delete_published_posts' => 'manage_options',
+        'delete_others_posts' => 'manage_options',
+        'edit_private_posts' => 'manage_options',
+        'edit_published_posts' => 'manage_options',
+        'create_posts' => 'manage_options',
+      ),
+      'map_meta_cap' => false,
     )
   );
 }
@@ -156,15 +174,27 @@ function wa_order_multiple_numbers_updated_messages($messages)
 add_action('save_post', 'wa_order_number_save_number_field', 10, 2);
 function wa_order_number_save_number_field($pid, $post)
 {
+  // Skip autosave, auto-draft, and non-WhatsApp number post types
   if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || $post->post_status == 'auto-draft' || $post->post_type != 'wa-order-numbers') {
     return;
   }
+  
+  // Security: Verify nonce
+  if (!isset($_POST['wa_order_phonenumbers_metabox_process']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['wa_order_phonenumbers_metabox_process'])), 'wa_order_phonenumbers_metabox_nonce')) {
+    return;
+  }
+  
+  // Security: Check user capability - only administrators can manage WhatsApp numbers
+  if (!current_user_can('manage_options')) {
+    return;
+  }
+  
   // Check if the phone number input exists in the POST data
   if (isset($_POST['wa_order_phone_number_input'])) {
     $sanitized_phone = sanitize_text_field(wp_unslash($_POST['wa_order_phone_number_input']));
     update_post_meta($pid, 'wa_order_phone_number_input', $sanitized_phone);
   } else {
-    // If the phone number input is not set, you might want to delete the meta key or handle it accordingly
+    // If the phone number input is not set, delete the meta key
     delete_post_meta($pid, 'wa_order_phone_number_input');
   }
 }
@@ -172,9 +202,21 @@ function wa_order_number_save_number_field($pid, $post)
 add_action('save_post', 'wa_order_completion_validator', 20, 2);
 function wa_order_completion_validator($pid, $post)
 {
+  // Skip autosave, auto-draft, and non-WhatsApp number post types
   if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || $post->post_status == 'auto-draft' || $post->post_type != 'wa-order-numbers') {
     return;
   }
+  
+  // Security: Verify nonce
+  if (!isset($_POST['wa_order_phonenumbers_metabox_process']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['wa_order_phonenumbers_metabox_process'])), 'wa_order_phonenumbers_metabox_nonce')) {
+    return;
+  }
+  
+  // Security: Check user capability - only administrators can manage WhatsApp numbers
+  if (!current_user_can('manage_options')) {
+    return;
+  }
+  
   $wa_number = get_post_meta($pid, 'wa_order_phone_number_input', true);
   if (empty($wa_number) && (isset($_POST['publish']) || isset($_POST['save'])) && isset($_POST['post_status']) && sanitize_text_field(wp_unslash($_POST['post_status'])) == 'publish') {
     global $wpdb;
