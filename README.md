@@ -125,6 +125,38 @@ For support and feature requests:
 
 ## 📝 Changelog
 
+## [1.1.1] - 2026-03-27
+
+### Added
+- **Automated Checkbox Migration Routine** – Background database migration (`wa_order_run_migrations`) runs automatically on update, inspecting database state and repairing corrupted settings options back to their intended `'yes'`/`'no'` values
+- **Migration Admin Notice** – One-time dismissible notice for administrators confirming when the database repair is complete, with a link to review settings
+- **WooCommerce Block Cart Support** – Full support for the Gutenberg-based Block Cart via dual-mode hook approach. Uses `MutationObserver` JavaScript injection to wait for React hydration before inserting the WhatsApp checkout button
+- **Block Cart "Hide Checkout" Support** – Scoped dynamic CSS injected via `wp_head` to hide the Block Cart's native checkout button, since `remove_action('woocommerce_proceed_to_checkout')` is ignored by Block Cart
+
+### Fixed
+- Fixed a major glitch causing all checkbox-based plugin settings (e.g. enabling/disabling cart buttons, altering visibility, GDPR toggles) to fail to save across the entire plugin
+- Restored missing `sanitize_checkbox` callbacks across 35+ `register_setting` rules, correctly translating checkbox states to binary `'yes'`/`'no'` options
+- Fixed the WhatsApp Cart Button not rendering on sites using modern block themes (e.g. Twenty Twenty-Five) due to WooCommerce transitioning from legacy shortcodes to React-based Block Cart
+- Fixed the "Hide Proceed to Checkout button?" option being silently ignored on Block Cart structures
+
+---
+
+## [1.1.0] - 2025-12-11
+
+### Security
+- **Authorization Fix** – Added proper capability checks to restrict WhatsApp number management to administrators only
+- **Custom Post Type Restriction** – WhatsApp Numbers CPT now requires `manage_options` capability for all operations
+- **Nonce Verification** – Enhanced CSRF protection for all save operations
+- **Security Advisory**: This update addresses a Missing Authorization vulnerability (CVE-2025-14270) that allowed authenticated users with Editor role or higher to modify plugin settings without proper authorization
+- **Credits**: Thank you to the Wordfence security team for responsible disclosure
+
+### Changed
+- **Minimal Implementation** – Security fix with no impact on existing functionality
+- **Backward Compatible** – All existing features work exactly as before
+- **WordPress Standards** – Uses WordPress core capability system
+
+---
+
 ### [1.0.9] - 2025-11-01
 
 #### Security Update
@@ -138,6 +170,8 @@ For support and feature requests:
 **Security Advisory**: This update addresses a potential security vulnerability. Immediate update is strongly recommended.
 
 **Credits**: Thank you to Md Shofiur R. from Pentest Testing Corp for responsible disclosure.
+
+---
 
 ### [1.0.8] - 2025-08-06
 
@@ -166,13 +200,15 @@ For support and feature requests:
 
 [View Full Changelog](CHANGELOG.md)
 
+---
+
 ## 📜 License
 
 This project is licensed under the GPLv3 or later - see the [LICENSE](http://www.gnu.org/licenses/gpl-3.0.html) file for details.
 
 ## 👨‍💻 Contributors
 
-- **Walter Pinem** - _Initial work_ - [walterpinem](https://github.com/walterpinem)
+- **Walter Pinem** - _Initial work_ - [Walter Pinem](https://walterpinem.com/)
 
 ## 💝 Support the Project
 
@@ -182,11 +218,23 @@ If you find this plugin helpful, consider supporting its development:
 
 ## 🔗 Links
 
-- [WordPress Plugin Page](https://wordpress.org/plugins/oneclick-chat-to-order/)
-- [Official Website](https://www.onlinestorekit.com/oneclick-chat-to-order/)
-- [GitHub Repository](https://github.com/yourusername/oneclick-chat-to-order)
-- [Demo Site](https://walterpinem.me/projects/oneclick/)
+- [Plugin Homepage](https://www.onlinestorekit.com/oneclick-chat-to-order/)
+- [WordPress Plugin Page](https://wordpress.org/plugins/oneclick-whatsapp-order/)
+- [Documentation](https://www.onlinestorekit.com/docs/octo/)
+- [Support Forum](https://wordpress.org/support/plugin/oneclick-whatsapp-order/)
+- [GitHub Repository](https://github.com/walterpinem/oneclick-chat-to-order)
 
 ---
 
-**Made with ❤️ for WooCommerce merchants worldwide**
+**Legend:**
+- 🔒 Security Update
+- ✨ New Feature
+- 🐛 Bug Fix
+- 🔧 Improvement
+- ⚡ Performance
+- 🎨 UI/UX
+- 📝 Documentation
+
+---
+
+**Made with ❤️ for WooCommerce merchants worldwide** by **[Walter Pinem](https://walterpinem.me/)**
