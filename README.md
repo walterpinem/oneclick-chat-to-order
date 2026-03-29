@@ -249,3 +249,6 @@ _(Older changelog entries preserved but omitted for brevity.)_
 - Fixes critical checkbox issue
 - Improves Block Cart compatibility
 
+---
+
+Coded with ❤️ and ☕ by [Walter Pinem](https://walterpinem.com/).
