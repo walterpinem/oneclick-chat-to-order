@@ -7,6 +7,8 @@
 
 Transform your WooCommerce store with seamless WhatsApp integration. Let customers order instantly via WhatsApp with enhanced features.
 
+🔗 **WordPress Plugin Page:** https://wordpress.org/plugins/oneclick-whatsapp-order/
+
 ---
 
 ## 🚀 Description
@@ -196,6 +198,13 @@ Yes:
 
 ## 📝 Changelog
 
+### 1.1.2 – May 27, 2026
+
+#### Bug Fixes
+- Fixed "Open in New Tab?" checkbox not saving on the Basic, Shop, Checkout, and Floating tabs. The four affected options (`wa_order_option_target`, `wa_order_option_shop_loop_open_new_tab`, `wa_order_option_custom_thank_you_open_new_tab`, `wa_order_floating_target`) were incorrectly registered with `sanitize_checkbox`, which only accepts `'yes'` and silently discards `'_blank'`. Changed all four to `sanitize_text_field` to match the Cart tab, which was already working correctly.
+
+---
+
 ### 1.1.1 – March 27, 2026
 
 #### New
@@ -243,6 +252,9 @@ _(Older changelog entries preserved but omitted for brevity.)_
 ---
 
 ## 🔄 Upgrade Notice
+
+### 1.1.2
+- Fixes "Open in New Tab?" checkbox not saving on Basic, Shop, Checkout, and Floating tabs. Update immediately if you rely on opening WhatsApp links in a new tab from any of those pages.
 
 ### 1.1.1
 - Adds migration system

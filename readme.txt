@@ -3,11 +3,11 @@ Contributors: walterpinem
 Donate link: https://www.paypal.me/WalterPinem
 Tags: woocommerce, woocommerce whatsapp, whatsapp, whatsapp chat, click to chat
 Requires at least: 6.0
-Tested up to: 6.9.4
-Stable tag: 1.1.1
+Tested up to: 7.0
+Stable tag: 1.1.2
 Requires PHP: 7.4
 WC requires at least: 8.2
-WC tested up to: 10.6.1
+WC tested up to: 10.8.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,11 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 8. WhatsApp button shortcode output on the front-end
 
 == Changelog ==
+= 1.1.2 – May 27, 2026 =
+
+#### **Bug Fixes**
+* Fixed "Open in New Tab?" checkbox not saving on the Basic, Shop, Checkout, and Floating tabs. The four affected options (`wa_order_option_target`, `wa_order_option_shop_loop_open_new_tab`, `wa_order_option_custom_thank_you_open_new_tab`, `wa_order_floating_target`) were incorrectly registered with `sanitize_checkbox`, which only accepts `'yes'` and silently discards `'_blank'`. Changed all four to `sanitize_text_field` to match the Cart tab, which was already working correctly.
+
 = 1.1.1 – March 27, 2026 =
 
 #### **New Features**
@@ -514,14 +519,5 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 
 == Upgrade Notice ==
 
-= 1.1.1 – March 27, 2026 =
-#### **New Features**
-* **Automated Checkbox Migration Routine** – Background database migration (`wa_order_run_migrations`) runs automatically on update, inspecting database state and repairing corrupted settings options back to their intended `'yes'`/`'no'` values.
-* **Migration Admin Notice** – One-time dismissible notice for administrators confirming when the database repair is complete, with a link to review settings.
-* **WooCommerce Block Cart Support** – Full support for the Gutenberg-based Block Cart via dual-mode hook approach. Uses `MutationObserver` JavaScript injection to wait for React hydration before inserting the WhatsApp checkout button.
-* **Block Cart "Hide Checkout" Support** – Scoped dynamic CSS injected via `wp_head` to hide the Block Cart's native checkout button, since `remove_action('woocommerce_proceed_to_checkout')` is ignored by Block Cart.
-
-#### **Bug Fixes**
-* Fixed a major glitch causing all checkbox-based plugin settings (e.g. enabling/disabling cart buttons, altering visibility, GDPR toggles) to fail to save across the entire plugin.
-* Restored missing `sanitize_checkbox` callbacks across 35+ `register_setting` rules, correctly translating checkbox states to binary `'yes'`/`'no'` options.
-* Fixed the WhatsApp Cart Button not rendering on sites using modern block themes (e.g. Twenty Twenty-Five) due to WooCommerce transitioning from legacy shortcodes to React-based Block Cart.
+= 1.1.2 =
+Bug fix: "Open in New Tab?" checkbox now saves correctly on the Basic, Shop, Checkout, and Floating tabs. Update immediately if you rely on opening WhatsApp links in a new tab from any of those pages.
