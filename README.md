@@ -1,5 +1,10 @@
 # OneClick Chat to Order
 
+[![Active Installs](https://img.shields.io/wordpress/plugin/installs/oneclick-whatsapp-order?label=Active%20Installs&logo=wordpress&color=blue)](https://wordpress.org/plugins/oneclick-whatsapp-order/)
+[![WordPress Rating](https://img.shields.io/wordpress/plugin/rating/oneclick-whatsapp-order?label=Rating&logo=wordpress)](https://wordpress.org/plugins/oneclick-whatsapp-order/)
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/oneclick-whatsapp-order?label=Version&logo=wordpress)](https://wordpress.org/plugins/oneclick-whatsapp-order/)
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 **Contributors:** walterpinem  
 **Donate:** https://www.paypal.me/WalterPinem  
 **License:** GPLv3 or later  
