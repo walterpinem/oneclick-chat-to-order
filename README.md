@@ -203,6 +203,40 @@ Yes:
 
 ## 📝 Changelog
 
+### 1.2.0 (November 2026)
+
+Maintenance release covering the support forum and email backlog, tested with WordPress 7.1 and WooCommerce 11.2. Option names, filters, CSS classes and button markup are unchanged.
+
+#### Fixes
+- 1.1.2 no longer switches buttons back on: the 1.1.1 checkbox repair runs once, only for sites that never ran it
+- "Hide Product Quantity" no longer locks cart quantities to 1; WooCommerce's own "Sold individually" works again
+- Button shows on products without a price (on by default) and optionally on out-of-stock products
+- Phone numbers saved and sent as digits only
+- onClick link type keeps the prefilled message
+- `[oneclick]` shortcode: no HTML or `&amp;` in messages, no crash outside product pages
+- Block Cart message updates live and the button survives re-renders (mobile)
+- Correct coupon amounts and tax display in cart and thank you messages
+- HPOS: shipping address included in the thank you message
+- Polylang/WPML translations of the product button text and message
+- Shop button on block-based shop pages (Product Collection)
+- Floating button accessible name, subfolder-safe source URL
+- Shortcode tab "Open in New Tab?" saves
+- Buttons without a number fall back to the Basic tab number instead of opening the share screen
+
+#### New
+- Cart: "Exclude Prices and Totals?" and "Include Extra Item Details?"
+- Display: "Hide WhatsApp Icon?"
+- Filters: `wa_order_single_button_hook`, `wa_order_single_button_priority`, `wa_order_filter_show_on_unpurchasable`, `wa_order_filter_whatsapp_url`, `wa_order_filter_cart_exclude_price`, `wa_order_filter_cart_include_item_data`, `wa_order_filter_floating_*`
+- wa.me links by default on new installs
+
+#### Under the hood
+- Text domain is now `oneclick-whatsapp-order` (translate.wordpress.org packs load)
+- `sanitize_checkbox()` renamed to `wa_order_sanitize_checkbox()`
+- Removed front-end `[donate]` shortcode, `wp-load.php` includes, GDPR tab polyfills and the unused deactivation routine
+- Number post type no longer public; multisite-aware uninstall
+
+---
+
 ### 1.1.2 – May 27, 2026
 
 #### Bug Fixes
@@ -257,6 +291,9 @@ _(Older changelog entries preserved but omitted for brevity.)_
 ---
 
 ## 🔄 Upgrade Notice
+
+### 1.2.0
+- Fixes cart quantities locked to 1, buttons switched on by 1.1.2, missing buttons on products without a price and stale Block Cart messages. Recommended for all stores.
 
 ### 1.1.2
 - Fixes "Open in New Tab?" checkbox not saving on Basic, Shop, Checkout, and Floating tabs. Update immediately if you rely on opening WhatsApp links in a new tab from any of those pages.

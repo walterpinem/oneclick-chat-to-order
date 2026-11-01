@@ -18,11 +18,26 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-// Check if user wants to delete plugin data
-$delete_data = get_option('wa_order_delete_data_on_uninstall', 'no');
+/**
+ * Delete this site's data if its admin opted in ("Delete data on uninstall").
+ */
+function wa_order_maybe_delete_site_data()
+{
+    if (get_option('wa_order_delete_data_on_uninstall', 'no') === 'yes') {
+        wa_order_delete_all_plugin_data();
+    }
+}
 
-if ($delete_data === 'yes') {
-    wa_order_delete_all_plugin_data();
+// On a network, honour each site's own choice (since 1.2.0).
+if (is_multisite()) {
+    $wa_order_site_ids = get_sites(array('fields' => 'ids', 'number' => 0));
+    foreach ($wa_order_site_ids as $wa_order_site_id) {
+        switch_to_blog($wa_order_site_id);
+        wa_order_maybe_delete_site_data();
+        restore_current_blog();
+    }
+} else {
+    wa_order_maybe_delete_site_data();
 }
 
 /**
@@ -216,6 +231,15 @@ function wa_order_delete_plugin_options()
     delete_option('wa_order_option_shop_loop_exclude_price');
     delete_option('wa_order_option_shop_loop_open_new_tab');
     delete_option('wa_order_option_shop_loop_show_regular_sale_prices');
+
+    // Added in 1.1.1 / 1.2.0
+    delete_option('wa_order_db_version');
+    delete_option('wa_order_option_show_without_price');
+    delete_option('wa_order_option_show_out_of_stock');
+    delete_option('wa_order_option_hide_button_icon');
+    delete_option('wa_order_option_cart_exclude_price');
+    delete_option('wa_order_option_cart_include_item_data');
+    delete_transient('wa_order_migration_notice');
 
     // Delete the uninstall option itself
     delete_option('wa_order_delete_data_on_uninstall');

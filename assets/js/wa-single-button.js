@@ -4,68 +4,45 @@
  * @package     OneClick Chat to Order
  * @author      Walter Pinem <hello@walterpinem.me>
  * @link        https://walterpinem.me/
- * @copyright   Copyright (c) 2019 - 2025, Walter Pinem | Online Store Kit
+ * @copyright   Copyright (c) 2019 - 2026, Walter Pinem | Online Store Kit
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
- * @version     1.0.8
+ * @version     1.2.0
  */
 
 (function($) {
     'use strict';
 
     $(document).ready(function() {
-        // Initialize WhatsApp button functionality
-        initWhatsAppButton();
+        handleGDPRCheckbox();
+        preventWooCommerceConflicts();
     });
 
     /**
-     * Initialize WhatsApp button functionality
-     */
-    function initWhatsAppButton() {
-        // Handle GDPR checkbox functionality
-        handleGDPRCheckbox();
-
-        // Handle button click tracking (if needed)
-        handleButtonTracking();
-    }
-
-    /**
-     * Handle GDPR checkbox functionality
+     * Each GDPR checkbox controls only the buttons in its own group
+     * (data-wa-gdpr-group), so two consent boxes on one page work independently.
+     * The inline script printed with each button does the same; this is a
+     * fallback for markup rendered by older add-ons without a group.
      */
     function handleGDPRCheckbox() {
-        var gdprCheckbox = $('#gdprChkbx');
-        if (gdprCheckbox.length) {
-            gdprCheckbox.on('change', function() {
-                var isChecked = $(this).is(':checked');
+        $(document).on('change', '.wa-order-gdprchk input[type="checkbox"]', function() {
+            var group = $(this).attr('data-wa-gdpr-group');
+            var isChecked = $(this).is(':checked');
+            if (group) {
+                $('button[data-wa-gdpr-group="' + group + '"]').prop('disabled', !isChecked);
+            } else {
                 $('.gdpr_wa_button_input').prop('disabled', !isChecked);
-            });
-        }
-    }
-
-    /**
-     * Handle button click tracking and prevent WooCommerce conflicts
-     */
-    function handleButtonTracking() {
-        // Only attach click handlers to buttons that don't have onclick attributes
-        $('.wa-order-button:not([onclick]), .gdpr_wa_button_input:not([onclick])').on('click', function(e) {
-            // Add any tracking or analytics code here if needed
-            // This is a placeholder for future functionality
+            }
         });
-
-        // Prevent WooCommerce from interfering with WhatsApp onClick buttons
-        preventWooCommerceConflicts();
     }
 
     /**
-     * Prevent WooCommerce from interfering with WhatsApp buttons
+     * Prevent WooCommerce from interfering with WhatsApp onClick buttons.
      */
     function preventWooCommerceConflicts() {
-        // Override WooCommerce's add to cart button handler for WhatsApp buttons
         $(document).on('click', 'button[data-wa-button="true"]', function(e) {
-            // Stop WooCommerce from processing this click
+            // Stop WooCommerce from processing this click; the button's own
+            // capture-phase handler has already opened WhatsApp.
             e.stopImmediatePropagation();
-
-            // Let the onclick attribute handle the WhatsApp functionality
-            // The onclick attribute will be executed after this
         });
 
         // Also prevent form submission for WhatsApp buttons

@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
     <?php settings_errors(); ?>
     <?php settings_fields('wa-order-settings-group-cart-options'); ?>
     <?php do_settings_sections('wa-order-settings-group-cart-options'); ?>
-    <h2 class="section_wa_order"><?php esc_html_e('WhatsApp Button on Cart Page', 'oneclick-wa-order'); ?></h2>
+    <h2 class="section_wa_order"><?php esc_html_e('WhatsApp Button on Cart Page', 'oneclick-whatsapp-order'); ?></h2>
     <p>
         <?php
         /* translators: 1. opening <strong> tag for "Cart", 2. closing </strong> tag, 3. opening <strong> tag for "Proceed to Checkout", 4. closing </strong> tag */
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
             /* translators: 2. closing </strong> tag */
             /* translators: 3. opening <strong> tag for "Proceed to Checkout" */
             /* translators: 4. closing </strong> tag */
-            esc_html__('Add custom WhatsApp button on %1$sCart%2$s page right under the %3$sProceed to Checkout%4$s button.', 'oneclick-wa-order'),
+            esc_html__('Add custom WhatsApp button on %1$sCart%2$s page right under the %3$sProceed to Checkout%4$s button.', 'oneclick-whatsapp-order'),
             '<strong>', // opening <strong> tag for "Cart"
             '</strong>', // closing <strong> tag for "Cart"
             '<strong>', // opening <strong> tag for "Proceed to Checkout"
@@ -40,24 +40,24 @@ if (!defined('ABSPATH')) {
     </p>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Cart Page', 'oneclick-wa-order'); ?></h2>
-            <p><?php esc_html_e('The following options will be only effective on cart page.', 'oneclick-wa-order'); ?></p>
+            <h2 class="section_wa_order"><?php esc_html_e('Cart Page', 'oneclick-whatsapp-order'); ?></h2>
+            <p><?php esc_html_e('The following options will be only effective on cart page.', 'oneclick-whatsapp-order'); ?></p>
 
             <!-- Display Button on Cart Page -->
             <tr class="wa_order_target">
                 <th scope="row">
-                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Display button on Cart page?', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Display button on Cart page?', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
                     <input type="checkbox" name="wa_order_option_add_button_to_cart" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_add_button_to_cart'), 'yes'); ?>>
-                    <?php esc_html_e('This will display WhatsApp button on Cart page', 'oneclick-wa-order'); ?>
+                    <?php esc_html_e('This will display WhatsApp button on Cart page', 'oneclick-whatsapp-order'); ?>
                 </td>
             </tr>
 
             <!-- WhatsApp Number Dropdown -->
             <tr>
                 <th scope="row">
-                    <label><?php esc_html_e('WhatsApp Number', 'oneclick-wa-order') ?></label>
+                    <label><?php esc_html_e('WhatsApp Number', 'oneclick-whatsapp-order') ?></label>
                 </th>
                 <td>
                     <?php wa_order_phone_numbers_dropdown(
@@ -72,7 +72,7 @@ if (!defined('ABSPATH')) {
                         echo wp_kses(
                             sprintf(
                                 /* translators: 1. opening <strong> tag with inline red color style for "required", 2. closing </strong> tag, 3. opening <a> tag for "Numbers", 4. closing </a> tag */
-                                __('WhatsApp number is %1$srequired%2$s. Please set it on the %3$sNumbers%4$s tab.', 'oneclick-wa-order'),
+                                __('WhatsApp number is %1$srequired%2$s. Please set it on the %3$sNumbers%4$s tab.', 'oneclick-whatsapp-order'),
                                 '<strong style="color:red;">', // opening <strong> tag with red color style
                                 '</strong>', // closing <strong> tag
                                 '<a href="edit.php?post_type=wa-order-numbers"><strong>', // opening <a> and <strong> tag
@@ -91,7 +91,7 @@ if (!defined('ABSPATH')) {
             <!-- Hide Proceed to Checkout Button -->
             <tr class="wa_order_target">
                 <th scope="row">
-                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Hide Proceed to Checkout button?', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Hide Proceed to Checkout button?', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
                     <input type="checkbox" name="wa_order_option_cart_hide_checkout" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_cart_hide_checkout'), 'yes'); ?>>
@@ -99,7 +99,7 @@ if (!defined('ABSPATH')) {
                     /* translators: 1. <code> tag for "Proceed to Checkout" */
                     echo sprintf(
                         /* translators: 1. <code> tag for "Proceed to Checkout" */
-                        esc_html__('This will only display WhatsApp button and hide the %1$sProceed to Checkout%2$s button', 'oneclick-wa-order'),
+                        esc_html__('This will only display WhatsApp button and hide the %1$sProceed to Checkout%2$s button', 'oneclick-whatsapp-order'),
                         '<code>', // opening <code> tag
                         '</code>' // closing <code> tag
                     );
@@ -110,26 +110,26 @@ if (!defined('ABSPATH')) {
             <!-- Text on Button -->
             <tr class="wa_order_btn_text">
                 <th scope="row">
-                    <label class="wa_order_btn_txt_label" for="text_button"><b><?php esc_html_e('Text on Button', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_btn_txt_label" for="text_button"><b><?php esc_html_e('Text on Button', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
-                    <input type="text" name="wa_order_option_cart_button_text" class="wa_order_input" value="<?php echo esc_attr(get_option('wa_order_option_cart_button_text')); ?>" placeholder="<?php esc_html_e('e.g. Complete Order via WhatsApp', 'oneclick-wa-order'); ?>">
+                    <input type="text" name="wa_order_option_cart_button_text" class="wa_order_input" value="<?php echo esc_attr(get_option('wa_order_option_cart_button_text')); ?>" placeholder="<?php esc_html_e('e.g. Complete Order via WhatsApp', 'oneclick-whatsapp-order'); ?>">
                 </td>
             </tr>
 
             <!-- Custom Message -->
             <tr class="wa_order_message">
                 <th scope="row">
-                    <label class="wa_order_message_label" for="message_wbw"><b><?php esc_html_e('Custom Message', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_message_label" for="message_wbw"><b><?php esc_html_e('Custom Message', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
-                    <textarea name="wa_order_option_cart_custom_message" class="wa_order_input_areatext" rows="5" placeholder="<?php esc_html_e('e.g. Hello, I want to purchase the item(s) below:', 'oneclick-wa-order'); ?>"><?php echo esc_textarea(get_option('wa_order_option_cart_custom_message')); ?></textarea>
+                    <textarea name="wa_order_option_cart_custom_message" class="wa_order_input_areatext" rows="5" placeholder="<?php esc_html_e('e.g. Hello, I want to purchase the item(s) below:', 'oneclick-whatsapp-order'); ?>"><?php echo esc_textarea(get_option('wa_order_option_cart_custom_message')); ?></textarea>
                     <p class="description">
                         <?php
                         /* translators: 1. <code> tag for the example message */
                         echo sprintf(
                             /* translators: 1. <code> tag for the example message */
-                            esc_html__('Enter custom message, e.g. %1$sHello, I want to purchase the item(s) below:%2$s', 'oneclick-wa-order'),
+                            esc_html__('Enter custom message, e.g. %1$sHello, I want to purchase the item(s) below:%2$s', 'oneclick-whatsapp-order'),
                             '<code>', // opening <code> tag
                             '</code>' // closing <code> tag
                         );
@@ -141,44 +141,66 @@ if (!defined('ABSPATH')) {
             <!-- Remove Product URL Option -->
             <tr class="wa_order_target">
                 <th scope="row">
-                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Remove Product URL?', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Remove Product URL?', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
                     <input type="checkbox" name="wa_order_option_cart_hide_product_url" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_cart_hide_product_url'), 'yes'); ?>>
-                    <?php esc_html_e('This will remove product URL from WhatsApp message sent from Cart page.', 'oneclick-wa-order'); ?>
+                    <?php esc_html_e('This will remove product URL from WhatsApp message sent from Cart page.', 'oneclick-whatsapp-order'); ?>
                 </td>
             </tr>
 
             <!-- Include Product Variation Option -->
             <tr class="wa_order_target">
                 <th scope="row">
-                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Include Product Variation?', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Include Product Variation?', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
                     <input type="checkbox" name="wa_order_option_cart_enable_variations" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_cart_enable_variations'), 'yes'); ?>>
-                    <?php esc_html_e('The product variation will be included in the message if it is stored by WooCommerce, might not all.', 'oneclick-wa-order'); ?>
+                    <?php esc_html_e('The product variation will be included in the message if it is stored by WooCommerce, might not all.', 'oneclick-whatsapp-order'); ?>
+                </td>
+            </tr>
+
+            <!-- Since 1.2.0: extra item details -->
+            <tr class="wa_order_target">
+                <th scope="row">
+                    <label class="wa_order_remove_btn_label" for="wa_order_option_cart_include_item_data"><b><?php esc_html_e('Include Extra Item Details?', 'oneclick-whatsapp-order'); ?></b></label>
+                </th>
+                <td>
+                    <input type="checkbox" name="wa_order_option_cart_include_item_data" id="wa_order_option_cart_include_item_data" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_cart_include_item_data', 'yes'), 'yes'); ?>>
+                    <?php esc_html_e('Include details other plugins add to cart items, such as product add-ons, booking dates or custom fields.', 'oneclick-whatsapp-order'); ?>
                 </td>
             </tr>
 
             <!-- Include Tax Option -->
             <tr class="wa_order_target">
                 <th scope="row">
-                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Include Tax?', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Include Tax?', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
                     <input type="checkbox" name="wa_order_option_cart_include_tax" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_cart_include_tax'), 'yes'); ?>>
-                    <?php esc_html_e('This will include the tax in the message.', 'oneclick-wa-order'); ?>
+                    <?php esc_html_e('This will include the tax in the message.', 'oneclick-whatsapp-order'); ?>
+                </td>
+            </tr>
+
+            <!-- Since 1.2.0: quote mode -->
+            <tr class="wa_order_target">
+                <th scope="row">
+                    <label class="wa_order_remove_btn_label" for="wa_order_option_cart_exclude_price"><b><?php esc_html_e('Exclude Prices and Totals?', 'oneclick-whatsapp-order'); ?></b></label>
+                </th>
+                <td>
+                    <input type="checkbox" name="wa_order_option_cart_exclude_price" id="wa_order_option_cart_exclude_price" class="wa_order_input_check" value="yes" <?php checked(get_option('wa_order_option_cart_exclude_price'), 'yes'); ?>>
+                    <?php esc_html_e('Send products and quantities only, without prices, discounts, tax or totals. Useful for quote requests.', 'oneclick-whatsapp-order'); ?>
                 </td>
             </tr>
 
             <!-- Open in New Tab Option -->
             <tr class="wa_order_target">
                 <th scope="row">
-                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Open in New Tab?', 'oneclick-wa-order'); ?></b></label>
+                    <label class="wa_order_remove_btn_label" for="wa_order_remove_wa_order_btn"><b><?php esc_html_e('Open in New Tab?', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
                     <input type="checkbox" name="wa_order_option_cart_open_new_tab" class="wa_order_input_check" value="_blank" <?php checked(get_option('wa_order_option_cart_open_new_tab'), '_blank'); ?>>
-                    <?php esc_html_e('Yes, Open in New Tab', 'oneclick-wa-order'); ?>
+                    <?php esc_html_e('Yes, Open in New Tab', 'oneclick-whatsapp-order'); ?>
                 </td>
             </tr>
         </tbody>

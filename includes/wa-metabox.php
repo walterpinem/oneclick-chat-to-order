@@ -21,7 +21,7 @@ add_filter('woocommerce_product_data_tabs', 'add_oneclick_options_product_data_t
 function add_oneclick_options_product_data_tab($product_data_tabs)
 {
     $product_data_tabs['oneclick-product-tab'] = array(
-        'label' => __('OneClick', 'oneclick-wa-order'), // translatable
+        'label' => __('OneClick', 'oneclick-whatsapp-order'), // translatable
         'target' => 'oneclick_options_product_data', // translatable
     );
     return $product_data_tabs;
@@ -48,7 +48,7 @@ function add_oneclick_options_product_data_fields()
     woocommerce_wp_checkbox(array(
         'id'      => '_wa_order_phone_number_check',
         'value'   => get_post_meta(get_the_ID(), '_wa_order_phone_number_check', true),
-        'label'   => __('Assign a Number?', 'oneclick-wa-order'),
+        'label'   => __('Assign a Number?', 'oneclick-whatsapp-order'),
         'description' => 'Check to assign a WhatsApp number only for this product.',
     ));
 
@@ -57,8 +57,8 @@ function add_oneclick_options_product_data_fields()
         'id'                => '_wa_order_phone_number',
         // 'name'              => '_select_field', // (optional) for different ID attribute than name attribute
         // 'wrapper_class' => 'show_if_simple', // (optional) example here for simple products type only
-        'label'         => __('Select Number', 'oneclick-wa-order'),
-        'description'   => __('Select WhatsApp number from the list you have created.', 'oneclick-wa-order'),
+        'label'         => __('Select Number', 'oneclick-whatsapp-order'),
+        'description'   => __('Select WhatsApp number from the list you have created.', 'oneclick-whatsapp-order'),
         'desc_tip'      => true,
         'options'       => $options
         // 'value'         => $value, // (optional) for a static value (can be conditionally set for $value variable)
@@ -67,9 +67,9 @@ function add_oneclick_options_product_data_fields()
     # WA button text
     woocommerce_wp_text_input(array(
         'id'            => '_wa_order_button_text',
-        'placeholder'   => __('Buy on WhatsApp', 'oneclick-wa-order'), // (optional)
-        'label'         => __('Button Text', 'oneclick-wa-order'), // (optional)
-        'description'   => __('Add custom button text. This will override the value on the plugin setting page.', 'oneclick-wa-order'), // (optional)
+        'placeholder'   => __('Buy on WhatsApp', 'oneclick-whatsapp-order'), // (optional)
+        'label'         => __('Button Text', 'oneclick-whatsapp-order'), // (optional)
+        'description'   => __('Add custom button text. This will override the value on the plugin setting page.', 'oneclick-whatsapp-order'), // (optional)
         'desc_tip'      => true, // (optional) To show the description as a tip
     ));
 
@@ -77,31 +77,31 @@ function add_oneclick_options_product_data_fields()
     woocommerce_wp_textarea_input(array(
         'id'        => '_wa_order_custom_message',
         'class'         => 'short', // (optional)
-        'placeholder'   => __('Hello, I want to buy this product', 'oneclick-wa-order'), // (optional)
-        'description'      => __('Add custom message. This will override the value of Single Product Page custom message text on the plugin setting page.', 'oneclick-wa-order'),
-        'label'     => __('Custom Message', 'oneclick-wa-order'),
+        'placeholder'   => __('Hello, I want to buy this product', 'oneclick-whatsapp-order'), // (optional)
+        'description'      => __('Add custom message. This will override the value of Single Product Page custom message text on the plugin setting page.', 'oneclick-whatsapp-order'),
+        'label'     => __('Custom Message', 'oneclick-whatsapp-order'),
         'desc_tip'  => true
     ));
 
     // WA hide or show button
     woocommerce_wp_checkbox(array(
         'id'        => '_hide_wa_button',
-        'description' => __('This will hide WhatsApp button only for this product.', 'oneclick-wa-order'),
-        'label'     => __('Hide WhatsApp button?', 'oneclick-wa-order')
+        'description' => __('This will hide WhatsApp button only for this product.', 'oneclick-whatsapp-order'),
+        'label'     => __('Hide WhatsApp button?', 'oneclick-whatsapp-order')
     ));
 
     // Hide or show Add to Cart button
     woocommerce_wp_checkbox(array(
         'id'        => '_hide_atc_button',
-        'description' => __('This will hide Add to Cart button only for this product.', 'oneclick-wa-order'),
-        'label'     => __('Hide Add to Cart button?', 'oneclick-wa-order')
+        'description' => __('This will hide Add to Cart button only for this product.', 'oneclick-whatsapp-order'),
+        'label'     => __('Hide Add to Cart button?', 'oneclick-whatsapp-order')
     ));
 
     // Force show the Add to Cart button
     woocommerce_wp_checkbox(array(
         'id'        => '_force_show_atc_button',
-        'description' => __('This will force the Add to Cart button to be shown only for this product, even if you check the <strong>"Hide Add to Cart button?"</strong> option on <strong>Global Settings</strong> page.', 'oneclick-wa-order'),
-        'label'     => __('Force Show Add to Cart button?', 'oneclick-wa-order')
+        'description' => __('This will force the Add to Cart button to be shown only for this product, even if you check the <strong>"Hide Add to Cart button?"</strong> option on <strong>Global Settings</strong> page.', 'oneclick-whatsapp-order'),
+        'label'     => __('Force Show Add to Cart button?', 'oneclick-whatsapp-order')
     ));
 
     // Add nonce field for security
