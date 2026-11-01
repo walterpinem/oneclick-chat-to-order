@@ -217,7 +217,7 @@ Maintenance release covering the support forum and email backlog, tested with Wo
 - Block Cart message updates live and the button survives re-renders (mobile)
 - Correct coupon amounts and tax display in cart and thank you messages
 - HPOS: shipping address included in the thank you message
-- Polylang/WPML translations of the product button text and message
+- Settings read at render time, so Polylang/WPML always see the current language
 - Shop button on block-based shop pages (Product Collection)
 - Floating button accessible name, subfolder-safe source URL
 - Shortcode tab "Open in New Tab?" saves
