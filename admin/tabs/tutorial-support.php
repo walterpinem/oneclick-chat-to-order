@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
                 /* translators: 1. <strong> tag for "OneClick Chat to Order" */
                 echo sprintf(
                     /* translators: 1. opening <strong> tag */
-                    esc_html__('%1$sOneClick Chat to Order%2$s is Waiting for Your Feedback', 'oneclick-wa-order'),
+                    esc_html__('%1$sOneClick Chat to Order%2$s is Waiting for Your Feedback', 'oneclick-whatsapp-order'),
                     '<strong>', // opening <strong> tag
                     '</strong>' // closing <strong> tag
                 );
@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) {
                 /* translators: 1. <strong> tag for "OneClick Chat to Order" */
                 /* translators: 2. opening <a> tag for "leaving a review" */
                 /* translators: 3. closing <a> tag */
-                esc_html__('%1$sOneClick Chat to Order%2$s is my second plugin and it\'s open source. I acknowledge that there are still a lot to fix, here and there, that\'s why I really need your feedback. Let\'s get in touch and show some love by %3$sleaving a review%4$s.', 'oneclick-wa-order'),
+                esc_html__('%1$sOneClick Chat to Order%2$s is my second plugin and it\'s open source. I acknowledge that there are still a lot to fix, here and there, that\'s why I really need your feedback. Let\'s get in touch and show some love by %3$sleaving a review%4$s.', 'oneclick-whatsapp-order'),
                 '<strong>', // opening <strong> tag
                 '</strong>', // closing <strong> tag
                 '<a href="https://wordpress.org/support/plugin/oneclick-whatsapp-order/reviews/?rate=5#new-post" target="_blank"><strong>', // opening <a> and <strong> tag
@@ -52,41 +52,41 @@ if (!defined('ABSPATH')) {
             </colgroup>
             <tr>
                 <th class="tg-kiyi">
-                    <?php esc_html_e('Author:', 'oneclick-wa-order'); ?></th>
+                    <?php esc_html_e('Author:', 'oneclick-whatsapp-order'); ?></th>
                 <th class="tg-fymr">
-                    <?php esc_html_e('Walter Pinem | Online Store Kit', 'oneclick-wa-order'); ?></th>
+                    <?php esc_html_e('Walter Pinem | Online Store Kit', 'oneclick-whatsapp-order'); ?></th>
             </tr>
             <tr>
                 <td class="tg-kiyi">
-                    <?php esc_html_e('Website:', 'oneclick-wa-order'); ?></td>
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/')); ?>" title="<?php esc_attr_e('Visit walterpinem.me', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('walterpinem.me', 'oneclick-wa-order'); ?></a></td>
+                    <?php esc_html_e('Website:', 'oneclick-whatsapp-order'); ?></td>
+                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/')); ?>" title="<?php esc_attr_e('Visit walterpinem.me', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('walterpinem.me', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
             <tr>
                 <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.com/')); ?>" title="<?php esc_attr_e('Visit walterpinem.com', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('walterpinem.com', 'oneclick-wa-order'); ?></a></td>
+                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.com/')); ?>" title="<?php esc_attr_e('Visit walterpinem.com', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('walterpinem.com', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
             <tr>
                 <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/')); ?>" title="<?php esc_attr_e('Online Store Kit', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('Online Store Kit', 'oneclick-wa-order'); ?></a></td>
+                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/')); ?>" title="<?php esc_attr_e('Online Store Kit', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('Online Store Kit', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
             <tr>
                 <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/projects/tools/')); ?>" title="<?php esc_attr_e('75+ Free Online Tools', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('75+ Free Online Tools', 'oneclick-wa-order'); ?></a></td>
+                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/projects/tools/')); ?>" title="<?php esc_attr_e('75+ Free Online Tools', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('75+ Free Online Tools', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
             <tr>
                 <td class="tg-kiyi">
-                    <?php esc_html_e('Docs:', 'oneclick-wa-order'); ?></td>
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/docs/octo/')); ?>" title="<?php esc_attr_e('Read full documentation.', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('Documentation', 'oneclick-wa-order'); ?></a></td>
+                    <?php esc_html_e('Docs:', 'oneclick-whatsapp-order'); ?></td>
+                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/docs/octo/')); ?>" title="<?php esc_attr_e('Read full documentation.', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('Documentation', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
             <tr>
-                <td class="tg-kiyi"><?php esc_html_e('More:', 'oneclick-wa-order'); ?></td>
-                <td class="tg-fymr"><a href="https://www.youtube.com/watch?v=LuURM5vZyB8&list=PLwazGJFvaLnBTOw4pNvPcsFW1ls4tn1Uj" title="<?php esc_attr_e('Complete Youtube Tutorial', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('Complete Tutorial', 'oneclick-wa-order'); ?></a></td>
+                <td class="tg-kiyi"><?php esc_html_e('More:', 'oneclick-whatsapp-order'); ?></td>
+                <td class="tg-fymr"><a href="https://www.youtube.com/watch?v=LuURM5vZyB8&list=PLwazGJFvaLnBTOw4pNvPcsFW1ls4tn1Uj" title="<?php esc_attr_e('Complete Youtube Tutorial', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('Complete Tutorial', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
             <tr>
                 <td class="tg-kiyi" rowspan="3"></td>
@@ -98,13 +98,13 @@ if (!defined('ABSPATH')) {
                                                     $theme_info = urlencode($theme_name . ' - v' . $theme_ver);
                                                 }
                                                 echo esc_url(oskit_url('https://www.onlinestorekit.com/support/?wpf1567_5=' . $theme_info . '&wpf1567_4=' . sanitize_title(OCTO_NAME)));
-                                                ?>" title="<?php esc_attr_e('Support & Feature Request', 'oneclick-wa-order'); ?>" target="_blank">
-                        <?php esc_html_e('Support & Feature Request', 'oneclick-wa-order'); ?></a></td>
+                                                ?>" title="<?php esc_attr_e('Support & Feature Request', 'oneclick-whatsapp-order'); ?>" target="_blank">
+                        <?php esc_html_e('Support & Feature Request', 'oneclick-whatsapp-order'); ?></a></td>
             </tr>
         </table>
         <br>
         <hr>
-        <?php echo do_shortcode("[donate]"); ?>
+        <?php echo wa_order_donate_button_shortcode(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
         <center>
             <p><?php
                 echo wp_kses_post(

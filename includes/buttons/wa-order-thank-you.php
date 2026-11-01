@@ -3,39 +3,6 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
-/**
- * OneClick Chat to Order
- *
- * @package     OneClick Chat to Order
- * @author      Walter Pinem <hello@walterpinem.me>
- * @link        https://walterpinem.me/
- * @link        https://www.onlinestorekit.com/oneclick-chat-to-order/
- * @copyright   Copyright (c) 2019 - 2025, Walter Pinem | Online Store Kit
- * @license     http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
- * @category    Thank You Page
- *
- ********************************* Thank You Page ********************************* */
-
-// Additional safety check for WordPress functions
-if (!function_exists('get_option') || !function_exists('add_filter') || !function_exists('wc_get_order')) {
-    // Try to load WordPress if not already loaded
-    if (!defined('WP_CONTENT_DIR')) {
-        // Find WordPress root directory
-        $wp_root = dirname(dirname(dirname(dirname(__FILE__))));
-        if (file_exists($wp_root . '/wp-load.php')) {
-            require_once($wp_root . '/wp-load.php');
-        }
-    }
-
-    // Final check - if still not available, show error
-    if (!function_exists('get_option')) {
-        wp_die(
-            '<h1>Error</h1><p>WordPress functions are not available. Please ensure WordPress is properly loaded.</p>',
-            'WordPress Loading Error',
-            array('response' => 500)
-        );
-    }
-}
 
 /**
  * OneClick Chat to Order Thank You Page
@@ -44,23 +11,36 @@ if (!function_exists('get_option') || !function_exists('add_filter') || !functio
  * @author      Walter Pinem <hello@walterpinem.me>
  * @link        https://walterpinem.me/
  * @link        https://www.onlinestorekit.com/oneclick-chat-to-order/
- * @copyright   Copyright (c) 2019 - 2025, Walter Pinem | Online Store Kit
+ * @copyright   Copyright (c) 2019 - 2026, Walter Pinem | Online Store Kit
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  * @category    Checkout Page
  */
 
+/**
+ * Turn a formatted WooCommerce address (with <br/> separators) into plain text lines.
+ *
+ * @since 1.2.0
+ *
+ * @param string $address Formatted address HTML.
+ * @return string
+ */
+function wa_order_plain_address($address)
+{
+    return wa_order_plain_text(preg_replace('#<br\s*/?>#i', "\r\n", (string) $address));
+}
+
 // Checkbox value
-$override_thankyou_page = get_option(sanitize_text_field('wa_order_option_enable_button_thank_you'));
+$override_thankyou_page = get_option('wa_order_option_enable_button_thank_you');
 function wa_order_thank_you_override($title, $id)
 {
     global $wp;
     // Consolidate get_option() calls with proper default values
     $options = array(
         'wanumberpage'               => get_option('wa_order_selected_wa_number_thanks', ''),
-        'custom_title'               => !empty(get_option('wa_order_option_custom_thank_you_title')) ? get_option('wa_order_option_custom_thank_you_title') : 'Thanks and You\'re Awesome',
-        'custom_subtitle'            => !empty(get_option('wa_order_option_custom_thank_you_subtitle')) ? get_option('wa_order_option_custom_thank_you_subtitle') : 'For faster response, send your order details by clicking below button.',
-        'button_text'                => !empty(get_option('wa_order_option_custom_thank_you_button_text')) ? get_option('wa_order_option_custom_thank_you_button_text') : 'Send Order Details',
-        'custom_message'             => !empty(get_option('wa_order_option_custom_thank_you_custom_message')) ? get_option('wa_order_option_custom_thank_you_custom_message') : "Hello, here's my order details:",
+        'custom_title'               => !empty(get_option('wa_order_option_custom_thank_you_title')) ? get_option('wa_order_option_custom_thank_you_title') : __('Thanks and You\'re Awesome', 'oneclick-whatsapp-order'),
+        'custom_subtitle'            => !empty(get_option('wa_order_option_custom_thank_you_subtitle')) ? get_option('wa_order_option_custom_thank_you_subtitle') : __('For faster response, send your order details by clicking below button.', 'oneclick-whatsapp-order'),
+        'button_text'                => !empty(get_option('wa_order_option_custom_thank_you_button_text')) ? get_option('wa_order_option_custom_thank_you_button_text') : __('Send Order Details', 'oneclick-whatsapp-order'),
+        'custom_message'             => !empty(get_option('wa_order_option_custom_thank_you_custom_message')) ? get_option('wa_order_option_custom_thank_you_custom_message') : __("Hello, here's my order details:", 'oneclick-whatsapp-order'),
         'thanks_label'               => get_option('wa_order_option_thank_you_label', ''),
         'include_order_number'       => get_option('wa_order_option_custom_thank_you_order_number', 'no'),
         'order_number_label'         => !empty(get_option('wa_order_option_custom_thank_you_order_number_label')) ? get_option('wa_order_option_custom_thank_you_order_number_label') : 'Order Number',
@@ -85,9 +65,16 @@ function wa_order_thank_you_override($title, $id)
         'include_shipping'           => get_option('wa_order_option_custom_thank_you_include_shipping', 'yes'),
         'shipping_label'             => !empty(get_option('wa_order_option_custom_thank_you_shipping_label')) ? get_option('wa_order_option_custom_thank_you_shipping_label') : 'Shipping',
     );
-    $wanumberpage                   = $options['wanumberpage'];
-    $postid                         = get_page_by_path($wanumberpage, OBJECT, 'wa-order-numbers');
-    $phonenumb                      = apply_filters('wa_order_filter_thank_you_page_phone_number', get_post_meta($postid->ID, 'wa_order_phone_number_input', true));
+
+    // Number from the Checkout tab, or the Basic tab number when none is chosen.
+    $phonenumb = wa_order_get_number_phone($options['wanumberpage']);
+    if ('' === $phonenumb) {
+        $phonenumb = wa_order_get_number_phone(get_option('wa_order_selected_wa_number_single_product', ''));
+    }
+    $phonenumb = apply_filters('wa_order_filter_thank_you_page_phone_number', $phonenumb);
+    if (!$phonenumb) {
+        return $title; // Keep WooCommerce's own text rather than print a dead button.
+    }
 
     // Mapping the options
     $custom_title           = apply_filters('wa_order_filter_thank_you_page_custom_title', $options['custom_title']);
@@ -96,8 +83,7 @@ function wa_order_thank_you_override($title, $id)
     $custom_message         = apply_filters('wa_order_filter_thank_you_page_custom_message', $options['custom_message']);
     $thanks_label           = $options['thanks_label'];
     $include_order_number   = $options['include_order_number'];
-    $order_number_label     = $options['order_number_label'];
-    $order_number_label     = apply_filters('wa_order_filter_thank_you_page_order_number_label', $order_number_label);
+    $order_number_label     = apply_filters('wa_order_filter_thank_you_page_order_number_label', $options['order_number_label']);
 
     $customer_details_label = $options['customer_details_label'];
     $total_products_label   = $options['total_products_label'];
@@ -109,72 +95,53 @@ function wa_order_thank_you_override($title, $id)
     $view_order_label       = $options['view_order_label'];
     $include_order_summary  = $options['include_order_summary_link'];
     $order_summary_label    = $options['order_summary_label'];
-    // Check if the payment link label is empty and set to default if necessary
-    if (empty($payment_link_label)) {
-        $payment_link_label = 'Payment Link';
-    }
-    // Check if the view order label is empty and set to default if necessary
-    if (empty($view_order_label)) {
-        $view_order_label = 'View Order';
-    }
-    // Check if the order summary label is empty and set to default if necessary
-    if (empty($order_summary_label)) {
-        $order_summary_label = 'Order Summary';
+
+    // The order: WooCommerce passes it to this filter; fall back to the endpoint query var.
+    $order = ($id instanceof WC_Order) ? $id : null;
+    $order_id = $order ? $order->get_id() : (isset($wp->query_vars['order-received']) ? absint($wp->query_vars['order-received']) : 0);
+    if (!$order_id) {
+        return $title;
     }
 
-    // Check the order with enhanced security validation
-    $order_id               = (int) $wp->query_vars['order-received'];
-    if (!$order_id) {
-        return '';
-    }
-    
     // Validate order access (if security enhancements are loaded)
     if (function_exists('wa_order_validate_order_access') && !wa_order_validate_order_access($order_id)) {
-        return '';
+        return $title;
     }
-    
-    $order = wc_get_order($order_id);
+
     if (!$order) {
-        return '';
+        $order = wc_get_order($order_id);
     }
+    if (!$order) {
+        return $title;
+    }
+
+    // Prices in the message follow the store's cart/checkout tax display setting.
+    $display_incl_tax = ('incl' === get_option('woocommerce_tax_display_cart'));
 
     // Prepare the message
     $customer_id        = $order->get_user_id();
     $first_name         = $order->get_billing_first_name();
     $message            = $custom_message . "\n\n";
-    $thetitle           = $custom_title . ', ' . $first_name . '!';
+    /* translators: 1: thank you title, 2: customer's first name */
+    $thetitle           = $first_name ? sprintf(__('%1$s, %2$s!', 'oneclick-whatsapp-order'), $custom_title, $first_name) : $custom_title;
     $subtitle           = $custom_subtitle;
     $button             = $button_text;
-    if (!$order) {
-        return '';
-    }
     $customer_email     = $order->get_billing_email();
     $customer_phone     = $order->get_billing_phone();
 
-    $billing_address    = $order->get_formatted_billing_address();
-    $formatted_billingx = str_replace('<br/>', "\r\n", $billing_address);
-    $formatted_billing  = $formatted_billingx . "\r\n" . $customer_phone . "\r\n" . $customer_email;
+    $formatted_billing  = wa_order_plain_address($order->get_formatted_billing_address()) . "\r\n" . $customer_phone . "\r\n" . $customer_email;
+    $formatted_shipping = wa_order_plain_address($order->get_formatted_shipping_address());
 
-    $shipping_address   = $order->get_formatted_shipping_address();
-    $formatted_shipping = str_replace('<br/>', "\r\n", $shipping_address);
-    // Check if the order has tax
-    $total_tax          = $order->get_total_tax();
-    $total_label        = $options['total_label'];
+    $total_label        = $options['total_label'] ?: 'Total';
     $payment_label      = $options['payment_label'];
-    $subtotal_price     = $order->get_subtotal_to_display();
-    $format_subtotal_pricex = wp_strip_all_tags($subtotal_price);
-    $format_subtotal_price = html_entity_decode($format_subtotal_pricex);
-    $label_total        = "*" . $total_label . ":*" . "\r\n";
-    $total_format_subtotal_price = $label_total . $format_subtotal_price;
+    $format_subtotal_price = wa_order_plain_text($order->get_subtotal_to_display());
+    $total_format_subtotal_price = "*" . __('Subtotal:', 'woocommerce') . "*" . "\r\n" . $format_subtotal_price;
     $payment_method     = $order->get_payment_method_title();
-    $payment            = "\r\n" . "*" . $payment_label . ":*" . "\r\n" . $payment_method . "\r\n";
-    $date               = gmdate('F j, Y - g:i A', $order->get_date_created()->getOffsetTimestamp());
+    $payment            = "\r\n" . "*" . ($payment_label ?: __('Payment method:', 'woocommerce')) . ($payment_label ? ":" : "") . "*" . "\r\n" . $payment_method . "\r\n";
+    $date_created       = $order->get_date_created();
+    $date               = $date_created ? wc_format_datetime($date_created, get_option('date_format') . ' - ' . get_option('time_format')) : '';
     $order_number       = $order->get_order_number();
-    if ($order_number_label == '') {
-        $on_label = "Order Number:";
-    } else {
-        $on_label = "$order_number_label";
-    }
+    $on_label           = ('' === (string) $order_number_label) ? 'Order Number:' : $order_number_label;
 
     // If Order Number inclusion is checked
     if ($include_order_number === 'yes') {
@@ -184,25 +151,22 @@ function wa_order_thank_you_override($title, $id)
         $message .= "*" . $total_products_label . "*: " . $order->get_item_count() . "\n-----------\n";
     }
     foreach ($order->get_items() as $item_id => $item) {
-        $product_id     = $item->get_product_id();
         $quantity       = $item->get_quantity();
-        $product_name   = $item->get_name();
+        $product_name   = wa_order_plain_text($item->get_name());
         $message        .= $quantity . "x - *" . $product_name . "*" . "\n";
 
         $formatted_meta_data = $item->get_formatted_meta_data('_', true);
         foreach ($formatted_meta_data as $meta) {
-            $message    .= "     - ```" . $meta->display_key . ":``` ```" . wp_strip_all_tags($meta->display_value) . "```" . "\r\n";
+            $message    .= "     - ```" . wa_order_plain_text($meta->display_key) . ":``` ```" . wa_order_plain_text($meta->display_value) . "```" . "\r\n";
         }
 
         // Include SKU if enabled and available
-        $include_sku = $options['include_sku'];
-        if ($include_sku === 'yes') {
+        if ($options['include_sku'] === 'yes') {
             $productsku = $item->get_product();
             if ($productsku) {
                 $sku = $productsku->get_sku();
-                $sku_label = __('SKU', 'woocommerce');
                 if (!empty($sku)) {
-                    $message .= "     - ```" . $sku_label . ": " . $sku . "```" . "\n";
+                    $message .= "     - ```" . __('SKU', 'woocommerce') . ": " . $sku . "```" . "\n";
                 }
             }
         }
@@ -214,142 +178,82 @@ function wa_order_thank_you_override($title, $id)
         $message .= "\n*" . $customer_details_label . "*\n" . $formatted_billing . "\n";
     }
 
-    // Shipping section - Use new shipping options
-    $include_shipping = $options['include_shipping'];
-    if ($include_shipping === 'yes') {
-        $ship_method = $order->get_shipping_method();
-
-        // Check if shipping to a different address
-        $ship_to_different_address = get_post_meta($order->get_id(), '_shipping_address_1', true);
-        $shipping_cost = $order->get_shipping_total();
+    // Shipping section (read through the order object, so it works with HPOS)
+    if ($options['include_shipping'] === 'yes') {
         $shipping_method = $order->get_shipping_method();
-        $plain_shipping_cost = html_entity_decode(wp_strip_all_tags(wc_price($shipping_cost)));
+        $shipping_total = (float) $order->get_shipping_total() + ($display_incl_tax ? (float) $order->get_shipping_tax() : 0);
+        $plain_shipping_cost = wa_order_plain_text(wc_price($shipping_total, array('currency' => $order->get_currency())));
         $ship_label = apply_filters('wa_order_filter_thank_you_page_shipping_label', $options['shipping_label']);
-        $shipping_cost = apply_filters('wa_order_filter_thank_you_page_shipping_cost', $plain_shipping_cost);
+        $plain_shipping_cost = apply_filters('wa_order_filter_thank_you_page_shipping_cost', $plain_shipping_cost);
 
-        // Include shipping details if shipping method exists
-        if (!empty($ship_method)) {
+        if (!empty($shipping_method)) {
             $message .= "\r\n*" . $ship_label . ":*\r\n";
             $message .= $shipping_method . ' - ' . $plain_shipping_cost . "\r\n";
 
-            // If shipping address is different, include shipping address details
-            if (!empty($ship_to_different_address)) {
+            if ($order->has_shipping_address() && '' !== $formatted_shipping) {
                 $message .= "\n-----------\n";
-                $message .= $formatted_shipping;  // Include only if ship to different address is checked
+                $message .= $formatted_shipping;
             }
         }
     }
 
-    // Coupon item: Check if coupon code used
-    $order_items = $order->get_items('coupon');
-    foreach ($order_items as $item_id => $item) {
-        $args = array(
-            'name'           => $item->get_name(),
-            'post_type'      => 'shop_coupon',
-            'post_status'    => 'publish',
-            'numberposts'    => 1
-        );
+    // Coupons: read from the order's own coupon lines, so deleted or renamed
+    // coupons still show and the amounts match what WooCommerce applied.
+    $coupon_items = $order->get_items('coupon');
+    if (!empty($coupon_items) && $order->get_total_discount() > 0 && $options['include_coupon'] === 'yes') {
+        $voucher_label = ('' === (string) $options['coupon_label']) ? 'Voucher Code:' : $options['coupon_label'];
+        $order_args = array('currency' => $order->get_currency());
 
-        $coupon_posts = get_posts($args);
-        if ($coupon_posts) {
-            $coupon_id = $coupon_posts[0]->ID;
-            $coupon = new WC_Coupon($coupon_id);
+        foreach ($coupon_items as $coupon_item) {
+            $code = $coupon_item->get_code();
+            $amount = (float) $coupon_item->get_discount() + ($display_incl_tax ? (float) $coupon_item->get_discount_tax() : 0);
+            $amount_text = wa_order_plain_text(wc_price($amount, $order_args));
 
-            $include_coupon = $options['include_coupon'];
-            if ($order->get_total_discount() > 0 && $include_coupon === 'yes') {
-                $coupons  = $order->get_coupon_codes();
-                $coupons  = count($coupons) > 0 ? implode(',', $coupons) : '';
-
-                $coupon_label = $options['coupon_label'];
-                if ($coupon_label == '') {
-                    $voucher_label = "Voucher Code:";
-                } else {
-                    $voucher_label = $coupon_label;
-                }
-
-                if ($coupon->is_type('fixed_cart') || $coupon->is_type('fixed_product')) {
-                    $discount_format = html_entity_decode(wp_strip_all_tags(wc_price($coupon->get_amount())));
-                    $coupon_code     = "\r\n" . "*" . $voucher_label . "*" . "\r\n" . strtoupper($coupon->get_code()) . ": -" . $discount_format . "";
-                    $total_discount  = html_entity_decode(wp_strip_all_tags(wc_price($order->get_discount_total())));
-                    $coupon_code     = apply_filters('wa_order_filter_thank_you_page_coupon_code', $coupon_code);
-                    $total_discount  = apply_filters('wa_order_filter_thank_you_page_total_discount', $total_discount);
-                    $message .= "\r\n" . $coupon_code . "\r\n";
-                    if ($total_discount_label) {
-                        $discount_label = $total_discount_label;
-                        $discount_label = apply_filters('wa_order_filter_thank_you_page_discount_label', $discount_label);
-                    } else {
-                        $discount_label = __('Total Discount', 'woocommerce');
-                        $discount_label = apply_filters('wa_order_filter_thank_you_page_discount_label', $discount_label);
-                    }
-                    $message .= "*" . $discount_label . ":* " . $total_discount . "\r\n";
-                    $numeric_subtotal = $order->get_subtotal();
-                    // Get the total discount applied
-                    $numeric_total_discount = $order->get_total_discount();
-                    $subtotal_minus_discount = $numeric_subtotal - $numeric_total_discount;
-
-                    $subtotal_minus_discount_formatted = html_entity_decode(wp_strip_all_tags(wc_price($subtotal_minus_discount)));
-                    $subtlabel = __('Discount', 'woocommerce');
-                    $subtcalculatedoutput = html_entity_decode(wp_strip_all_tags(wc_price($numeric_subtotal))) . " - " . $total_discount . " = " . $subtotal_minus_discount_formatted;
-                    $message .= "*" . $subtlabel . ":* " . "\r\n" . $subtcalculatedoutput;
-                } elseif ($coupon->is_type(array('percent')) || $coupon->is_type('percent')) {
-                    $discount_percent = $coupon->get_amount();
-                    // Get the subtotal before discount
-                    $numeric_subtotal = $order->get_subtotal();
-
-                    // Calculate the discount amount based on percentage
-                    $discount_amount = ($discount_percent / 100) * $numeric_subtotal;
-
-                    // Format the discount and total
-                    $formatted_discount_amount = html_entity_decode(wp_strip_all_tags(wc_price($discount_amount)));
-                    $total_discount = html_entity_decode(wp_strip_all_tags(wc_price($order->get_discount_total())));
-
-                    // Add coupon code and discount details to the message
-                    $coupon_code = "\r\n" . "*" . $voucher_label . "*" . "\r\n" . strtoupper($coupon->get_code()) . ": -" . $discount_percent . "% (-" . $formatted_discount_amount . ")";
-                    $coupon_code = apply_filters('wa_order_filter_thank_you_page_coupon_code', $coupon_code);
-                    $total_discount = apply_filters('wa_order_filter_thank_you_page_total_discount', $total_discount);
-                    $message .= "\r\n" . $coupon_code . "\r\n";
-                    if ($total_discount_label) {
-                        $discount_label = $total_discount_label;
-                        $discount_label = apply_filters('wa_order_filter_thank_you_page_discount_label', $discount_label);
-                    } else {
-                        $discount_label = __('Total Discount', 'woocommerce');
-                        $discount_label = apply_filters('wa_order_filter_thank_you_page_discount_label', $discount_label);
-                    }
-                    $message .= "*" . $discount_label . ":* " . $total_discount;
-                } else {
-                    $total_discount = html_entity_decode(wp_strip_all_tags(wc_price($order->get_discount_total())));
-
-                    if ($total_discount_label) {
-                        $discount_label = $total_discount_label;
-                    } else {
-                        $discount_label = __('Total Discount', 'woocommerce');
-                    }
-                    $message .= "*" . $discount_label . ":* " . $total_discount;
+            $percent = '';
+            $coupon_id = wc_get_coupon_id_by_code($code);
+            if ($coupon_id) {
+                $coupon = new WC_Coupon($coupon_id);
+                if ($coupon->is_type('percent')) {
+                    $percent = wc_format_decimal($coupon->get_amount(), '') . '% ';
                 }
             }
+
+            $coupon_code = "\r\n" . "*" . $voucher_label . "*" . "\r\n" . strtoupper($code) . ": -" . ('' !== $percent ? $percent . "(-" . $amount_text . ")" : $amount_text);
+            $coupon_code = apply_filters('wa_order_filter_thank_you_page_coupon_code', $coupon_code);
+            $message .= "\r\n" . $coupon_code . "\r\n";
         }
+
+        $discount_total = (float) $order->get_discount_total() + ($display_incl_tax ? (float) $order->get_discount_tax() : 0);
+        $total_discount = apply_filters('wa_order_filter_thank_you_page_total_discount', wa_order_plain_text(wc_price($discount_total, $order_args)));
+        $discount_label = $total_discount_label ? $total_discount_label : __('Total Discount', 'woocommerce');
+        $discount_label = apply_filters('wa_order_filter_thank_you_page_discount_label', $discount_label);
+        $message .= "*" . $discount_label . ":* " . $total_discount . "\r\n";
+
+        $subtotal_tax = 0.0;
+        if ($display_incl_tax) {
+            foreach ($order->get_items() as $line_item) {
+                $subtotal_tax += (float) $line_item->get_subtotal_tax();
+            }
+        }
+        $numeric_subtotal = (float) $order->get_subtotal() + $subtotal_tax;
+        $message .= "*" . __('Discount', 'woocommerce') . ":* " . "\r\n" . wa_order_plain_text(wc_price($numeric_subtotal, $order_args)) . " - " . $total_discount . " = " . wa_order_plain_text(wc_price($numeric_subtotal - $discount_total, $order_args));
     }
 
     $note = $order->get_customer_note();
     if ($note) {
-        $note_label = __('Note:', 'woocommerce');
-        $purchase_note = "*" . $note_label . "*" . "\r\n" . $note . "\n\n";
+        $purchase_note = "*" . __('Note:', 'woocommerce') . "*" . "\r\n" . $note . "\n\n";
     } else {
         $purchase_note = "";
     }
-    $include_tax        = $options['include_tax'];
-    $total_tax          = $order->get_total_tax();
-    if ($include_tax === 'yes' && $total_tax > 0) {
-        $formatted_total_tax =  html_entity_decode(wp_strip_all_tags(wc_price($total_tax)));
-        $formatted_total_tax = apply_filters('wa_order_filter_thank_you_page_tax', html_entity_decode(wp_strip_all_tags(wc_price($total_tax))));
+    $total_tax = $order->get_total_tax();
+    if ($options['include_tax'] === 'yes' && $total_tax > 0) {
+        $formatted_total_tax = apply_filters('wa_order_filter_thank_you_page_tax', wa_order_plain_text(wc_price($total_tax, array('currency' => $order->get_currency()))));
         $tax_label           = apply_filters('wa_order_filter_thank_you_page_tax_label', $tax_label);
         $message            .= "\n*" . $tax_label . ":* " . $formatted_total_tax;
     }
-    $price              = $order->get_total();
-    $total_price        = apply_filters('wa_order_filter_thank_you_page_total_price', html_entity_decode(wp_strip_all_tags(wc_price($price))));
-    $label_total        = apply_filters('wa_order_filter_thank_you_page_total_label', "*Total:*");
-    $total_price        = "\r\n" . $label_total . "\r\n" . $total_price;
-    $message            .= $total_price;
+    $total_price        = apply_filters('wa_order_filter_thank_you_page_total_price', wa_order_plain_text(wc_price($order->get_total(), array('currency' => $order->get_currency()))));
+    $label_total        = apply_filters('wa_order_filter_thank_you_page_total_label', "*" . $total_label . ":*");
+    $message            .= "\r\n" . $label_total . "\r\n" . $total_price;
 
     // Order Summary Link
     $order_summary_link  = apply_filters('wa_order_filter_thank_you_page_order_summary_link', $order->get_checkout_order_received_url());
@@ -368,29 +272,26 @@ function wa_order_thank_you_override($title, $id)
     // View Order Link
     $order_view_url     = apply_filters('wa_order_filter_thank_you_page_view_order_url', $order->get_view_order_url());
     $view_order_label   = apply_filters('wa_order_filter_thank_you_page_view_order_label', $view_order_label);
-    // View Order Link - Fix the logic to properly check the setting
     if ($include_view_order === 'yes' && ($customer_id || !empty($order->get_billing_email()))) {
-        // Include the order view URL
         $message .= "\n\n*" . $view_order_label . ":* \r\n" . $order_view_url;
     }
 
     // Order Date, Purchase Note & Thank You Message
-    $order_date = $options['order_date'];
-    if ($order_date !== 'yes') {
+    if ($options['order_date'] !== 'yes' || '' === $date) {
         $message .= "\n\n" . $purchase_note . $thanks_label;
     } else {
         $message .= "\n\n" . $purchase_note . $thanks_label . "\n\n(" . $date . ")";
     }
     $message            = apply_filters('wa_order_filter_thank_you_page_final_message', $message);
     // WhatsApp Button
-    $button_url         = wa_order_the_url($phonenumb, $message); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped $message;
+    $button_url         = wa_order_the_url($phonenumb, $message);
     $target             = $options['open_new_tab'];
     // Final Output
     $final_output = '<div class="thankyoucustom_wrapper">
-    <h2 class="thankyoutitle">' . esc_attr($thetitle) . '</h2>
-    <p class="subtitle">' . esc_attr($subtitle) . '</p>
-    <a id="sendbtn" href="' . $button_url . '" target="' . esc_attr($target) . '" class="wa-order-thankyou">
-        ' . esc_attr($button) . '
+    <h2 class="thankyoutitle">' . esc_html($thetitle) . '</h2>
+    <p class="subtitle">' . esc_html($subtitle) . '</p>
+    <a id="sendbtn" href="' . esc_url($button_url) . '" target="' . esc_attr($target) . '" rel="noopener" class="wa-order-thankyou">
+        ' . esc_html($button) . '
     </a>
     </div>';
     return wp_kses_post($final_output);
@@ -399,19 +300,29 @@ if ($override_thankyou_page === 'yes') {
     add_filter('woocommerce_thankyou_order_received_text', 'wa_order_thank_you_override', 10, 2);
 }
 
-// Thank you page default class
+// Remove WooCommerce's now-empty "order received" paragraph on the order received page.
+// Since 1.2.0: plain JavaScript (no jQuery dependency), printed only on that page,
+// and it never removes an element that still holds the WhatsApp button or text.
 function wa_order_remove_default_thankyou_class()
 {
-    $override_thankyou_page = get_option(sanitize_text_field('wa_order_option_enable_button_thank_you'));
-    if ($override_thankyou_page === 'yes') {
-?>
-        <script type="text/javascript">
-            jQuery(document).ready(function() {
-                jQuery(".woocommerce-thankyou-order-received").remove();
-            });
-        </script>
-<?php
+    if (get_option('wa_order_option_enable_button_thank_you') !== 'yes') {
+        return;
     }
+    if (!function_exists('is_order_received_page') || !is_order_received_page()) {
+        return;
+    }
+?>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            Array.prototype.forEach.call(document.querySelectorAll('.woocommerce-thankyou-order-received'), function(el) {
+                if (el.querySelector('.thankyoucustom_wrapper') || el.textContent.trim() !== '') {
+                    return;
+                }
+                el.parentNode.removeChild(el);
+            });
+        });
+    </script>
+<?php
 }
 // Remove element based on class
 add_action('wp_footer', 'wa_order_remove_default_thankyou_class');

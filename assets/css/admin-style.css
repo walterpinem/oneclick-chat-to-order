@@ -185,3 +185,10 @@
 .oskit-footer-thankyou a:hover {
 	text-decoration: underline;
 }
+/* Donate link (an <a> since 1.2.0) */
+.donate-container a.donatebutton,
+.donate-container a.donatebutton:hover,
+.donate-container a.donatebutton:focus {
+	color: #fff;
+	text-decoration: none;
+}

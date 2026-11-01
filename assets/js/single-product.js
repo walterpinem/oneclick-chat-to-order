@@ -1,59 +1,66 @@
 (function($) {
-    var initialized = false;
+    'use strict';
+
+    // Open the WhatsApp link of a button nested inside an <a>, respecting its target.
+    function openLink(link) {
+        var href = link.attr('href');
+        if (!href) {
+            return;
+        }
+        if (link.attr('target') === '_blank') {
+            window.open(href, '_blank');
+        } else {
+            window.location.href = href;
+        }
+    }
+
+    // Some themes and Ajax add-to-cart scripts treat any .single_add_to_cart_button
+    // as an Add to Cart button. When the WhatsApp button sits after Add to Cart it
+    // carries that class for styling, so take over its click.
+    // Each button is bound once; this runs again for quick views loaded later.
     function disableAjaxOnWaButtons() {
-        if (initialized) return; // Skip if already run
-        initialized = true;
-
-
-        // Target standard WA button
         $('.wa-order-button.single_add_to_cart_button').each(function() {
-
-            $(this).off('click'); // Unbind existing handlers (WooCommerce/Woodmart)
-            $(this).on('click', function(e) {
+            var $button = $(this);
+            if ($button.data('waOrderBound')) {
+                return;
+            }
+            $button.data('waOrderBound', true);
+            $button.off('click'); // Unbind existing handlers (WooCommerce/Woodmart)
+            $button.on('click', function(e) {
+                var link = $(this).closest('a');
+                if (!link.length) {
+                    return; // onClick link type handles itself.
+                }
                 e.preventDefault(); // Prevent any default form submit/AJAX
                 e.stopPropagation(); // Stop bubbling to other handlers
-                var link = $(this).closest('a');
-                var href = link.attr('href'); // Get parent <a> href
-                var target = link.attr('target'); // Get parent <a> target
-                if (href) {
-                    // redirect logic
-                } else {
-
-                }
-                if (target === '_blank') {
-                    window.open(href, '_blank');
-                } else {
-                    window.location.href = href;
-                }
+                openLink(link);
             });
         });
 
-        // Target GDPR WA button
         $('.gdpr_wa_button_input.single_add_to_cart_button').each(function() {
-
-            $(this).off('click'); // Unbind existing handlers
-            $(this).on('click', function(e) {
-                if (!$(this).prop('disabled')) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var link = $(this).closest('a');
-                    var href = link.attr('href');
-                    var target = link.attr('target');
-                    if (href) {
-    
-                        if (target === '_blank') {
-                            window.open(href, '_blank');
-                        } else {
-                            window.location.href = href;
-                        }
-                    }
+            var $button = $(this);
+            if ($button.data('waOrderBound')) {
+                return;
+            }
+            $button.data('waOrderBound', true);
+            $button.off('click'); // Unbind existing handlers
+            $button.on('click', function(e) {
+                if ($(this).prop('disabled')) {
+                    return;
                 }
+                var link = $(this).closest('a');
+                if (!link.length) {
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                openLink(link);
             });
         });
     }
 
-    // Run on ready, after variation form, and on Woodmart-specific events
+    // Run on ready, after variation form, and on theme quick-view events
     $(document).ready(disableAjaxOnWaButtons);
     $(document).on('wc_variation_form', disableAjaxOnWaButtons);
-    $(document).on('woodmart_pquick_view_loaded woodmart_quick_shop_success flatsome_quickview_loaded', disableAjaxOnWaButtons); // Add Flatsome or others
+    $(document).on('woodmart_pquick_view_loaded woodmart_quick_shop_success flatsome_quickview_loaded', disableAjaxOnWaButtons);
 })(jQuery);

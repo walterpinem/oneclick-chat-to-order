@@ -3,11 +3,11 @@ Contributors: walterpinem
 Donate link: https://www.paypal.me/WalterPinem
 Tags: woocommerce, woocommerce whatsapp, whatsapp, whatsapp chat, click to chat
 Requires at least: 6.0
-Tested up to: 7.0
-Stable tag: 1.1.2
+Tested up to: 7.1
+Stable tag: 1.2.0
 Requires PHP: 7.4
 WC requires at least: 8.2
-WC tested up to: 10.8.0
+WC tested up to: 11.2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,9 +103,9 @@ Yes! OneClick Chat to Order is completely free to use for unlimited sites. All f
 
 = How do I install and configure OneClick Chat to Order? =
 1. **Prerequisites**: Ensure WooCommerce is installed and activated on your WordPress site
-2. **Installation**: Install the plugin via WordPress Admin <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span> Plugins <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span> Add New <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span> Upload Plugin
-3. **Initial Setup**: Navigate to Chat to Order <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span> Numbers and add your first WhatsApp number
-4. **Configuration**: Configure settings in Chat to Order <span aria-hidden="true" class="wp-exclude-emoji"><span aria-hidden="true" class="wp-exclude-emoji">→</span></span> Basic tab
+2. **Installation**: Install the plugin via WordPress Admin > Plugins > Add New > Upload Plugin
+3. **Initial Setup**: Navigate to Chat to Order > Numbers and add your first WhatsApp number
+4. **Configuration**: Configure settings in Chat to Order > Basic tab
 5. **Testing**: Test the WhatsApp button on a product page
 
 = Can I use multiple WhatsApp numbers? =
@@ -187,10 +187,27 @@ For additional support:
 – Check the plugin's support forums
 – Watch tutorial videos for visual guidance
 
+= The WhatsApp button doesn't show on products without a price. Why? =
+WooCommerce hides the Add to Cart form on products without a price, and the default button positions sit inside that form. Since 1.2.0 the button is shown below the product summary on these products. Turn it off with "Show on Products Without a Price?" on the Basic tab. Out-of-stock products have their own option, "Show on Out-of-Stock Products?".
+
+= Phones open WhatsApp Web, or iPhone users have to search for a contact. How do I fix it? =
+1. Save numbers with the country code and digits only, for example 6281234567890. Since 1.2.0, spaces, dashes and "+" are removed automatically.
+2. Turn on "Force wa.me" on the Basic tab. Without it, the plugin picks the WhatsApp address per device when the page is generated, and a page cache can then serve a desktop link to phones. New installs use wa.me by default since 1.2.0.
+3. Clear your page cache after changing these settings.
+
+= Customers can only add one of each product to the cart. Why? =
+Before 1.2.0, "Hide Product Quantity Option?" on the Display tab marked every product as sold individually, which locked cart quantities to 1. Since 1.2.0 it only hides the quantity field on single product pages.
+
+= Can I send a quote request without prices? =
+Yes. Product and shop messages have an "Exclude Price?" option. Since 1.2.0 the Cart tab also has "Exclude Prices and Totals?", which sends products and quantities only.
+
+= Can I move the single product button to another hook or priority? =
+Yes, since 1.2.0 with two filters: `wa_order_single_button_hook` and `wa_order_single_button_priority`. The per-product hide option and the category and tag exclusions keep working wherever the button goes.
+
 = Is it compatible with WooCommerce HPOS? =
-Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order Storage (HPOS) and is compatible with:
-– WordPress 6.9+
-– WooCommerce 10.6.1+
+Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order Storage (HPOS) and the Cart and Checkout blocks. It requires:
+– WordPress 6.0+
+– WooCommerce 8.2+
 – PHP 7.4+
 – Modern hosting environments
 
@@ -205,6 +222,53 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 8. WhatsApp button shortcode output on the front-end
 
 == Changelog ==
+= 1.2.0 (November 2026) =
+
+A maintenance release that fixes the reports collected on the support forum and by email, and catches up with WordPress 7.1 and WooCommerce 11.2. Option names, filters, CSS classes and button markup are unchanged, so existing customizations and add-ons keep working.
+
+#### **Fixes**
+* Updating no longer switches buttons back on. 1.1.2 re-ran the 1.1.1 checkbox repair on every site, which could turn on the floating, shop, cart, checkout or GDPR features. The repair now runs once, only for sites that never ran it, and a one-time notice asks 1.1.1 and 1.1.2 users to check their tabs.
+* "Hide Product Quantity Option?" no longer locks cart quantities to 1 (it marked every product as sold individually). With the option off, WooCommerce's own "Sold individually" setting is respected again in the cart, AJAX add to cart and the Cart block.
+* The button now shows on products without a price (on by default) and, optionally, on out-of-stock products.
+* Phone numbers are saved and sent as digits only, so numbers entered with "+", spaces or dashes work.
+* The "Inline onClick Event" link type opened WhatsApp without the message unless "Force wa.me" was on.
+* The `[oneclick]` shortcode sent HTML tags and codes like `&amp;` in messages, crashed on pages without a product, and changed the product shown on the rest of the page.
+* The Block Cart message now updates when quantities, coupons or shipping change, and the button stays visible when the cart re-renders (including on mobile).
+* Cart and thank you messages use the discount WooCommerce actually applied for each coupon, follow the store's tax display setting, and no longer contain HTML.
+* Thank you message: the shipping address is included on stores using HPOS, the subtotal has its own label, the total uses your "Total" label, dates are translated, and the page keeps WooCommerce's text when no number is set instead of showing a broken button.
+* The thank you page script no longer needs jQuery and only runs on the order received page.
+* Polylang and WPML translations of the single product button text and message now apply.
+* The per-product "Custom Message" field now applies to the single product button, not only to the shortcode.
+* Prices in messages follow the store's "Display prices" tax setting, and variable products send their price range.
+* "Force show Add to Cart" works when the WhatsApp button is on; "Hide Add to Cart" also hides it on variable products and no longer hides the GDPR WhatsApp button.
+* "Hide Price in Product Page" only hides the price of the product being viewed, not related products.
+* The shop button appears on block-based shop and category pages (Product Collection block), uses the product's own number when one is assigned, and category or tag exclusions apply right away without slow site-wide queries.
+* The floating button has an accessible name (fixes WAVE "empty link"), builds the source URL correctly on sites in a subfolder, and uses the same mobile breakpoint as other buttons.
+* Shortcode tab "Open in New Tab?" now saves, and `[waorder target="yes"]` outputs a valid link target.
+* Buttons with no number set no longer open WhatsApp's share screen. Cart, shop, checkout, floating and shortcode buttons fall back to the Basic tab number.
+* Phone numbers changed in the settings take effect immediately (the one-hour cache was removed).
+* GDPR consent boxes work independently when several are on one page, and the link around a disabled button can no longer skip consent.
+* The admin order screen's WhatsApp link works on both the HPOS and legacy order screens.
+* The admin notice about WhatsApp numbers only appears on the plugin's screens.
+
+#### **Improvements**
+* New Cart options: "Exclude Prices and Totals?" for quote requests and "Include Extra Item Details?" for add-on, booking and custom field data.
+* New Display option: "Hide WhatsApp Icon?".
+* New filters: `wa_order_single_button_hook`, `wa_order_single_button_priority`, `wa_order_filter_show_on_unpurchasable`, `wa_order_filter_whatsapp_url`, `wa_order_filter_cart_exclude_price`, `wa_order_filter_cart_include_item_data`, `wa_order_filter_floating_phone_number`, `wa_order_filter_floating_message`, `wa_order_filter_floating_button_url`.
+* New installs use wa.me links by default. Sites with a page cache see a suggestion to turn on "Force wa.me".
+* Number dropdowns have an empty choice, so saving a tab no longer stores the first number by accident.
+* Declared compatibility with the WooCommerce Cart and Checkout blocks.
+* Tested with WordPress 7.1 and WooCommerce 11.2.
+
+#### **Under the Hood**
+* Text domain changed to `oneclick-whatsapp-order` so translations from translate.wordpress.org load. The bundled Indonesian translation was moved to the new name.
+* Renamed the global `sanitize_checkbox()` function to `wa_order_sanitize_checkbox()` to prevent fatal errors with themes or plugins using the same name.
+* Removed the `[donate]` shortcode from the front end, direct `wp-load.php` includes, core function fallbacks in the GDPR tab, and an unused deactivation routine that would have deleted all settings.
+* Links to the author's site no longer include PHP version, WordPress version or locale.
+* The WhatsApp Numbers post type is no longer public.
+* Uninstall cleans up every site on a multisite network (when that site chose to delete data).
+* Fixed unclosed admin markup, a duplicated tab include, and Select2 being applied to every dropdown on the settings screens.
+
 = 1.1.2 – May 27, 2026 =
 
 #### **Bug Fixes**
@@ -518,6 +582,9 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 * Initial Release
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Fixes cart quantities locked to 1, buttons switched on by the 1.1.2 update, missing buttons on products without a price, stale Block Cart messages and many message formatting issues. Recommended for all stores.
 
 = 1.1.2 =
 Bug fix: "Open in New Tab?" checkbox now saves correctly on the Basic, Shop, Checkout, and Floating tabs. Update immediately if you rely on opening WhatsApp links in a new tab from any of those pages.

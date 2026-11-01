@@ -1,3 +1,9 @@
+// Make a value safe inside a double-quoted shortcode attribute:
+// double quotes and square brackets would end the attribute or the shortcode.
+function waOrderShortcodeAttr(value) {
+	return String(value || '').replace(/"/g, "'").replace(/\[/g, '(').replace(/\]/g, ')');
+}
+
 // Shortcode Generator
 function generateWAshortcode() {
 	// Check if required elements exist before proceeding
@@ -15,7 +21,7 @@ function generateWAshortcode() {
 	var VWAbuttonText = buttonTextEl.value;
 	var VWAcustomMessage = customMessageEl.value;
 	var VWAnewTab = newTabEl.value;
-	var generatedWAbuttonData = '[waorder phone="'+Vselected_wa_number+'" button="'+VWAbuttonText+'" message="'+VWAcustomMessage+'" target="'+VWAnewTab+'"]';
+	var generatedWAbuttonData = '[waorder phone="'+waOrderShortcodeAttr(Vselected_wa_number)+'" button="'+waOrderShortcodeAttr(VWAbuttonText)+'" message="'+waOrderShortcodeAttr(VWAcustomMessage)+'" target="'+waOrderShortcodeAttr(VWAnewTab)+'"]';
 	outputEl.innerHTML = generatedWAbuttonData;
 }
 
@@ -89,17 +95,17 @@ function generateSingleWAshortcode() {
     if (productValue === 'current') {
         shortcode += ' product="current"';
     } else if (productValue === 'product_id' && productId !== '') {
-        shortcode += ' product="' + productId + '"';
+        shortcode += ' product="' + waOrderShortcodeAttr(productId) + '"';
     }
 
     // Handle text attribute
     if (buttonTextValue !== '') {
-        shortcode += ' text="' + buttonTextValue + '"';
+        shortcode += ' text="' + waOrderShortcodeAttr(buttonTextValue) + '"';
     }
 
     // Handle message attribute
     if (customMessageValue !== '') {
-        shortcode += ' message="' + customMessageValue + '"';
+        shortcode += ' message="' + waOrderShortcodeAttr(customMessageValue) + '"';
     }
 
     // Force fullwidth

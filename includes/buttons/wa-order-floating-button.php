@@ -22,6 +22,63 @@ function wa_order_is_floating_tooltip_enabled()
 	return get_option('wa_order_floating_tooltip_enable', 'no') === 'yes';
 }
 
+/**
+ * Build the floating button's WhatsApp URL, or '' when no number is set.
+ *
+ * @since 1.2.0
+ *
+ * @return string
+ */
+function wa_order_get_floating_button_url()
+{
+	// Number from the Floating tab, or the Basic tab number when none is chosen.
+	$phonenumb = apply_filters('wa_order_filter_floating_phone_number', wa_order_get_placement_phone('wa_order_selected_wa_number_floating'));
+	if (!$phonenumb) {
+		return '';
+	}
+
+	$custom_message = get_option('wa_order_floating_message', '');
+	if (empty($custom_message)) {
+		$custom_message = __('Hello, I need to know more about:', 'oneclick-whatsapp-order');
+	}
+
+	$message = (string) $custom_message;
+	if ('yes' === get_option('wa_order_floating_source_url', 'no')) {
+		$src_label = get_option('wa_order_floating_source_url_label', '');
+		if (empty($src_label)) {
+			$src_label = __('From URL:', 'oneclick-whatsapp-order');
+		}
+		$message .= "\n\n*" . $src_label . "* " . wa_order_current_url();
+	}
+
+	/**
+	 * Filter the floating button message (plain text).
+	 *
+	 * @since 1.2.0
+	 */
+	$message = apply_filters('wa_order_filter_floating_message', $message);
+
+	/**
+	 * Filter the floating button WhatsApp URL.
+	 *
+	 * @since 1.2.0
+	 */
+	return apply_filters('wa_order_filter_floating_button_url', wa_order_the_url($phonenumb, $message), $phonenumb, $message);
+}
+
+/**
+ * Accessible name for the icon-only floating button.
+ *
+ * @since 1.2.0
+ *
+ * @return string
+ */
+function wa_order_get_floating_button_label()
+{
+	$tooltip = get_option('wa_order_floating_tooltip', '');
+	return ('' !== trim((string) $tooltip)) ? $tooltip : __('Chat with us on WhatsApp', 'oneclick-whatsapp-order');
+}
+
 // Display Floating Button
 function wa_order_display_floating_button()
 {
@@ -34,42 +91,14 @@ function wa_order_display_floating_button()
 	if ($floating !== 'yes') {
 		return;
 	}
-	$floating_position = get_option('wa_order_floating_button_position', 'left');
-
-	// Set default values if options are empty
-	$custom_message_default = 'Hello, I need to know more about:';
-	$custom_message = get_option('wa_order_floating_message', $custom_message_default);
-	if (empty($custom_message)) {
-		$custom_message = $custom_message_default;
-	}
-	$custom_message = urlencode($custom_message);
-
 	$floating_target = get_option('wa_order_floating_target', '_blank');
-	$wanumberpage = get_option('wa_order_selected_wa_number_floating', '');
-	$postid = get_page_by_path($wanumberpage, OBJECT, 'wa-order-numbers');
-	if (!$postid) {
+	$floating_link = wa_order_get_floating_button_url();
+	if ('' === $floating_link) {
 		return;
 	}
-	$phonenumb = get_post_meta($postid->ID, 'wa_order_phone_number_input', true);
-	if (!$phonenumb) {
-		return;
-	}
-	$include_source = get_option('wa_order_floating_source_url', 'no');
-
-	// Set default value for source URL label
-	$src_label_default = 'From URL:';
-	$src_label = get_option('wa_order_floating_source_url_label', $src_label_default);
-	if (empty($src_label)) {
-		$src_label = $src_label_default;
-	}
-
-	$source_url = $include_source === 'yes' ? urlencode(home_url(add_query_arg(null, null))) : '';
-	$floating_message = $custom_message . ($include_source === 'yes' ? "\n\n*" . $src_label . "* " . $source_url : '');
-	$floating_link = wa_order_the_url($phonenumb, urldecode($floating_message)); // phpcs:ignore WordPress.Security.EscapeOutput.
 ?>
-	<a id="sendbtn" class="floating_button" href="<?php echo $floating_link; // phpcs:ignore WordPress.Security.EscapeOutput.
-													?>" role="button" target="<?php echo esc_attr($floating_target); ?>">
-		<span class="floating_button_icon"></span>
+	<a id="sendbtn" class="floating_button" href="<?php echo esc_url($floating_link); ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" rel="noopener" aria-label="<?php echo esc_attr(wa_order_get_floating_button_label()); ?>">
+		<span class="floating_button_icon" aria-hidden="true"></span>
 	</a>
 <?php
 }
@@ -203,51 +232,28 @@ function wa_order_display_floating_tooltip()
 		return;
 	}
 	$floating = get_option('wa_order_floating_button', 'no');
+	if ('yes' !== $floating) {
+		return;
+	}
 	$floating_position = get_option('wa_order_floating_button_position', 'left');
 
-	// Set default values if options are empty
-	$custom_message_default = 'Hello, I need to know more about:';
-	$custom_message = get_option('wa_order_floating_message', $custom_message_default);
-	if (empty($custom_message)) {
-		$custom_message = $custom_message_default;
-	}
-	$custom_message = urlencode($custom_message);
-
 	$floating_target = get_option('wa_order_floating_target', '_blank');
-	$wanumberpage = get_option('wa_order_selected_wa_number_floating', '');
-	$postid = get_page_by_path($wanumberpage, OBJECT, 'wa-order-numbers');
-	if (!$postid) {
-		return;
-	}
-	$phonenumb = get_post_meta($postid->ID, 'wa_order_phone_number_input', true);
-	if (!$phonenumb) {
-		return;
-	}
 	$tooltip_enable = get_option('wa_order_floating_tooltip_enable', 'no');
 
 	// Set default value for tooltip
-	$tooltip_default = "Let's Chat!";
-	$tool_tip = get_option('wa_order_floating_tooltip', $tooltip_default);
+	$tool_tip = get_option('wa_order_floating_tooltip', '');
 	if (empty($tool_tip)) {
-		$tool_tip = $tooltip_default;
+		$tool_tip = __("Let's Chat!", 'oneclick-whatsapp-order');
 	}
 
-	$include_source = get_option('wa_order_floating_source_url', 'no');
-
-	// Set default value for source URL label
-	$src_label_default = 'From URL:';
-	$src_label = get_option('wa_order_floating_source_url_label', $src_label_default);
-	if (empty($src_label)) {
-		$src_label = $src_label_default;
+	$floating_link = wa_order_get_floating_button_url();
+	if ('' === $floating_link) {
+		return;
 	}
-
-	$source_url = $include_source === 'yes' ? urlencode(home_url(add_query_arg(null, null))) : '';
-	$floating_message = $custom_message . ($include_source === 'yes' ? "\n\n*" . $src_label . "* " . $source_url : '');
-	$floating_link = wa_order_the_url($phonenumb, urldecode($floating_message)); // phpcs:ignore WordPress.Security.EscapeOutput.
 	if ($floating === 'yes' && $tooltip_enable === 'yes') {
 	?>
-		<a id="sendbtn" href="<?php echo $floating_link; ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" class="floating_button">
-			<span class="floating_button_icon"></span>
+		<a id="sendbtn" href="<?php echo esc_url($floating_link); ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" rel="noopener" class="floating_button" aria-label="<?php echo esc_attr($tool_tip); ?>">
+			<span class="floating_button_icon" aria-hidden="true"></span>
 			<div class="label-container">
 				<div class="label-text"><?php echo esc_html($tool_tip); ?></div>
 			</div>
@@ -327,11 +333,11 @@ function wa_order_adjust_floating_button_visibility()
 		echo '<style>';
 		if ($floating_mobile === 'yes') {
 			// Hides on mobile devices
-			echo '@media only screen and (max-width: 480px) { .floating_button { display: none !important; } }';
+			echo '@media only screen and (max-width: 767px) { .floating_button { display: none !important; } }';
 		}
 		if ($floating_desktop === 'yes') {
 			// Hides on desktop
-			echo '@media (min-width: 481px) { .floating_button { display: none !important; } }';
+			echo '@media (min-width: 768px) { .floating_button { display: none !important; } }';
 		}
 		echo '</style>';
 	}
@@ -344,10 +350,10 @@ function wa_order_hide_floating_button_conditionally()
 	global $post;
 
 	// Get the settings as arrays
-	$posts_array = (array) get_option('wa_order_floating_hide_specific_posts');
-	$pages_array = (array) get_option('wa_order_floating_hide_specific_pages');
-	$cats_array  = (array) get_option('wa_order_floating_hide_product_cats');
-	$tags_array  = (array) get_option('wa_order_floating_hide_product_tags');
+	$posts_array = array_filter((array) get_option('wa_order_floating_hide_specific_posts'));
+	$pages_array = array_filter((array) get_option('wa_order_floating_hide_specific_pages'));
+	$cats_array  = array_filter((array) get_option('wa_order_floating_hide_product_cats'));
+	$tags_array  = array_filter((array) get_option('wa_order_floating_hide_product_tags'));
 
 	// Early exit if no conditions are set
 	if (empty($posts_array) && empty($pages_array) && empty($cats_array) && empty($tags_array)) {
@@ -357,9 +363,13 @@ function wa_order_hide_floating_button_conditionally()
 	$should_hide = false;
 
 	// Check conditions to hide the floating button
+	if (!($post instanceof WP_Post)) {
+		return;
+	}
+
 	if (is_product()) {
 		$product = wc_get_product($post->ID);
-		if (!is_null($product)) {
+		if ($product) {
 			if (!empty($cats_array) && has_term($cats_array, 'product_cat', $post->ID)) {
 				$should_hide = true;
 			}

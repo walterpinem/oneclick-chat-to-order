@@ -27,13 +27,16 @@ function wa_order_multiple_numbers()
     'wa-order-numbers',
     array(
       'labels' => array(
-        'name' => __('WhatsApp Numbers', 'oneclick-wa-order'),
-        'singular_name' => __('WhatsApp Number', 'oneclick-wa-order'),
-        'add_new_item' => __('Add WhatsApp Number', 'oneclick-wa-order'),
-        'add_new' => __('Add WhatsApp Number', 'oneclick-wa-order')
+        'name' => __('WhatsApp Numbers', 'oneclick-whatsapp-order'),
+        'singular_name' => __('WhatsApp Number', 'oneclick-whatsapp-order'),
+        'add_new_item' => __('Add WhatsApp Number', 'oneclick-whatsapp-order'),
+        'add_new' => __('Add WhatsApp Number', 'oneclick-whatsapp-order')
       ),
       'show_in_menu' => false,
-      'public' => true,
+      'public' => false, // Since 1.2.0: admin-only, not offered in menus or to SEO plugins.
+      'show_ui' => true,
+      'exclude_from_search' => true,
+      'show_in_nav_menus' => false,
       'publicly_queryable' => false,
       'has_archive' => false,
       'rewrite' => array('slug' => 'waon', 'with_front' => false),
@@ -68,7 +71,7 @@ function wa_order_multiple_numbers_create_metabox()
 {
   add_meta_box(
     'wa_order_phonenumbers_metabox', // Metabox ID
-    __('Set a Number', 'oneclick-wa-order'), // Title to display
+    __('Set a Number', 'oneclick-whatsapp-order'), // Title to display
     'wa_order_phonenumbers_render_metabox', // Function to call that contains the metabox content
     'wa-order-numbers', // Post type to display metabox on
     'normal', // Where to put it (normal = main column, side = sidebar, etc.)
@@ -86,12 +89,12 @@ function wa_order_phonenumbers_render_metabox()
     <tbody>
       <tr class="wa_order_number">
         <th scope="row">
-          <label class="wa_order_number_label" for="wa_order_phone_number_input"><b><?php esc_html_e('WhatsApp Number', 'oneclick-wa-order'); ?></b></label>
+          <label class="wa_order_number_label" for="wa_order_phone_number_input"><b><?php esc_html_e('WhatsApp Number', 'oneclick-whatsapp-order'); ?></b></label>
         </th>
         <td>
-          <input type="text" name="wa_order_phone_number_input" class="wa_order_input" id="wa_order_phone_number_input" value="<?php echo esc_attr($phone); ?>" placeholder="<?php esc_attr_e('e.g. 6281234567890', 'oneclick-wa-order'); ?>">
+          <input type="text" name="wa_order_phone_number_input" class="wa_order_input" id="wa_order_phone_number_input" value="<?php echo esc_attr($phone); ?>" placeholder="<?php esc_attr_e('e.g. 6281234567890', 'oneclick-whatsapp-order'); ?>">
           <p class="description">
-            <?php esc_html_e('Enter number including country code, e.g. 6281234567890', 'oneclick-wa-order'); ?>
+            <?php esc_html_e('Enter number including country code, e.g. 6281234567890. Spaces, dashes and "+" are removed when saving.', 'oneclick-whatsapp-order'); ?>
           </p>
         </td>
       </tr>
@@ -100,7 +103,7 @@ function wa_order_phonenumbers_render_metabox()
   <div class="wa-return-to-setting">
     <p>
       <a href="<?php echo esc_url(admin_url('admin.php?page=wa-order&tab=welcome')); ?>">
-        <?php esc_html_e('Click here to return to Global Settings page.', 'oneclick-wa-order'); ?>
+        <?php esc_html_e('Click here to return to Global Settings page.', 'oneclick-whatsapp-order'); ?>
       </a>
     </p>
   </div>
@@ -126,8 +129,8 @@ function wa_order_multiple_numbers_save_metabox($post_id, $post)
   if (!isset($_POST['wa_order_phone_number_input'])) {
     return $post_id;
   }
-  // Sanitize the submitted phone number
-  $sanitized_phone = sanitize_text_field(wp_unslash($_POST['wa_order_phone_number_input']));
+  // Sanitize the submitted phone number: digits only (country code included, no "+")
+  $sanitized_phone = wa_order_sanitize_phone_number(sanitize_text_field(wp_unslash($_POST['wa_order_phone_number_input'])));
   // Save our submissions to the database
   update_post_meta($post_id, 'wa_order_phone_number_input', $sanitized_phone);
 }
@@ -146,21 +149,21 @@ function wa_order_multiple_numbers_updated_messages($messages)
   }
   $messages['wa-order-numbers'] = array(
     0  => '', // Unused. Messages start at index 1.
-    1  => esc_html__('WhatsApp Number updated.', 'oneclick-wa-order'),
-    2  => esc_html__('WhatsApp Number updated.', 'oneclick-wa-order'),
-    3  => esc_html__('WhatsApp Number deleted.', 'oneclick-wa-order'),
-    4  => esc_html__('WhatsApp Number updated.', 'oneclick-wa-order'),
+    1  => esc_html__('WhatsApp Number updated.', 'oneclick-whatsapp-order'),
+    2  => esc_html__('WhatsApp Number updated.', 'oneclick-whatsapp-order'),
+    3  => esc_html__('WhatsApp Number deleted.', 'oneclick-whatsapp-order'),
+    4  => esc_html__('WhatsApp Number updated.', 'oneclick-whatsapp-order'),
     /* translators: %s: date and time of the revision */
-    5  => isset($_GET['revision']) ? sprintf(esc_html__('WhatsApp Number restored to revision from %s', 'oneclick-wa-order'), wp_post_revision_title((int) $_GET['revision'], false)) : false,
-    6  => esc_html__('WhatsApp Number successfully added.', 'oneclick-wa-order'),
-    7  => esc_html__('WhatsApp Number saved.', 'oneclick-wa-order'),
-    8  => esc_html__('WhatsApp Number submitted.', 'oneclick-wa-order'),
+    5  => isset($_GET['revision']) ? sprintf(esc_html__('WhatsApp Number restored to revision from %s', 'oneclick-whatsapp-order'), wp_post_revision_title((int) $_GET['revision'], false)) : false,
+    6  => esc_html__('WhatsApp Number successfully added.', 'oneclick-whatsapp-order'),
+    7  => esc_html__('WhatsApp Number saved.', 'oneclick-whatsapp-order'),
+    8  => esc_html__('WhatsApp Number submitted.', 'oneclick-whatsapp-order'),
     9  => sprintf(
       /* translators: %s: date and time of the scheduled publication */
-      esc_html__('WhatsApp Number scheduled for: <strong>%1$s</strong>.', 'oneclick-wa-order'),
-      date_i18n(__('M j, Y @ G:i', 'oneclick-wa-order'), strtotime($post->post_date))
+      esc_html__('WhatsApp Number scheduled for: <strong>%1$s</strong>.', 'oneclick-whatsapp-order'),
+      date_i18n(__('M j, Y @ G:i', 'oneclick-whatsapp-order'), strtotime($post->post_date))
     ),
-    10 => esc_html__('WhatsApp Number draft updated.', 'oneclick-wa-order')
+    10 => esc_html__('WhatsApp Number draft updated.', 'oneclick-whatsapp-order')
   );
   return $messages;
 }
@@ -191,7 +194,7 @@ function wa_order_number_save_number_field($pid, $post)
   
   // Check if the phone number input exists in the POST data
   if (isset($_POST['wa_order_phone_number_input'])) {
-    $sanitized_phone = sanitize_text_field(wp_unslash($_POST['wa_order_phone_number_input']));
+    $sanitized_phone = wa_order_sanitize_phone_number(sanitize_text_field(wp_unslash($_POST['wa_order_phone_number_input'])));
     update_post_meta($pid, 'wa_order_phone_number_input', $sanitized_phone);
   } else {
     // If the phone number input is not set, delete the meta key
@@ -220,7 +223,8 @@ function wa_order_completion_validator($pid, $post)
   $wa_number = get_post_meta($pid, 'wa_order_phone_number_input', true);
   if (empty($wa_number) && (isset($_POST['publish']) || isset($_POST['save'])) && isset($_POST['post_status']) && sanitize_text_field(wp_unslash($_POST['post_status'])) == 'publish') {
     global $wpdb;
-    $wpdb->update($wpdb->posts, array('post_status' => 'pending'), array('ID' => $pid));
+    $wpdb->update($wpdb->posts, array('post_status' => 'pending'), array('ID' => $pid)); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+    clean_post_cache($pid);
     add_filter('redirect_post_location', function ($location) {
       return add_query_arg('message', '4', $location);
     });
@@ -230,7 +234,7 @@ function wa_order_completion_validator($pid, $post)
 // Show admin notice if the WhatsApp number is empty
 add_action('admin_notices', function () {
   if (get_transient('wa_order_number_empty_notice')) {
-    echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('OneClick Chat to Order requires a WhatsApp Number to be set!', 'oneclick-wa-order') . '</p></div>';
+    echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('OneClick Chat to Order requires a WhatsApp Number to be set!', 'oneclick-whatsapp-order') . '</p></div>';
     delete_transient('wa_order_number_empty_notice');
   }
 });
@@ -244,7 +248,7 @@ function wa_order_check_if_number_empty()
     $wa_number = get_post_meta(get_the_ID(), 'wa_order_phone_number_input', true);
     // Check if WhatsApp number is empty
     if (empty($wa_number)) {
-      $error_message = esc_html__('OneClick Chat to Order requires a WhatsApp number to be set! Please add a valid and active WhatsApp number.', 'oneclick-wa-order');
+      $error_message = esc_html__('OneClick Chat to Order requires a WhatsApp number to be set! Please add a valid and active WhatsApp number.', 'oneclick-whatsapp-order');
       printf('<div class="error"><p><strong>%s</strong></p></div>', esc_html($error_message));
     }
   }
@@ -266,7 +270,20 @@ if (!function_exists('wa_order_phone_numbers_dropdown')) {
     // Dropdown HTML
     $name = isset($args['name']) ? 'name="' . esc_attr($args['name']) . '" ' : '';
     $multiple = isset($args['multiple']) ? 'multiple' : '';
-    echo '<select ' . $name . 'id="" class="wa_order-admin-select2 regular-text" ' . $multiple . '>';
+    echo '<select ' . $name . 'class="wa_order-admin-select2 regular-text" ' . $multiple . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts.
+    // Since 1.2.0: an explicit empty choice, so saving a tab no longer stores
+    // the first number by accident. Placements without a number use the Basic tab number.
+    if (!$multiple) {
+      $field_name = isset($args['name']) ? $args['name'] : '';
+      if (isset($args['placeholder'])) {
+        $placeholder = $args['placeholder'];
+      } elseif ('wa_order_selected_wa_number_single_product' === $field_name) {
+        $placeholder = __('Select a number', 'oneclick-whatsapp-order');
+      } else {
+        $placeholder = __('Same as the Basic tab number', 'oneclick-whatsapp-order');
+      }
+      echo '<option value="">' . esc_html($placeholder) . '</option>';
+    }
     // Loop through posts
     if ($the_query->have_posts()) {
       while ($the_query->have_posts()) {
@@ -275,12 +292,12 @@ if (!function_exists('wa_order_phone_numbers_dropdown')) {
         $selected = '';
         if (isset($args['selected'])) {
           if ($multiple) {
-            $selected = in_array(get_post_field('post_name'), $args['selected']) ? 'selected="selected"' : '';
+            $selected = in_array(get_post_field('post_name'), (array) $args['selected']) ? 'selected="selected"' : '';
           } else {
             $selected = (get_post_field('post_name') == $args['selected']) ? 'selected="selected"' : '';
           }
         }
-        echo '<option value="' . esc_attr(get_post_field('post_name')) . '" ' . esc_attr($selected) . '>' . esc_html(get_the_title()) . ' - ' . esc_html($phonenumb) . '</option>';
+        echo '<option value="' . esc_attr(get_post_field('post_name')) . '" ' . ($selected ? 'selected="selected"' : '') . '>' . esc_html(get_the_title()) . ' - ' . esc_html($phonenumb) . '</option>';
       }
       wp_reset_postdata();
     }
@@ -319,7 +336,7 @@ if (!function_exists('wa_order_phone_numbers_dropdown_shortcode_generator')) {
             $selected = (get_the_title() === $args['selected']) ? 'selected="selected"' : '';
           }
         }
-        echo '<option value="' . esc_attr($phonenumb) . '" ' . esc_attr($selected) . '>' . esc_html(get_the_title()) . ' - ' . esc_attr($phonenumb) . '</option>';
+        echo '<option value="' . esc_attr(wa_order_sanitize_phone_number($phonenumb)) . '" ' . ($selected ? 'selected="selected"' : '') . '>' . esc_html(get_the_title()) . ' - ' . esc_html($phonenumb) . '</option>';
       }
       wp_reset_postdata();
     }

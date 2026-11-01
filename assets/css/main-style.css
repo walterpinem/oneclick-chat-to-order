@@ -372,3 +372,13 @@ a.wa-shop-button:before {
 .single-product a.wa-order-class {
     flex: 0 0 auto!important;
 }
+/* Since 1.2.0: shop button under block-based product grids */
+.wa-order-block-shop-button {
+    margin-top: 0.5em;
+    text-align: center;
+}
+
+/* Since 1.2.0: button on products without a price or out of stock */
+.wa-order-unpurchasable {
+    margin: 1em 0;
+}

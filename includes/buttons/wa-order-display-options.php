@@ -48,7 +48,7 @@ function wa_order_display_options()
 	if (get_option(sanitize_text_field('wa_order_display_option_cart_hide_desktop')) === 'yes') {
 	?>
 		<style>
-			@media only screen and (min-width: 767px) {
+			@media only screen and (min-width: 768px) {
 				.wc-proceed-to-checkout .wa-order-checkout {
 					display: none !important;
 				}
@@ -72,7 +72,7 @@ function wa_order_display_options()
 	if (get_option(sanitize_text_field('wa_order_display_option_checkout_hide_desktop')) === 'yes') {
 	?>
 		<style>
-			@media only screen and (min-width: 767px) {
+			@media only screen and (min-width: 768px) {
 				a.wa-order-thankyou {
 					display: none !important;
 				}
@@ -234,16 +234,40 @@ function wa_order_display_options_button_padding()
 }
 
 // Hide Product Quantity
-function wa_order_remove_quantity($return, $product)
+// Since 1.2.0 the "Hide Product Quantity" option only hides the quantity field
+// while a single product page renders. It used to mark every product as
+// "sold individually" everywhere, which locked cart quantities to 1, and with
+// the option off it returned null, which ignored WooCommerce's own setting.
+function wa_order_remove_quantity($sold_individually, $product = null)
 {
-	global $product;
-
-	$hide_quantity = get_option('wa_order_option_remove_quantity');
-	if ($hide_quantity === 'yes' || is_a($product, 'WC_Product') && get_post_meta($product->get_id(), '_sold_individually', true) === 'yes') {
+	if (
+		'yes' === get_option('wa_order_option_remove_quantity')
+		&& did_action('wp')
+		&& !wp_doing_ajax()
+		&& !(defined('REST_REQUEST') && REST_REQUEST)
+		&& function_exists('is_product')
+		&& is_product()
+	) {
 		return true;
 	}
+	return $sold_individually;
 }
 add_filter('woocommerce_is_sold_individually', 'wa_order_remove_quantity', 10, 2);
+
+/**
+ * Hide the WhatsApp icon on buttons (Display tab).
+ * The icon-only shortcode button keeps its icon.
+ *
+ * @since 1.2.0
+ */
+function wa_order_hide_button_icon_css()
+{
+	if ('yes' !== get_option('wa_order_option_hide_button_icon')) {
+		return;
+	}
+	echo '<style>.wa-order-button:before,.gdpr_wa_button_input:before,a.wa-shop-button:before,a.wa-order-checkout:before,.wa-order-thankyou:before,a.shortcode_wa_button:before{content:none!important;display:none!important;}</style>';
+}
+add_action('wp_head', 'wa_order_hide_button_icon_css');
 
 // Add CSS for Hiding Product Quantity & Add to Cart Button
 function wa_order_remove_quantity_atc_css()
@@ -275,7 +299,7 @@ function wa_order_remove_quantity_atc_css()
 
 	// Echo the CSS if it's not empty
 	if (!empty($custom_css)) {
-		echo "<style>" . esc_html($custom_css) . "</style>";
+		echo "<style>" . wp_strip_all_tags($custom_css) . "</style>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static CSS.
 	}
 }
 

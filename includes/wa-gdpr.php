@@ -66,14 +66,6 @@ class WA_GDPR
 		return "<a href='" . esc_url($page_permalink) . "' target='_blank'><strong>" . esc_html($page_title) . "</strong></a>";
 	}
 
-	// Get option if enabled
-	private function _get_option($data)
-	{
-
-		$option = get_option('wa_order_gdpr_status_enable');
-
-		return $option[$data];
-	}
 } // WA_GDPR
 
 new WA_GDPR;
@@ -87,9 +79,9 @@ if (! function_exists('wa_order_options_dropdown')) {
 			'post_type'   => 'page',
 			'post_status' => 'publish'
 		));
-		$name = ($args['name']) ? 'name="' . esc_attr($args['name']) . '" ' : '';
+		$name = !empty($args['name']) ? 'name="' . esc_attr($args['name']) . '" ' : '';
 		$multiple = isset($args['multiple']) ? 'multiple' : '';
-		echo '<select ' . esc_attr($name) . ' class="wa_order-admin-select2 regular-text" ' . esc_attr($multiple) . '>';
+		echo '<select ' . $name . ' class="wa_order-admin-select2 regular-text" ' . $multiple . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts.
 		foreach ($pages as $page) {
 			$selected = '';
 			if ($args['selected']) {
@@ -99,7 +91,7 @@ if (! function_exists('wa_order_options_dropdown')) {
 					$selected = ($page->post_name == $args['selected']) ? 'selected="selected"' : '';
 				}
 			}
-			echo '<option value="' . esc_attr($page->post_name) . '" ' . esc_attr($selected) . '>' . esc_html($page->post_title) . '</option>';
+			echo '<option value="' . esc_attr($page->post_name) . '" ' . ($selected ? 'selected="selected"' : '') . '>' . esc_html($page->post_title) . '</option>';
 		}
 		echo '</select>';
 	}
