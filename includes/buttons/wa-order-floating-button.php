@@ -97,7 +97,7 @@ function wa_order_display_floating_button()
 		return;
 	}
 ?>
-	<a id="sendbtn" class="floating_button" href="<?php echo esc_url($floating_link); ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" rel="noopener" aria-label="<?php echo esc_attr(wa_order_get_floating_button_label()); ?>">
+	<a id="sendbtn" class="floating_button" href="<?php echo wa_order_esc_whatsapp_url($floating_link); ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" rel="noopener" aria-label="<?php echo esc_attr(wa_order_get_floating_button_label()); ?>">
 		<span class="floating_button_icon" aria-hidden="true"></span>
 	</a>
 <?php
@@ -252,7 +252,7 @@ function wa_order_display_floating_tooltip()
 	}
 	if ($floating === 'yes' && $tooltip_enable === 'yes') {
 	?>
-		<a id="sendbtn" href="<?php echo esc_url($floating_link); ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" rel="noopener" class="floating_button" aria-label="<?php echo esc_attr($tool_tip); ?>">
+		<a id="sendbtn" href="<?php echo wa_order_esc_whatsapp_url($floating_link); ?>" role="button" target="<?php echo esc_attr($floating_target); ?>" rel="noopener" class="floating_button" aria-label="<?php echo esc_attr($tool_tip); ?>">
 			<span class="floating_button_icon" aria-hidden="true"></span>
 			<div class="label-container">
 				<div class="label-text"><?php echo esc_html($tool_tip); ?></div>

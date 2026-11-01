@@ -214,7 +214,7 @@ function wa_order_thank_you_override($title, $id)
             if ($coupon_id) {
                 $coupon = new WC_Coupon($coupon_id);
                 if ($coupon->is_type('percent')) {
-                    $percent = wc_format_decimal($coupon->get_amount(), '') . '% ';
+                    $percent = wc_format_decimal($coupon->get_amount(), false, true) . '% ';
                 }
             }
 
@@ -290,7 +290,7 @@ function wa_order_thank_you_override($title, $id)
     $final_output = '<div class="thankyoucustom_wrapper">
     <h2 class="thankyoutitle">' . esc_html($thetitle) . '</h2>
     <p class="subtitle">' . esc_html($subtitle) . '</p>
-    <a id="sendbtn" href="' . esc_url($button_url) . '" target="' . esc_attr($target) . '" rel="noopener" class="wa-order-thankyou">
+    <a id="sendbtn" href="' . wa_order_esc_whatsapp_url($button_url) . '" target="' . esc_attr($target) . '" rel="noopener" class="wa-order-thankyou">
         ' . esc_html($button) . '
     </a>
     </div>';

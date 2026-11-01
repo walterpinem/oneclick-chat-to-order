@@ -245,6 +245,7 @@ A maintenance release that fixes the reports collected on the support forum and 
 * The shop button appears on block-based shop and category pages (Product Collection block), uses the product's own number when one is assigned, and category or tag exclusions apply right away without slow site-wide queries.
 * The floating button has an accessible name (fixes WAVE "empty link"), builds the source URL correctly on sites in a subfolder, and uses the same mobile breakpoint as other buttons.
 * Shortcode tab "Open in New Tab?" now saves, and `[waorder target="yes"]` outputs a valid link target.
+* `[wa-order]` and `[waorder]` messages keep their line breaks (link escaping removed them).
 * Buttons with no number set no longer open WhatsApp's share screen. Cart, shop, checkout, floating and shortcode buttons fall back to the Basic tab number.
 * Phone numbers changed in the settings take effect immediately (the one-hour cache was removed).
 * GDPR consent boxes work independently when several are on one page, and the link around a disabled button can no longer skip consent.

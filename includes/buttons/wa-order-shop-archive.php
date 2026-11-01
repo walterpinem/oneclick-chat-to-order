@@ -161,7 +161,7 @@ function wa_order_display_button_shop_page()
 	$button_url = apply_filters('wa_order_filter_shop_button_url', wa_order_the_url($phonenumb, urldecode($final_message)), $phonenumb, $final_message);
 	$target = apply_filters('wa_order_filter_shop_button_target', get_option('wa_order_option_shop_loop_open_new_tab', '_blank'));
 ?>
-	<a id="sendbtn" href="<?php echo esc_url($button_url); ?>" title="<?php echo esc_attr($link_title); ?>" target="<?php echo esc_attr($target); ?>" rel="noopener" class="<?php echo esc_attr($class); ?>">
+	<a id="sendbtn" href="<?php echo wa_order_esc_whatsapp_url($button_url); ?>" title="<?php echo esc_attr($link_title); ?>" target="<?php echo esc_attr($target); ?>" rel="noopener" class="<?php echo esc_attr($class); ?>">
 		<?php echo esc_html($button_text); ?>
 	</a>
 <?php

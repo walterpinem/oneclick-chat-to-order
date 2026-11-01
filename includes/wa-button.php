@@ -121,9 +121,9 @@ function wa_order_shortcode_button($atts, $content = null)
 
     // Build the button HTML
     if (!empty($options['button_text'])) {
-        $output = "<a id=\"sendbtn\" class=\"shortcode_wa_button\" href=\"" . esc_url($button_url) . "\"" . $blank . "><span>" . do_shortcode($content) . esc_html($options['button_text']) . "</span></a>";
+        $output = "<a id=\"sendbtn\" class=\"shortcode_wa_button\" href=\"" . wa_order_esc_whatsapp_url($button_url) . "\"" . $blank . "><span>" . do_shortcode($content) . esc_html($options['button_text']) . "</span></a>";
     } else {
-        $output = "<a id=\"sendbtn\" class=\"shortcode_wa_button_nt\" href=\"" . esc_url($button_url) . "\"" . $blank . " aria-label=\"" . esc_attr__('Chat on WhatsApp', 'oneclick-whatsapp-order') . "\"><span>" . do_shortcode($content) . "</span></a>";
+        $output = "<a id=\"sendbtn\" class=\"shortcode_wa_button_nt\" href=\"" . wa_order_esc_whatsapp_url($button_url) . "\"" . $blank . " aria-label=\"" . esc_attr__('Chat on WhatsApp', 'oneclick-whatsapp-order') . "\"><span>" . do_shortcode($content) . "</span></a>";
     }
 
     return $output;
@@ -159,7 +159,7 @@ function wa_order_shortcode_generator_button($atts, $content = null)
     $button_url = wa_order_the_url($phone, $message);
 
     // Build the output for the button
-    $output = "<a id=\"sendbtn\" class=\"shortcode_wa_button\" href=\"" . esc_url($button_url) . "\"" . $blank . "><span>" . do_shortcode($content) . esc_html($button) . "</span></a>";
+    $output = "<a id=\"sendbtn\" class=\"shortcode_wa_button\" href=\"" . wa_order_esc_whatsapp_url($button_url) . "\"" . $blank . "><span>" . do_shortcode($content) . esc_html($button) . "</span></a>";
 
     return $output;
 }
@@ -320,7 +320,7 @@ function wa_order_shortcode($atts)
 
     // WhatsApp URL
     $button_url = apply_filters('wa_order_filter_oneclick_shortcode_button_url', wa_order_the_url($phone, urldecode($message_content)), $phone, $message_content);
-    $button_href = esc_url($button_url);
+    $button_href = wa_order_esc_whatsapp_url($button_url);
     $button_text_html = esc_html($button_text);
 
     // Full-Width button

@@ -317,7 +317,7 @@ function wa_order_add_button_plugin()
 		</script>";
 	} else {
 		// Use standard link tag (default)
-		$button_html = "<a href=\"" . esc_url($button_url) . "\" class=\"wa-order-class\" role=\"button\" target=\"$target_attr\" rel=\"noopener\"><button type=\"button\" class=\"wa-order-button {$wc_button_class}button alt $button_fullwidth_class\" $button_fullwidth_style>$button_text_html</button></a>";
+		$button_html = "<a href=\"" . wa_order_esc_whatsapp_url($button_url) . "\" class=\"wa-order-class\" role=\"button\" target=\"$target_attr\" rel=\"noopener\"><button type=\"button\" class=\"wa-order-button {$wc_button_class}button alt $button_fullwidth_class\" $button_fullwidth_style>$button_text_html</button></a>";
 	}
 
 	// GDPR compliance
@@ -375,7 +375,7 @@ function wa_order_add_button_plugin()
 			$button_html = "
 		$gdpr_script
 		<label class=\"wa-button-gdpr2\" $button_fullwidth_style_gdpr>
-			<a href=\"" . esc_url($button_url) . "\" class=\"gdpr_wa_button\" role=\"button\" target=\"$target_attr\" rel=\"noopener\" aria-disabled=\"true\" data-wa-gdpr-group=\"$gdpr_group\">
+			<a href=\"" . wa_order_esc_whatsapp_url($button_url) . "\" class=\"gdpr_wa_button\" role=\"button\" target=\"$target_attr\" rel=\"noopener\" aria-disabled=\"true\" data-wa-gdpr-group=\"$gdpr_group\">
 				<button type=\"button\" class=\"gdpr_wa_button_input $button_class $button_fullwidth_class_gdpr button alt\" disabled=\"disabled\" data-wa-gdpr-group=\"$gdpr_group\">
 					$button_text_html
 				</button>

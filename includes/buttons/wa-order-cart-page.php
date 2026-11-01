@@ -198,7 +198,7 @@ function wa_order_build_cart_message($options)
 			if (!$exclude_price) {
 				$amount_text = wa_order_plain_text(wc_price($amount));
 				if ($coupon->is_type('percent')) {
-					$line .= ": -" . wc_format_decimal($coupon->get_amount(), '') . "% (-" . $amount_text . ")";
+					$line .= ": -" . wc_format_decimal($coupon->get_amount(), false, true) . "% (-" . $amount_text . ")";
 				} else {
 					$line .= ": -" . $amount_text;
 				}
@@ -261,7 +261,7 @@ function wa_order_add_button_to_cart_page()
 	$target = apply_filters('wa_order_filter_cart_button_target', $options['target']);
 ?>
 	<div class="wc-proceed-to-checkout">
-		<a id="sendbtn" href="<?php echo esc_url($button_url); ?>" target="<?php echo esc_attr($target); ?>" rel="noopener" class="wa-order-checkout checkout-button button wa-cart-button">
+		<a id="sendbtn" href="<?php echo wa_order_esc_whatsapp_url($button_url); ?>" target="<?php echo esc_attr($target); ?>" rel="noopener" class="wa-order-checkout checkout-button button wa-cart-button">
 			<?php echo esc_html($cart_button_text); ?>
 		</a>
 	</div>
