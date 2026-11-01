@@ -815,8 +815,11 @@ function wa_order_esc_whatsapp_url($url)
     if ('' === $url) {
         return '';
     }
-    // An encoded URL never contains these; drop them if a filter added any.
-    $url = preg_replace('/[\x00-\x20"<>\\\\^`{|}]/', '', $url);
+    // An encoded URL never contains these. Encode them if a filter added any,
+    // so a snippet returning "text=Hello world" still sends "Hello world".
+    $url = preg_replace_callback('/[\x00-\x20"<>\\\\^`{|}]/', function ($m) {
+        return rawurlencode($m[0]);
+    }, $url);
     // Removes javascript: and any other protocol that isn't allowed (whatsapp:// is).
     $url = wp_kses_bad_protocol($url, wp_allowed_protocols());
     return esc_attr($url);

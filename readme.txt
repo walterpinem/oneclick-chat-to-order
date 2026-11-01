@@ -246,7 +246,7 @@ A maintenance release that fixes the reports collected on the support forum and 
 * The floating button has an accessible name (fixes WAVE "empty link"), builds the source URL correctly on sites in a subfolder, and uses the same mobile breakpoint as other buttons.
 * Shortcode tab "Open in New Tab?" now saves, and `[waorder target="yes"]` outputs a valid link target.
 * `[wa-order]` and `[waorder]` messages keep their line breaks (link escaping removed them).
-* Buttons with no number set no longer open WhatsApp's share screen. Cart, shop, checkout, floating and shortcode buttons fall back to the Basic tab number.
+* Buttons with no number set no longer open WhatsApp's share screen. Cart, shop, checkout and shortcode buttons fall back to the Basic tab number. The floating button still needs its own number.
 * Phone numbers changed in the settings take effect immediately (the one-hour cache was removed).
 * GDPR consent boxes work independently when several are on one page, and the link around a disabled button can no longer skip consent.
 * The admin order screen's WhatsApp link works on both the HPOS and legacy order screens.

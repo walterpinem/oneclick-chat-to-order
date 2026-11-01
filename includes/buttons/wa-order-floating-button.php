@@ -31,8 +31,10 @@ function wa_order_is_floating_tooltip_enabled()
  */
 function wa_order_get_floating_button_url()
 {
-	// Number from the Floating tab, or the Basic tab number when none is chosen.
-	$phonenumb = apply_filters('wa_order_filter_floating_phone_number', wa_order_get_placement_phone('wa_order_selected_wa_number_floating'));
+	// Number from the Floating tab only. No fallback to the Basic tab number:
+	// 1.1.2 showed no floating button without a valid number, and a fallback
+	// would make a bubble appear on every page of sites that never set one up.
+	$phonenumb = apply_filters('wa_order_filter_floating_phone_number', wa_order_get_placement_phone('wa_order_selected_wa_number_floating', false));
 	if (!$phonenumb) {
 		return '';
 	}

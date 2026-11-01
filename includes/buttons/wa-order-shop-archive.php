@@ -186,6 +186,13 @@ function wa_order_render_block_product_button($block_content, $parsed_block, $bl
 		return $block_content;
 	}
 
+	// Block archive templates (shop, category, tag, search) mark their blocks
+	// "isInherited" and already fire woocommerce_after_shop_loop_item, which
+	// prints the button. Also respect code that unhooked the shop button.
+	if (!empty($parsed_block['attrs']['isInherited']) || false === has_action('woocommerce_after_shop_loop_item', 'wa_order_display_button_shop_page')) {
+		return $block_content;
+	}
+
 	$post_id = ($block instanceof WP_Block && isset($block->context['postId'])) ? (int) $block->context['postId'] : get_the_ID();
 	$block_product = $post_id ? wc_get_product($post_id) : null;
 	if (!$block_product) {
