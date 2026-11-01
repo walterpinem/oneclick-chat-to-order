@@ -237,7 +237,7 @@ A maintenance release that fixes the reports collected on the support forum and 
 * Cart and thank you messages use the discount WooCommerce actually applied for each coupon, follow the store's tax display setting, and no longer contain HTML.
 * Thank you message: the shipping address is included on stores using HPOS, the subtotal has its own label, the total uses your "Total" label, dates are translated, and the page keeps WooCommerce's text when no number is set instead of showing a broken button.
 * The thank you page script no longer needs jQuery and only runs on the order received page.
-* Polylang and WPML translations of the single product button text and message now apply.
+* Settings are read when each button renders instead of being cached while plugins load, so Polylang and WPML always see the current language.
 * The per-product "Custom Message" field now applies to the single product button, not only to the shortcode.
 * Prices in messages follow the store's "Display prices" tax setting, and variable products send their price range.
 * "Force show Add to Cart" works when the WhatsApp button is on; "Hide Add to Cart" also hides it on variable products and no longer hides the GDPR WhatsApp button.
