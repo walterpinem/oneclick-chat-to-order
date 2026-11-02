@@ -31,9 +31,8 @@ function wa_order_plain_address($address)
 
 // Checkbox value
 $override_thankyou_page = get_option('wa_order_option_enable_button_thank_you');
-function wa_order_thank_you_override($title, $id)
+function wa_order_thank_you_override($title, $id = null)
 {
-    global $wp;
     // Consolidate get_option() calls with proper default values
     $options = array(
         'wanumberpage'               => get_option('wa_order_selected_wa_number_thanks', ''),
@@ -96,22 +95,24 @@ function wa_order_thank_you_override($title, $id)
     $include_order_summary  = $options['include_order_summary_link'];
     $order_summary_label    = $options['order_summary_label'];
 
-    // The order: WooCommerce passes it to this filter; fall back to the endpoint query var.
+    // WooCommerce passes the order, or false/null when this visitor may not see
+    // its details (login or email check pending, no permission). Respect that,
+    // otherwise the button link would expose the customer's details.
     $order = ($id instanceof WC_Order) ? $id : null;
-    $order_id = $order ? $order->get_id() : (isset($wp->query_vars['order-received']) ? absint($wp->query_vars['order-received']) : 0);
-    if (!$order_id) {
+    if (!$order) {
         return $title;
     }
+
+    // Keep WooCommerce's own text for failed, cancelled and refunded orders.
+    // The block Order Confirmation also runs the refunded text through
+    // sprintf(), which fails on the "%" codes in the WhatsApp link.
+    if ($order->has_status(array('failed', 'cancelled', 'refunded'))) {
+        return $title;
+    }
+    $order_id = $order->get_id();
 
     // Validate order access (if security enhancements are loaded)
     if (function_exists('wa_order_validate_order_access') && !wa_order_validate_order_access($order_id)) {
-        return $title;
-    }
-
-    if (!$order) {
-        $order = wc_get_order($order_id);
-    }
-    if (!$order) {
         return $title;
     }
 

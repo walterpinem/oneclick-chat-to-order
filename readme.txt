@@ -222,12 +222,12 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 8. WhatsApp button shortcode output on the front-end
 
 == Changelog ==
-= 1.2.0 (November 2026) =
+= 1.2.0 – November 03, 2026 =
 
 A maintenance release that fixes the reports collected on the support forum and by email, and catches up with WordPress 7.1 and WooCommerce 11.2. Option names, filters, CSS classes and button markup are unchanged, so existing customizations and add-ons keep working.
 
 #### **Fixes**
-* Updating no longer switches buttons back on. 1.1.2 re-ran the 1.1.1 checkbox repair on every site, which could turn on the floating, shop, cart, checkout or GDPR features. The repair now runs once, only for sites that never ran it, and a one-time notice asks 1.1.1 and 1.1.2 users to check their tabs.
+* Updating no longer switches buttons back on. 1.1.2 re-ran the 1.1.1 checkbox repair on every site, which could turn on the floating, shop, cart, checkout or GDPR features. The repair is gone: a one-time notice asks 1.1.1 and 1.1.2 users to check their tabs, and tells sites updating from 1.1.0 or older which features are switched off but still have their text filled in.
 * "Hide Product Quantity Option?" no longer locks cart quantities to 1 (it marked every product as sold individually). With the option off, WooCommerce's own "Sold individually" setting is respected again in the cart, AJAX add to cart and the Cart block.
 * The button now shows on products without a price (on by default) and, optionally, on out-of-stock products.
 * Phone numbers are saved and sent as digits only, so numbers entered with "+", spaces or dashes work.
@@ -237,6 +237,7 @@ A maintenance release that fixes the reports collected on the support forum and 
 * Cart and thank you messages use the discount WooCommerce actually applied for each coupon, follow the store's tax display setting, and no longer contain HTML.
 * Thank you message: the shipping address is included on stores using HPOS, the subtotal has its own label, the total uses your "Total" label, dates are translated, and the page keeps WooCommerce's text when no number is set instead of showing a broken button.
 * The thank you page script no longer needs jQuery and only runs on the order received page.
+* Thank you page: when WooCommerce doesn't show the order to the visitor (a logged-out customer, or a guest who still has to confirm their email), the button no longer carries the customer's name, address, email or phone. Failed, cancelled and refunded orders keep WooCommerce's own text, which also fixes a critical error on the Order Confirmation block for refunded orders.
 * Settings are read when each button renders instead of being cached while plugins load, so Polylang and WPML always see the current language.
 * The per-product "Custom Message" field now applies to the single product button, not only to the shortcode.
 * Prices in messages follow the store's "Display prices" tax setting, and variable products send their price range.
@@ -246,7 +247,7 @@ A maintenance release that fixes the reports collected on the support forum and 
 * The floating button has an accessible name (fixes WAVE "empty link"), builds the source URL correctly on sites in a subfolder, and uses the same mobile breakpoint as other buttons.
 * Shortcode tab "Open in New Tab?" now saves, and `[waorder target="yes"]` outputs a valid link target.
 * `[wa-order]` and `[waorder]` messages keep their line breaks (link escaping removed them).
-* Buttons with no number set no longer open WhatsApp's share screen. Cart, shop, checkout, floating and shortcode buttons fall back to the Basic tab number.
+* Buttons with no number set no longer open WhatsApp's share screen. Cart, shop, checkout and shortcode buttons fall back to the Basic tab number. The floating button still needs its own number.
 * Phone numbers changed in the settings take effect immediately (the one-hour cache was removed).
 * GDPR consent boxes work independently when several are on one page, and the link around a disabled button can no longer skip consent.
 * The admin order screen's WhatsApp link works on both the HPOS and legacy order screens.

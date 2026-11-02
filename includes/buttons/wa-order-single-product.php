@@ -129,13 +129,14 @@ function wa_order_get_product_price_parts($product)
 	if ($product->is_type('variable')) {
 		$min_price = $product->get_variation_price('min', true);
 		$max_price = $product->get_variation_price('max', true);
-		if ('' !== $min_price && null !== $min_price) {
+		// WooCommerce returns false when no variation has a price.
+		if (is_numeric($min_price)) {
 			$parts['price'] = ((float) $min_price !== (float) $max_price) ? wc_price($min_price) . ' – ' . wc_price($max_price) : wc_price($min_price);
 		}
 		$min_regular = $product->get_variation_regular_price('min', true);
 		$min_sale    = $product->get_variation_sale_price('min', true);
-		$parts['regular'] = ('' !== $min_regular && null !== $min_regular) ? wc_price($min_regular) : $parts['price'];
-		$parts['sale']    = ('' !== $min_sale && null !== $min_sale) ? wc_price($min_sale) : '';
+		$parts['regular'] = is_numeric($min_regular) ? wc_price($min_regular) : $parts['price'];
+		$parts['sale']    = is_numeric($min_sale) ? wc_price($min_sale) : '';
 		$parts['on_sale'] = $product->is_on_sale() && '' !== $parts['sale'] && (float) $min_sale < (float) $min_regular;
 		return $parts;
 	}
@@ -528,10 +529,14 @@ function wa_order_add_button_plugin_fallback()
 	 */
 	if (apply_filters('wa_order_filter_show_on_unpurchasable', $show, $the_product)) {
 		$GLOBALS['wa_order_rendering_fallback'] = true;
-		echo '<div class="wa-order-unpurchasable">';
+		ob_start();
 		wa_order_add_button_plugin();
-		echo '</div>';
+		$button = trim(ob_get_clean());
 		$GLOBALS['wa_order_rendering_fallback'] = false;
+		// No empty wrapper when the button is off or has no number.
+		if ('' !== $button) {
+			echo '<div class="wa-order-unpurchasable">' . $button . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by wa_order_add_button_plugin().
+		}
 	}
 }
 add_action('woocommerce_single_product_summary', 'wa_order_add_button_plugin_fallback', 31);

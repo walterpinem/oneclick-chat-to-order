@@ -518,8 +518,9 @@ function wa_order_has_existing_settings()
  * Settings migration routine.
  *
  * Each step runs once, keyed by the stored schema version. The 1.1.1 checkbox
- * repair runs only for sites that never ran it; 1.1.2 re-ran it on every site
- * because the schema version was tied to the plugin version.
+ * repair was removed in 1.2.0: it could not tell a feature switched off by the
+ * 1.0.9/1.1.0 bug from one the owner switched off, so sites coming from those
+ * versions get a notice listing the suspects instead.
  *
  * @since 1.1.1
  */
@@ -533,12 +534,6 @@ function wa_order_run_migrations()
     }
 
     $is_fresh_install = ('0' === $current_db_version) && !wa_order_has_existing_settings();
-
-    // 1.1.1: repair checkbox options corrupted by the missing sanitize callback.
-    // Only sites that never ran it (no schema version stored yet).
-    if ('0' === $current_db_version && !$is_fresh_install) {
-        wa_order_migrate_repair_checkboxes();
-    }
 
     // 1.2.0
     if (version_compare($current_db_version, '1.2.0', '<')) {
@@ -572,68 +567,36 @@ function wa_order_migrate_1_2_0($is_fresh_install)
 }
 
 /**
- * Repair checkbox options that were corrupted by the undefined sanitize_checkbox() callback
- * in 1.0.9 and 1.1.0.
+ * List the features that are switched off but still have text the owner typed.
  *
- * A feature is switched back on only when the store owner typed text for it
- * (button text, custom message, tooltip, GDPR text). Number dropdowns are not
- * used as evidence because they always submit a value when the tab is saved.
- * "Open in new tab" options are left alone.
+ * The undefined sanitize_checkbox() callback in 1.0.9 and 1.1.0 switched features
+ * off when a tab was saved. Forms use placeholders, so saved button text, a
+ * custom message, tooltip or GDPR text means the owner configured the feature.
+ * Nothing is changed here; the update notice names these tabs so the owner decides.
  *
- * @since 1.1.1
+ * @since 1.2.0
+ *
+ * @return string[] Settings tab names.
  */
-function wa_order_migrate_repair_checkboxes()
+function wa_order_get_switched_off_features()
 {
-    $repairs_made = 0;
+    $features = array(
+        'wa_order_option_enable_single_product'   => array(__('Basic', 'oneclick-whatsapp-order'), array('wa_order_option_text_button', 'wa_order_option_message')),
+        'wa_order_option_enable_button_shop_loop' => array(__('Shop', 'oneclick-whatsapp-order'), array('wa_order_option_button_text_shop_loop', 'wa_order_option_custom_message_shop_loop')),
+        'wa_order_option_add_button_to_cart'      => array(__('Cart', 'oneclick-whatsapp-order'), array('wa_order_option_cart_button_text', 'wa_order_option_cart_custom_message')),
+        'wa_order_option_enable_button_thank_you' => array(__('Checkout', 'oneclick-whatsapp-order'), array('wa_order_option_custom_thank_you_button_text', 'wa_order_option_custom_thank_you_custom_message')),
+        'wa_order_floating_button'                => array(__('Floating', 'oneclick-whatsapp-order'), array('wa_order_floating_message', 'wa_order_floating_tooltip')),
+        'wa_order_gdpr_status_enable'             => array(__('GDPR', 'oneclick-whatsapp-order'), array('wa_order_gdpr_message')),
+    );
 
-    // ── Single Product Button ──
-    if (wa_order_has_companion_values(array(
-        'wa_order_option_text_button',
-        'wa_order_option_message',
-    ))) {
-        $repairs_made += wa_order_repair_checkbox('wa_order_option_enable_single_product');
+    $switched_off = array();
+    foreach ($features as $option_name => $feature) {
+        if ('yes' !== get_option($option_name) && wa_order_has_companion_values($feature[1])) {
+            $switched_off[] = $feature[0];
+        }
     }
 
-    // ── Cart Page ──
-    if (wa_order_has_companion_values(array(
-        'wa_order_option_cart_button_text',
-        'wa_order_option_cart_custom_message',
-    ))) {
-        $repairs_made += wa_order_repair_checkbox('wa_order_option_add_button_to_cart');
-    }
-
-    // ── Thank You Page ──
-    if (wa_order_has_companion_values(array(
-        'wa_order_option_custom_thank_you_button_text',
-        'wa_order_option_custom_thank_you_custom_message',
-    ))) {
-        $repairs_made += wa_order_repair_checkbox('wa_order_option_enable_button_thank_you');
-    }
-
-    // ── Shop Page ──
-    if (wa_order_has_companion_values(array(
-        'wa_order_option_button_text_shop_loop',
-        'wa_order_option_custom_message_shop_loop',
-    ))) {
-        $repairs_made += wa_order_repair_checkbox('wa_order_option_enable_button_shop_loop');
-    }
-
-    // ── Floating Button ──
-    if (wa_order_has_companion_values(array(
-        'wa_order_floating_message',
-        'wa_order_floating_tooltip',
-    ))) {
-        $repairs_made += wa_order_repair_checkbox('wa_order_floating_button');
-    }
-
-    // ── GDPR ──
-    if (wa_order_has_companion_values(array(
-        'wa_order_gdpr_message',
-    ))) {
-        $repairs_made += wa_order_repair_checkbox('wa_order_gdpr_status_enable');
-    }
-
-    return $repairs_made;
+    return $switched_off;
 }
 
 /**
@@ -651,26 +614,6 @@ function wa_order_has_companion_values($option_names)
         }
     }
     return false;
-}
-
-/**
- * Repair a single checkbox option if it appears corrupted.
- *
- * @param string $option_name  The option to repair.
- * @param string $expected_val The value the checkbox should have when checked. Default 'yes'.
- * @return int 1 if repaired, 0 if skipped.
- */
-function wa_order_repair_checkbox($option_name, $expected_val = 'yes')
-{
-    $current = get_option($option_name);
-
-    // Already has the correct value — not corrupted
-    if ($current === $expected_val) {
-        return 0;
-    }
-
-    update_option($option_name, $expected_val);
-    return 1;
 }
 
 /**
@@ -692,9 +635,18 @@ function wa_order_migration_admin_notice()
 
     $settings_url = admin_url('admin.php?page=wa-order&tab=welcome');
 
+    // Sites coming from 1.1.0 or older (no schema version) may have features switched off by the old checkbox bug.
+    $switched_off = ('0' === $previous_version) ? wa_order_get_switched_off_features() : array();
+
     // Sites that ran 1.1.2's repair a second time get a specific explanation.
     if (in_array($previous_version, array('1.1.1', '1.1.2'), true)) {
         $message = esc_html__('Version 1.1.2 may have switched some buttons back on after updating (floating, shop, cart, checkout or GDPR). Please check that each tab shows what you want.', 'oneclick-whatsapp-order');
+    } elseif ($switched_off) {
+        $message = sprintf(
+            /* translators: %s: comma-separated list of settings tab names, e.g. "Shop, Cart". */
+            esc_html__('These features are switched off but still have their text filled in: %s. An older version could switch them off by mistake when a tab was saved. If you want them, switch them back on in those tabs.', 'oneclick-whatsapp-order'),
+            esc_html(implode(', ', $switched_off))
+        );
     } else {
         $message = esc_html__('Your settings have been preserved. We recommend checking each tab once.', 'oneclick-whatsapp-order');
     }
@@ -815,8 +767,11 @@ function wa_order_esc_whatsapp_url($url)
     if ('' === $url) {
         return '';
     }
-    // An encoded URL never contains these; drop them if a filter added any.
-    $url = preg_replace('/[\x00-\x20"<>\\\\^`{|}]/', '', $url);
+    // An encoded URL never contains these. Encode them if a filter added any,
+    // so a snippet returning "text=Hello world" still sends "Hello world".
+    $url = preg_replace_callback('/[\x00-\x20"<>\\\\^`{|}]/', function ($m) {
+        return rawurlencode($m[0]);
+    }, $url);
     // Removes javascript: and any other protocol that isn't allowed (whatsapp:// is).
     $url = wp_kses_bad_protocol($url, wp_allowed_protocols());
     return esc_attr($url);
