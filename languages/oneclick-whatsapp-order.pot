@@ -2040,38 +2040,44 @@ msgstr ""
 msgid "OneClick Chat to Order requires WooCommerce to be installed and activated."
 msgstr ""
 
-#: whatsapp-order.php:697
+#: whatsapp-order.php:643
 msgid "Version 1.1.2 may have switched some buttons back on after updating (floating, shop, cart, checkout or GDPR). Please check that each tab shows what you want."
 msgstr ""
 
-#: whatsapp-order.php:699
+#. translators: %s: comma-separated list of settings tab names, e.g. "Shop, Cart".
+#: whatsapp-order.php:647
+#, php-format
+msgid "These features are switched off but still have their text filled in: %s. An older version could switch them off by mistake when a tab was saved. If you want them, switch them back on in those tabs."
+msgstr ""
+
+#: whatsapp-order.php:651
 msgid "Your settings have been preserved. We recommend checking each tab once."
 msgstr ""
 
-#: whatsapp-order.php:704
+#: whatsapp-order.php:656
 msgid "OneClick Chat to Order has been updated to 1.2.0."
 msgstr ""
 
-#: whatsapp-order.php:707
+#: whatsapp-order.php:659
 msgid "Review Settings →"
 msgstr ""
 
-#: whatsapp-order.php:736
+#: whatsapp-order.php:688
 msgid "A page cache is active on this site. Turn on \"Force wa.me\" so visitors on phones and desktops always get a working WhatsApp link."
 msgstr ""
 
-#: whatsapp-order.php:738
+#: whatsapp-order.php:690
 msgid "Open the Basic tab"
 msgstr ""
 
 #. translators: 1: plugin name, 2: 5-star review link
-#: whatsapp-order.php:974
+#: whatsapp-order.php:954
 #, php-format
 msgid "Enjoyed %1$s? Please leave a %2$s rating. I really appreciate your support!"
 msgstr ""
 
 #. translators: 1: plugin name, 2: 5-star review link
-#: whatsapp-order.php:976
+#: whatsapp-order.php:956
 msgid "5 stars"
 msgstr ""
 

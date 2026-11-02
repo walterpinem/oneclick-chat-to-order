@@ -222,12 +222,12 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 8. WhatsApp button shortcode output on the front-end
 
 == Changelog ==
-= 1.2.0 (November 2026) =
+= 1.2.0 – November 03, 2026 =
 
 A maintenance release that fixes the reports collected on the support forum and by email, and catches up with WordPress 7.1 and WooCommerce 11.2. Option names, filters, CSS classes and button markup are unchanged, so existing customizations and add-ons keep working.
 
 #### **Fixes**
-* Updating no longer switches buttons back on. 1.1.2 re-ran the 1.1.1 checkbox repair on every site, which could turn on the floating, shop, cart, checkout or GDPR features. The repair now runs once, only for sites that never ran it, and a one-time notice asks 1.1.1 and 1.1.2 users to check their tabs.
+* Updating no longer switches buttons back on. 1.1.2 re-ran the 1.1.1 checkbox repair on every site, which could turn on the floating, shop, cart, checkout or GDPR features. The repair is gone: a one-time notice asks 1.1.1 and 1.1.2 users to check their tabs, and tells sites updating from 1.1.0 or older which features are switched off but still have their text filled in.
 * "Hide Product Quantity Option?" no longer locks cart quantities to 1 (it marked every product as sold individually). With the option off, WooCommerce's own "Sold individually" setting is respected again in the cart, AJAX add to cart and the Cart block.
 * The button now shows on products without a price (on by default) and, optionally, on out-of-stock products.
 * Phone numbers are saved and sent as digits only, so numbers entered with "+", spaces or dashes work.
