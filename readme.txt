@@ -237,6 +237,7 @@ A maintenance release that fixes the reports collected on the support forum and 
 * Cart and thank you messages use the discount WooCommerce actually applied for each coupon, follow the store's tax display setting, and no longer contain HTML.
 * Thank you message: the shipping address is included on stores using HPOS, the subtotal has its own label, the total uses your "Total" label, dates are translated, and the page keeps WooCommerce's text when no number is set instead of showing a broken button.
 * The thank you page script no longer needs jQuery and only runs on the order received page.
+* Thank you page: when WooCommerce doesn't show the order to the visitor (a logged-out customer, or a guest who still has to confirm their email), the button no longer carries the customer's name, address, email or phone. Failed, cancelled and refunded orders keep WooCommerce's own text, which also fixes a critical error on the Order Confirmation block for refunded orders.
 * Settings are read when each button renders instead of being cached while plugins load, so Polylang and WPML always see the current language.
 * The per-product "Custom Message" field now applies to the single product button, not only to the shortcode.
 * Prices in messages follow the store's "Display prices" tax setting, and variable products send their price range.
