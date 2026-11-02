@@ -222,7 +222,7 @@ Yes! OneClick Chat to Order fully supports WooCommerce High Performance Order St
 8. WhatsApp button shortcode output on the front-end
 
 == Changelog ==
-= 1.2.0 – November 03, 2026 =
+= 1.2.0 – November 02, 2026 =
 
 A maintenance release that fixes the reports collected on the support forum and by email, and catches up with WordPress 7.1 and WooCommerce 11.2. Option names, filters, CSS classes and button markup are unchanged, so existing customizations and add-ons keep working.
 
