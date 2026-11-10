@@ -11,8 +11,8 @@
  *   and decoration colours only. On white they measure 1.7:1 and 2.6:1.
  *   Teal text and icons use --octo-brand-deep (5.6:1 on white); orange text
  *   uses --octo-accent-deep (5.3:1).
- * - On ink, the accent orange measures 5.3:1, so the header plate, the
- *   version badge and the primary button's hover label carry it.
+ * - On ink, the accent orange measures 5.3:1, so the primary button's
+ *   hover label carries it. The header plate and version badge are white.
  * - Ink on the teal header band measures 8.0:1.
  *
  * Switching to the plain Online Store Kit palette is this file only: put the

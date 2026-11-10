@@ -143,7 +143,7 @@ if (!defined('ABSPATH')) {
                     <label class="wa_order_message_label" for="generatedSingleWAShortcode"><b><?php echo esc_html__('Copy Shortcode', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
-                    <textarea class="wa_order_input_areatext" rows="5" id="generatedSingleWAShortcode" onclick="this.setSelectionRange(0, this.value.length)"></textarea>
+                    <textarea class="wa_order_input_areatext octo-code" rows="5" id="generatedSingleWAShortcode" onclick="this.setSelectionRange(0, this.value.length)"></textarea>
                     <p class="description">
                         <?php echo esc_html__('Copy above shortcode and paste it anywhere.', 'oneclick-whatsapp-order'); ?></p>
                 </td>
@@ -235,7 +235,7 @@ if (!defined('ABSPATH')) {
                     <label class="wa_order_message_label" for="message_wbw"><b><?php echo esc_html__('Copy Shortcode', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
-                    <textarea class="wa_order_input_areatext" rows="5" id="generatedShortcode" onclick="this.setSelectionRange(0, this.value.length)"></textarea>
+                    <textarea class="wa_order_input_areatext octo-code" rows="5" id="generatedShortcode" onclick="this.setSelectionRange(0, this.value.length)"></textarea>
                     <p class="description">
                         <?php echo esc_html__('Copy above shortcode and paste it anywhere.', 'oneclick-whatsapp-order'); ?></p>
                 </td>
@@ -316,7 +316,7 @@ if (!defined('ABSPATH')) {
                     <label class="wa_order_copy_label" for="wa_order_copy"><b><?php echo esc_html__('Copy Shortcode', 'oneclick-whatsapp-order'); ?></b></label>
                 </th>
                 <td>
-                    <input style="letter-spacing: 1px;" class="wa_order_shortcode_input" onClick="this.setSelectionRange(0, this.value.length)" value="[wa-order]" readonly />
+                    <input type="text" id="wa_order_copy" class="wa_order_shortcode_input octo-code" onClick="this.setSelectionRange(0, this.value.length)" value="[wa-order]" readonly />
                 </td>
             </tr>
             <!-- Open in New Tab? -->

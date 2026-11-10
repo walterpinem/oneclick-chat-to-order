@@ -8,9 +8,9 @@
  * Values match the reference, not an approximation.
  *
  * Two deliberate changes from the reference, both about colour only: the
- * active-tab underline and everything drawn on ink (header plate, version
- * badge, primary button hover label) use the orange accent, so OneClick shows
- * both of its colours. The OneClick-only section at the end adapts the
+ * active-tab underline and the primary button's hover label use the orange
+ * accent, so OneClick shows both of its colours. The header plate icon and
+ * the version badge are white on ink. The OneClick-only section at the end adapts the
  * existing settings tables to the cards without changing a single field.
  *
  * Logical properties are used where direction matters, so RTL needs no
@@ -67,10 +67,9 @@
   width: 60px;
 }
 
-/* Until OneClick's new mark is drawn, the plate holds a dashicon in the
-   accent orange, which measures 5.3:1 on ink. */
+/* Until OneClick's new mark is drawn, the plate holds a white dashicon. */
 .octo-settings-icon .dashicons {
-  color: var(--octo-accent);
+  color: #fff;
   font-size: 32px;
   height: 32px;
   line-height: 32px;
@@ -102,7 +101,7 @@
 .octo-version-badge {
   background: var(--octo-ink);
   border-radius: 20px;
-  color: var(--octo-accent);
+  color: #fff;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -208,12 +207,6 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   margin-block-end: 24px;
   overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.octo-settings-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
 }
 
 .octo-card-header {
@@ -649,13 +642,25 @@ a.octo-button-secondary:visited {
 
 /* Save footer ------------------------------------------------------------- */
 
+/*
+ * Sticky save bar (as in WPNM), so a long tab never needs a scroll back to
+ * save. It floats over the cards while scrolling, so it is opaque and
+ * carries the accent rule. At the very bottom it sits in its own place,
+ * 24px under the last card, and covers nothing.
+ */
 .octo-settings-footer {
   background: var(--octo-surface);
+  border: 1px solid var(--octo-line);
+  border-block-start: 3px solid var(--octo-accent);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  bottom: 0;
+  box-shadow: 0 -3px 12px rgba(38, 46, 51, 0.09);
   display: flex;
   justify-content: flex-end;
-  padding: 24px;
+  margin-block-start: 24px;
+  padding: 13px 20px;
+  position: sticky;
+  z-index: 20;
 }
 
 /* Notices ----------------------------------------------------------------- */
@@ -856,6 +861,27 @@ a.octo-button-secondary:visited {
   border-color: var(--octo-brand-deep);
   box-shadow: 0 0 0 3px var(--octo-brand-ring);
   outline: none;
+}
+
+/* Copy Shortcode fields hold code, so they take the house code field
+   (monospace, soft inset), as WP MyLinks' Scripts editor does. */
+.octo-settings-content .form-table input[type="text"].octo-code,
+.octo-settings-content .form-table textarea.octo-code {
+  background-color: var(--octo-canvas-soft);
+  border: 1px solid var(--octo-line-strong);
+  box-shadow: inset 0 2px 6px rgba(38, 46, 51, 0.07);
+  color: var(--octo-ink);
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 10px 14px;
+}
+
+.octo-settings-content .form-table input[type="text"].octo-code:focus,
+.octo-settings-content .form-table textarea.octo-code:focus {
+  background-color: var(--octo-surface);
+  border-color: var(--octo-brand-strong);
+  box-shadow: inset 0 2px 6px rgba(38, 46, 51, 0.05), 0 0 0 3px var(--octo-brand-ring);
 }
 
 /* The small margin/padding/shadow boxes on the Display tab stay compact. */

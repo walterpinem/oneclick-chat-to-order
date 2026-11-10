@@ -413,7 +413,7 @@ function wa_order_create_admin_page()
             <div class="octo-settings-header-content">
                 <div class="octo-settings-header-left">
                     <?php // Swap the dashicon for the brand mark once OneClick's new mark is drawn. ?>
-                    <div class="octo-settings-icon"><span class="dashicons dashicons-format-chat" aria-hidden="true"></span></div>
+                    <div class="octo-settings-icon"><span class="dashicons dashicons-whatsapp" aria-hidden="true"></span></div>
                     <div>
                         <h1><?php esc_html_e('OneClick Chat to Order', 'oneclick-whatsapp-order'); ?></h1>
                         <p class="octo-settings-subtitle"><?php esc_html_e('Let customers order and ask through WhatsApp with one click.', 'oneclick-whatsapp-order'); ?></p>
