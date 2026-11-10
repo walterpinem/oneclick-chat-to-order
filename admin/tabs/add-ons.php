@@ -16,171 +16,83 @@ if (!defined('ABSPATH')) {
  *
  ********************************* Add-ons Tab ********************************* */
 ?>
-<div class="oneclick-spacer"></div>
-<div class="oneclick-addons plugin-install-tab-featured">
-    <form id="plugin-filter">
-        <div class="wp-list-table widefat plugin-install">
-            <h2 class="screen-reader-text"><?php echo esc_html__('OneClick Chat to Order Add-ons List', 'oneclick-whatsapp-order'); ?></h2>
-            <div id="the-list">
-                <!-- OneClick WCFM Connector -->
-                <div class="plugin-card plugin-card-oneclick-wcfm-connector">
-                    <div class="plugin-card-top">
-                        <div class="name column-name">
-                            <h3>
-                                <?php echo esc_html__('OneClick WCFM Connector', 'oneclick-whatsapp-order'); ?> <img src="<?php echo esc_url(OCTO_URL . 'assets/images/icon-ocwcfm.png'); ?>" class="plugin-icon" alt="OneClick WCFM Connector">
-                            </h3>
-                        </div>
-                        <div class="action-links">
-                            <ul class="plugin-action-buttons">
-                                <li>
-                                    <?php if (is_plugin_active('oneclick-wcfm-connector/oneclick-wcfm-connector.php')) { ?>
-                                        <button type="button" class="button button-disabled" disabled="disabled"><?php echo esc_html__('Active', 'oneclick-whatsapp-order'); ?></button>
-                                    <?php } else { ?>
-                                        <a class="install-now button" href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/kit/oneclick-wcfm-connector/')); ?>" aria-label="<?php echo esc_html__('Install OneClick WCFM Connector now', 'oneclick-whatsapp-order'); ?>" role="button" title="<?php echo esc_html__('Install OneClick WCFM Connector now', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('Install Now', 'oneclick-whatsapp-order'); ?></a>
-                                    <?php } ?>
-                                </li>
-                                <li><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-wcfm-connector/')); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_html__('More information about OneClick WCFM Connector', 'oneclick-whatsapp-order'); ?>" title="<?php echo esc_html__('More information about OneClick WCFM Connector', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('More Details', 'oneclick-whatsapp-order'); ?></a></li>
-                            </ul>
-                        </div>
-                        <div class="desc column-description">
-                            <p><?php echo esc_html__('Easily connect OneClick WCFM Connector with WCFM - Frontend Manager for WooCommerce to enable your vendors to show and use WhatsApp on their own stores.', 'oneclick-whatsapp-order'); ?></p>
-                        </div>
-                    </div>
+<?php
+// The add-ons, as the house plugin grid. A dashicon plate replaced each
+// add-on's raster icon in 1.3.0. Same meaning, same icon: the three
+// marketplace connectors share one.
+$wa_order_addons = [
+    [
+        'file'  => 'oneclick-wcfm-connector/oneclick-wcfm-connector.php',
+        'icon'  => 'groups',
+        'name'  => __('OneClick WCFM Connector', 'oneclick-whatsapp-order'),
+        'desc'  => __('Easily connect OneClick WCFM Connector with WCFM - Frontend Manager for WooCommerce to enable your vendors to show and use WhatsApp on their own stores.', 'oneclick-whatsapp-order'),
+        'buy'   => 'https://www.onlinestorekit.com/kit/oneclick-wcfm-connector/',
+        'about' => 'https://www.onlinestorekit.com/oneclick-wcfm-connector/',
+    ],
+    [
+        'file'  => 'oneclick-dokan-connector/oneclick-dokan-connector.php',
+        'icon'  => 'groups',
+        'name'  => __('OneClick Dokan Connector', 'oneclick-whatsapp-order'),
+        'desc'  => __('Extend the functionality of Dokan Multivendor Marketplace by combining it with OneClick Chat to Order. Let vendors show the WhatsApp button(s) on their own products.', 'oneclick-whatsapp-order'),
+        'buy'   => 'https://www.onlinestorekit.com/kit/oneclick-dokan-connector/',
+        'about' => 'https://www.onlinestorekit.com/oneclick-dokan-connector/',
+    ],
+    [
+        'file'  => 'oneclick-wcvendors-connector/oneclick-wcvendors-connector.php',
+        'icon'  => 'groups',
+        'name'  => __('OneClick WCVendors Connector', 'oneclick-whatsapp-order'),
+        'desc'  => __('Integrate OneClick Chat to Order with WC Vendors Multivendor Marketplace plugin to allow vendors to receive orders and purchases directly through WhatsApp.', 'oneclick-whatsapp-order'),
+        'buy'   => 'https://www.onlinestorekit.com/kit/oneclick-wcvendors-connector/',
+        'about' => 'https://www.onlinestorekit.com/oneclick-wcvendors-connector/',
+    ],
+    [
+        'file'   => 'oneclick-variations-grabber/oneclick-variations-grabber.php',
+        'icon'   => 'forms',
+        'accent' => true,
+        'name'   => __('OneClick Variations Grabber', 'oneclick-whatsapp-order'),
+        'desc'   => __('Let your customers send the selected product variations, quantities, and other important details from WooCommerce product pages directly to you via WhatsApp.', 'oneclick-whatsapp-order'),
+        'buy'    => 'https://www.onlinestorekit.com/kit/oneclick-variations-grabber/',
+        'about'  => 'https://www.onlinestorekit.com/oneclick-variations-grabber/',
+    ],
+    [
+        'file'  => 'external-marketplace-buttons/external-marketplace-buttons.php',
+        'icon'  => 'external',
+        'name'  => __('External Marketplace Buttons', 'oneclick-whatsapp-order'),
+        'desc'  => __('Easily add external marketplace buttons on your product pages. Extremely useful if you also sell somewhere else.', 'oneclick-whatsapp-order'),
+        'buy'   => 'https://www.onlinestorekit.com/kit/external-marketplace-buttons/',
+        'about' => 'https://www.onlinestorekit.com/external-marketplace-buttons/',
+    ],
+];
+if (oskit_is_indonesian_store()) {
+    $wa_order_addons[] = [
+        'file'  => 'indonesian-banks-premium/indonesian-banks-premium.php',
+        'icon'  => 'bank',
+        'name'  => __('Indonesian Banks Premium', 'oneclick-whatsapp-order'),
+        'desc'  => __('Indonesian Banks plugin consists of a collection of Indonesian banks for offline payment methods on WooCommerce-enabled online store.', 'oneclick-whatsapp-order'),
+        'buy'   => 'https://www.dequixote.com/product/indonesian-banks-premium/',
+        'about' => 'https://www.dequixote.com/indonesian-banks-premium/',
+    ];
+}
+?>
+<h2 class="screen-reader-text"><?php esc_html_e('OneClick Chat to Order Add-ons List', 'oneclick-whatsapp-order'); ?></h2>
+<div class="octo-plugin-grid">
+    <?php foreach ($wa_order_addons as $wa_order_addon) : ?>
+        <div class="octo-plugin">
+            <div class="octo-plugin__head">
+                <span class="octo-plugin__icon octo-plugin__icon--glyph<?php echo empty($wa_order_addon['accent']) ? '' : ' octo-plugin__icon--accent'; ?> dashicons dashicons-<?php echo esc_attr($wa_order_addon['icon']); ?>" aria-hidden="true"></span>
+                <div class="octo-plugin__title">
+                    <h3><?php echo esc_html($wa_order_addon['name']); ?></h3>
                 </div>
-                <!-- OneClick Dokan Connector -->
-                <div class="plugin-card plugin-card-oneclick-dokan-connector">
-                    <div class="plugin-card-top">
-                        <div class="name column-name">
-                            <h3>
-                                <?php echo esc_html__('OneClick Dokan Connector', 'oneclick-whatsapp-order'); ?> <img src="<?php echo esc_url(OCTO_URL . 'assets/images/icon-ocdc.png'); ?>" class="plugin-icon" alt="OneClick Dokan Connector">
-                            </h3>
-                        </div>
-                        <div class="action-links">
-                            <ul class="plugin-action-buttons">
-                                <li>
-                                    <?php if (is_plugin_active('oneclick-dokan-connector/oneclick-dokan-connector.php')) { ?>
-                                        <button type="button" class="button button-disabled" disabled="disabled"><?php echo esc_html__('Active', 'oneclick-whatsapp-order'); ?></button>
-                                    <?php } else { ?>
-                                        <a class="install-now button" href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/kit/oneclick-dokan-connector/')); ?>" aria-label="<?php echo esc_html__('Install OneClick Dokan Connector now', 'oneclick-whatsapp-order'); ?>" role="button" title="<?php echo esc_html__('Install OneClick Dokan Connector now', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('Install Now', 'oneclick-whatsapp-order'); ?></a>
-                                    <?php } ?>
-                                </li>
-                                <li><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-dokan-connector/')); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_html__('More information about OneClick Dokan Connector', 'oneclick-whatsapp-order'); ?>" title="<?php echo esc_html__('More information about OneClick Dokan Connector', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('More Details', 'oneclick-whatsapp-order'); ?></a></li>
-                            </ul>
-                        </div>
-                        <div class="desc column-description">
-                            <p><?php echo esc_html__('Extend the functionality of Dokan Multivendor Marketplace by combining it with OneClick Chat to Order. Let vendors show the WhatsApp button(s) on their own products.', 'oneclick-whatsapp-order'); ?></p>
-                        </div>
-                    </div>
-                </div>
-                <!-- OneClick WCVendors Connector -->
-                <div class="plugin-card plugin-card-oneclick-wcvendors-connector">
-                    <div class="plugin-card-top">
-                        <div class="name column-name">
-                            <h3>
-                                <?php echo esc_html__('OneClick WCVendors Connector', 'oneclick-whatsapp-order'); ?> <img src="<?php echo esc_url(OCTO_URL . 'assets/images/icon-ocwcv.png'); ?>" class="plugin-icon" alt="OneClick WCVendors Connector">
-                            </h3>
-                        </div>
-                        <div class="action-links">
-                            <ul class="plugin-action-buttons">
-                                <li>
-                                    <?php if (is_plugin_active('oneclick-wcvendors-connector/oneclick-wcvendors-connector.php')) { ?>
-                                        <button type="button" class="button button-disabled" disabled="disabled"><?php echo esc_html__('Active', 'oneclick-whatsapp-order'); ?></button>
-                                    <?php } else { ?>
-                                        <a class="install-now button" href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/kit/oneclick-wcvendors-connector/')); ?>" aria-label="<?php echo esc_html__('Install OneClick WCVendors Connector now', 'oneclick-whatsapp-order'); ?>" role="button" title="<?php echo esc_html__('Install OneClick WCVendors Connector now', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('Install Now', 'oneclick-whatsapp-order'); ?></a>
-                                    <?php } ?>
-                                </li>
-                                <li><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-wcvendors-connector/')); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_html__('More information about OneClick WCVendors Connector', 'oneclick-whatsapp-order'); ?>" title="<?php echo esc_html__('More information about OneClick WCVendors Connector', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('More Details', 'oneclick-whatsapp-order'); ?></a></li>
-                            </ul>
-                        </div>
-                        <div class="desc column-description">
-                            <p><?php echo esc_html__('Integrate OneClick Chat to Order with WC Vendors Multivendor Marketplace plugin to allow vendors to receive orders and purchases directly through WhatsApp.', 'oneclick-whatsapp-order'); ?></p>
-                        </div>
-                    </div>
-                </div>
-                <!-- OneClick Variations Grabber -->
-                <div class="plugin-card plugin-card-oneclick-variations-grabber">
-                    <div class="plugin-card-top">
-                        <div class="name column-name">
-                            <h3>
-                                <?php echo esc_html__('OneClick Variations Grabber', 'oneclick-whatsapp-order'); ?> <img src="<?php echo esc_url(OCTO_URL . 'assets/images/icon-ocvg.png'); ?>" class="plugin-icon" alt="OneClick Variations Grabber">
-                            </h3>
-                        </div>
-                        <div class="action-links">
-                            <ul class="plugin-action-buttons">
-                                <li>
-                                    <?php if (is_plugin_active('oneclick-variations-grabber/oneclick-variations-grabber.php')) { ?>
-                                        <button type="button" class="button button-disabled" disabled="disabled"><?php echo esc_html__('Active', 'oneclick-whatsapp-order'); ?></button>
-                                    <?php } else { ?>
-                                        <a class="install-now button" href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/kit/oneclick-variations-grabber/')); ?>" aria-label="<?php echo esc_html__('Install OneClick Variations Grabber now', 'oneclick-whatsapp-order'); ?>" role="button" title="<?php echo esc_html__('Install OneClick Variations Grabber now', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('Install Now', 'oneclick-whatsapp-order'); ?></a>
-                                    <?php } ?>
-                                </li>
-                                <li><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-variations-grabber/')); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_html__('More information about OneClick Variations Grabber', 'oneclick-whatsapp-order'); ?>" title="<?php echo esc_html__('More information about OneClick Variations Grabber', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('More Details', 'oneclick-whatsapp-order'); ?></a></li>
-                            </ul>
-                        </div>
-                        <div class="desc column-description">
-                            <p><?php echo esc_html__('Let your customers send the selected product variations, quantities, and other important details from WooCommerce product pages directly to you via WhatsApp.', 'oneclick-whatsapp-order'); ?></p>
-                        </div>
-                    </div>
-                </div>
-                <!-- External Marketplace Buttons -->
-                <div class="plugin-card plugin-card-external-marketplace-buttons">
-                    <div class="plugin-card-top">
-                        <div class="name column-name">
-                            <h3>
-                                <?php echo esc_html__('External Marketplace Buttons', 'oneclick-whatsapp-order'); ?> <img src="<?php echo esc_url(OCTO_URL . 'assets/images/icon-emb.png'); ?>" class="plugin-icon" alt="External Marketplace Buttons">
-                            </h3>
-                        </div>
-                        <div class="action-links">
-                            <ul class="plugin-action-buttons">
-                                <li>
-                                    <?php if (is_plugin_active('external-marketplace-buttons/external-marketplace-buttons.php')) { ?>
-                                        <button type="button" class="button button-disabled" disabled="disabled"><?php echo esc_html__('Active', 'oneclick-whatsapp-order'); ?></button>
-                                    <?php } else { ?>
-                                        <a class="install-now button" href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/kit/external-marketplace-buttons/')); ?>" aria-label="<?php echo esc_html__('Install External Marketplace Buttons now', 'oneclick-whatsapp-order'); ?>" role="button" title="<?php echo esc_html__('Install External Marketplace Buttons now', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('Install Now', 'oneclick-whatsapp-order'); ?></a>
-                                    <?php } ?>
-                                </li>
-                                <li><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/external-marketplace-buttons/')); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_html__('More information about External Marketplace Buttons', 'oneclick-whatsapp-order'); ?>" title="<?php echo esc_html__('More information about External Marketplace Buttons', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('More Details', 'oneclick-whatsapp-order'); ?></a></li>
-                            </ul>
-                        </div>
-                        <div class="desc column-description">
-                            <p><?php echo esc_html__('Easily add external marketplace buttons on your product pages. Extremely useful if you also sell somewhere else.', 'oneclick-whatsapp-order'); ?></p>
-                        </div>
-                    </div>
-                </div>
-                <?php
-                // Call the function to determine if it's an Indonesian store
-                $include_ibp = oskit_is_indonesian_store();
-
-                // Use the result of the function call in the conditional statement
-                if ($include_ibp) :
-                ?>
-                    <!-- Indonesian Banks Premium -->
-                    <div class="plugin-card plugin-card-indonesian-banks-premium">
-                        <div class="plugin-card-top">
-                            <div class="name column-name">
-                                <h3>
-                                    <?php echo esc_html__('Indonesian Banks Premium', 'oneclick-whatsapp-order'); ?> <img src="<?php echo esc_url(OCTO_URL . 'assets/images/icon-ibp.png'); ?>" class="plugin-icon" alt="Indonesian Banks Premium">
-                                </h3>
-                            </div>
-                            <div class="action-links">
-                                <ul class="plugin-action-buttons">
-                                    <li>
-                                        <?php if (is_plugin_active('indonesian-banks-premium/indonesian-banks-premium.php')) { ?>
-                                            <button type="button" class="button button-disabled" disabled="disabled"><?php echo esc_html__('Active', 'oneclick-whatsapp-order'); ?></button>
-                                        <?php } else { ?>
-                                            <a class="install-now button" href="<?php echo esc_url(oskit_url('https://www.dequixote.com/product/indonesian-banks-premium/')); ?>" aria-label="<?php echo esc_html__('Install Indonesian Banks Premium now', 'oneclick-whatsapp-order'); ?>" role="button" title="<?php echo esc_html__('Install Indonesian Banks Premium now', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('Install Now', 'oneclick-whatsapp-order'); ?></a>
-                                        <?php } ?>
-                                    </li>
-                                    <li><a href="<?php echo esc_url(oskit_url('https://www.dequixote.com/indonesian-banks-premium/')); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_html__('More information about Indonesian Banks Premium', 'oneclick-whatsapp-order'); ?>" title="<?php echo esc_html__('More information about Indonesian Banks Premium', 'oneclick-whatsapp-order'); ?>" target="_blank"><?php echo esc_html__('More Details', 'oneclick-whatsapp-order'); ?></a></li>
-                                </ul>
-                            </div>
-                            <div class="desc column-description">
-                                <p><?php echo esc_html__('Indonesian Banks plugin consists of a collection of Indonesian banks for offline payment methods on WooCommerce-enabled online store.', 'oneclick-whatsapp-order'); ?></p>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <p class="octo-plugin__description"><?php echo esc_html($wa_order_addon['desc']); ?></p>
+            <div class="octo-plugin__actions">
+                <?php if (is_plugin_active($wa_order_addon['file'])) : ?>
+                    <span class="octo-plugin__running"><span class="dashicons dashicons-yes-alt" aria-hidden="true"></span><?php esc_html_e('Active', 'oneclick-whatsapp-order'); ?></span>
+                <?php else : ?>
+                    <a class="octo-button-primary" href="<?php echo esc_url(oskit_url($wa_order_addon['buy'])); ?>" target="_blank" rel="noopener"><?php esc_html_e('Install Now', 'oneclick-whatsapp-order'); ?></a>
                 <?php endif; ?>
+                <a class="octo-button-secondary" href="<?php echo esc_url(oskit_url($wa_order_addon['about'])); ?>" target="_blank" rel="noopener"><?php esc_html_e('More Details', 'oneclick-whatsapp-order'); ?></a>
             </div>
         </div>
-    </form>
+    <?php endforeach; ?>
 </div>

@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     <?php settings_fields('wa-order-settings-group-button-config'); ?>
     <?php do_settings_sections('wa-order-settings-group-button-config'); ?>
     <!-- Basic Configuration tab -->
-    <h2 class="section_wa_order"><?php esc_html_e('Confirmation', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_open('yes-alt', __('Confirmation', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php
         /* translators: 1. opening <a> tag with strong tag for "set it here", 2. closing </a> tag, 3. opening <a> tag with strong tag for "Learn more", 4. closing </a> tag. */
@@ -51,13 +51,12 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
     <?php /** Re-activated in version 1.0.7. */ ?>
-    <h2 class="section_wa_order"><?php esc_html_e('WhatsApp Base URL', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_card_open('admin-links', __('WhatsApp Base URL', 'oneclick-whatsapp-order')); ?>
     <p class="description">
         <?php esc_html_e('If you or your customers are having trouble opening the WhatsApp link on a mobile device or desktop, don\'t worry - you can simply configure the base URL for each device type here.', 'oneclick-whatsapp-order'); ?>
     </p>
-    <hr>
     <table class="form-table">
         <tbody>
             <tr class="wa_order_target">
@@ -129,10 +128,10 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('products', __('Single Product Page', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Single Product Page', 'oneclick-whatsapp-order'); ?></h2>
             <p>
                 <?php esc_html_e('These configurations will be only effective on single product page.', 'oneclick-whatsapp-order'); ?>
                 <br />
@@ -307,10 +306,10 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('hidden', __('Exclusion', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Exclusion', 'oneclick-whatsapp-order'); ?></h2>
             <p>
                 <?php
                 /* translators: 1. opening <a> tag with href to "Display Options" tab, 2. closing </a> tag */
@@ -346,10 +345,10 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('translation', __('Text Translations', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Text Translations', 'oneclick-whatsapp-order'); ?></h2>
             <p><?php esc_html_e('You can translate the following strings which will be included in the sent message. By default, the labels are used in the message. You can translate or change them below accordingly.', 'oneclick-whatsapp-order'); ?></p>
             <tr class="wa_order_btn_text">
                 <th scope="row">
@@ -418,9 +417,9 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
     <!-- Plugin Data Management -->
-    <h2 class="section_wa_order"><?php esc_html_e('Plugin Data Management', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_card_open('database', __('Plugin Data Management', 'oneclick-whatsapp-order')); ?>
     <p class="description">
         <?php esc_html_e('Configure what happens to your plugin data when the plugin is uninstalled.', 'oneclick-whatsapp-order'); ?>
     </p>
@@ -458,6 +457,6 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>

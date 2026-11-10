@@ -16,116 +16,70 @@ if (!defined('ABSPATH')) {
  *
  ********************************* Welcome Tab ********************************* */
 ?>
-<!-- Begin creating plugin admin page -->
-<div class="wrap">
-    <div class="feature-section one-col wrap about-wrap">
-        <div class="indo-title-text">
-            <h2><?php echo wp_kses_post('Thank you for using <br><strong>OneClick Chat to Order</strong>', 'oneclick-whatsapp-order'); ?></h2>
-            <img src="<?php echo esc_url(OCTO_URL . 'assets/images/oneclick-chat-to-order.png'); ?>" alt="<?php esc_attr_e('OneClick Chat to Order banner', 'oneclick-whatsapp-order'); ?>" />
-        </div>
-        <div class="feature-section one-col about-text">
-            <h3><?php esc_html_e("Make It Easy for Customers to Reach You!", 'oneclick-whatsapp-order'); ?></h3>
-        </div>
-        <div class="feature-section one-col indo-about-description">
-            <p>
-                <?php esc_html_e('OneClick Chat to Order seamlessly integrates your WooCommerce-based online store with WhatsApp, providing your customers with an efficient and straightforward method to connect with you and finalize their transactions via WhatsApp.', 'oneclick-whatsapp-order'); ?>
-            </p>
-            <p>
-                <a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-chat-to-order/')); ?>" class="button button-primary" target="_blank" rel="noopener"><?php esc_html_e('Learn More', 'oneclick-whatsapp-order'); ?></a>
-                <a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/docs/octo/')); ?>" class="button button-secondary" target="_blank" rel="noopener"><?php esc_html_e('Read Documentation', 'oneclick-whatsapp-order'); ?></a>
-            </p>
-        </div>
-        <div class="clear"></div>
-        <hr>
-        <div class="feature-section one-col about-text">
-            <h4><?php echo wp_kses_post(__('<strong style="color:red;">NEW!</strong> OneClick Variations Grabber', 'oneclick-whatsapp-order')); ?></h4>
-        </div>
-        <div class="feature-section one-col indo-about-description">
-            <p>
-                <?php esc_html_e('A powerful plugin add-on that enhances customer interactions by allowing them to easily send selected product variations, quantities, and additional details directly through WhatsApp, making the order process smoother and more efficient.', 'oneclick-whatsapp-order'); ?>
-            </p>
-            <p>
-                <a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-variations-grabber/')); ?>" class="button button-primary" target="_blank" rel="noopener"><?php esc_html_e('Read Details', 'oneclick-whatsapp-order'); ?></a>
-                <a href="https://www.youtube.com/watch?v=R0th4wQhb6c&list=PLwazGJFvaLnBfmpEu2PUcoxDtws55LI_D" class="button button-secondary" target="_blank" rel="noopener"><?php esc_html_e('Watch Video', 'oneclick-whatsapp-order'); ?></a>
-                <a href="<?php echo admin_url('admin.php?page=wa-order&tab=addons'); ?>" class="button button-primary" target="_blank" rel="noopener"><?php esc_html_e('More Add-ons', 'oneclick-whatsapp-order'); ?></a>
+<div class="octo-settings-grid octo-settings-grid--2col">
 
-            </p>
+    <?php wa_order_card_open('controls-play', __('Make It Easy for Customers to Reach You!', 'oneclick-whatsapp-order')); ?>
+        <p><?php esc_html_e('OneClick Chat to Order seamlessly integrates your WooCommerce-based online store with WhatsApp, providing your customers with an efficient and straightforward method to connect with you and finalize their transactions via WhatsApp.', 'oneclick-whatsapp-order'); ?></p>
+        <div class="octo-card-actions">
+            <a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-chat-to-order/')); ?>" class="octo-button-primary" target="_blank" rel="noopener"><?php esc_html_e('Learn More', 'oneclick-whatsapp-order'); ?></a>
+            <a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/docs/octo/')); ?>" class="octo-button-secondary" target="_blank" rel="noopener"><?php esc_html_e('Read Documentation', 'oneclick-whatsapp-order'); ?></a>
         </div>
-        <div class="clear"></div>
-        <hr />
-        <div class="feature-section one-col">
-            <h3 style="text-align: center;"><?php esc_html_e('Watch the Complete Overview and Tutorial', 'oneclick-whatsapp-order'); ?></h3>
-            <div class="headline-feature feature-video">
-                <div class='embed-container'>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=P4KW9wnME3q2Mqvj&amp;list=PLwazGJFvaLnBTOw4pNvPcsFW1ls4tn1Uj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <?php wa_order_card_close(); ?>
+
+    <?php wa_order_card_open('forms', __('OneClick Variations Grabber', 'oneclick-whatsapp-order')); ?>
+        <p><?php esc_html_e('A powerful plugin add-on that enhances customer interactions by allowing them to easily send selected product variations, quantities, and additional details directly through WhatsApp, making the order process smoother and more efficient.', 'oneclick-whatsapp-order'); ?></p>
+        <div class="octo-card-actions">
+            <a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/oneclick-variations-grabber/')); ?>" class="octo-button-primary" target="_blank" rel="noopener"><?php esc_html_e('Read Details', 'oneclick-whatsapp-order'); ?></a>
+            <a href="https://www.youtube.com/watch?v=R0th4wQhb6c&amp;list=PLwazGJFvaLnBfmpEu2PUcoxDtws55LI_D" class="octo-button-secondary" target="_blank" rel="noopener"><?php esc_html_e('Watch Video', 'oneclick-whatsapp-order'); ?></a>
+            <a href="<?php echo esc_url(admin_url('admin.php?page=wa-order&tab=addons')); ?>" class="octo-button-secondary"><?php esc_html_e('More Add-ons', 'oneclick-whatsapp-order'); ?></a>
+        </div>
+    <?php wa_order_card_close(); ?>
+
+    <?php wa_order_card_open('list-view', __('Let\'s Get Started', 'oneclick-whatsapp-order')); ?>
+        <ol class="octo-steps">
+            <li><?php esc_html_e('Start adding your WhatsApp number on WhatsApp Numbers post type. You can add unlimited numbers! Learn more or dismiss notice.', 'oneclick-whatsapp-order'); ?></li>
+            <li><?php esc_html_e('Show a fancy Floating Button with customized message and tooltip which you can customize easily on Floating Button setting panel.', 'oneclick-whatsapp-order'); ?></li>
+            <li><?php esc_html_e('Configure some options to display or hide buttons, including the WhatsApp button on Display Options setting panel.', 'oneclick-whatsapp-order'); ?></li>
+            <li><?php esc_html_e('Make your online store GDPR-ready by showing GDPR Notice right under the WhatsApp Order button on GDPR Notice setting panel.', 'oneclick-whatsapp-order'); ?></li>
+            <li><?php esc_html_e('Display WhatsApp button anywhere you like with a single shortcode. You can generate it with a customized message and a nice text on button on Generate Shortcode setting panel.', 'oneclick-whatsapp-order'); ?></li>
+            <li><?php esc_html_e('Have an inquiry? Find out how to reach me out on Support panel.', 'oneclick-whatsapp-order'); ?></li>
+        </ol>
+    <?php wa_order_card_close(); ?>
+
+    <?php wa_order_card_open('video-alt3', __('Watch the Complete Overview and Tutorial', 'oneclick-whatsapp-order')); ?>
+        <div class="octo-embed">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLwazGJFvaLnBTOw4pNvPcsFW1ls4tn1Uj" title="<?php esc_attr_e('Watch the Complete Overview and Tutorial', 'oneclick-whatsapp-order'); ?>" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    <?php wa_order_card_close(); ?>
+
+
+</div>
+
+<?php
+// What the plugin does: one card per feature, each with the dashicon of the
+// tab that configures it. These replaced the 600x180 text images in 1.3.0.
+$wa_order_features = [
+    ['cart', __('Simple Chat to Order Button', 'oneclick-whatsapp-order'), __('Replace the default Add to Cart button or simply show both. Once the Chat to Order button is clicked, the message along with the product details are sent to you through WhatsApp.', 'oneclick-whatsapp-order')],
+    ['format-chat', __('Fancy Floating Button', 'oneclick-whatsapp-order'), __('Make it easy for any customers/visitors to reach you out through a click of a floating WhatsApp button, displayed on the left of right with tons of customization options.', 'oneclick-whatsapp-order')],
+    ['visibility', __('Display This or Hide That', 'oneclick-whatsapp-order'), __('Wanna hide some buttons or elements you don\'t like? You have the command to rule them all. Just visit the panel and all of the options are there to configure.', 'oneclick-whatsapp-order')],
+    ['privacy', __('Make It GDPR-Ready', 'oneclick-whatsapp-order'), __('The regulations are real and it\'s time to make your site ready for them. Make your site GDPR-ready with some simple configurations, really easy!', 'oneclick-whatsapp-order')],
+    ['shortcode', __('Shortcode Generator', 'oneclick-whatsapp-order'), __('Are the previous options still not enough for you? You can extend the flexibility to display a WhatsApp button using a shortcode, which you can generate easily.', 'oneclick-whatsapp-order')],
+    ['book', __('Comprehensive Documentation', 'oneclick-whatsapp-order'), __('You will not be left alone. My complete documentation or tutorial will always help and support all your needs to get started. Watch tutorial videos.', 'oneclick-whatsapp-order')],
+];
+?>
+<div class="octo-plugin-grid octo-plugin-grid--3col">
+    <?php foreach ($wa_order_features as $wa_order_feature) : ?>
+        <div class="octo-plugin">
+            <div class="octo-plugin__head">
+                <span class="octo-plugin__icon octo-plugin__icon--glyph dashicons dashicons-<?php echo esc_attr($wa_order_feature[0]); ?>" aria-hidden="true"></span>
+                <div class="octo-plugin__title">
+                    <h3><?php echo esc_html($wa_order_feature[1]); ?></h3>
                 </div>
             </div>
+            <p class="octo-plugin__description"><?php echo esc_html($wa_order_feature[2]); ?></p>
         </div>
-        <div class="clear"></div>
-        <hr />
-        <div class="feature-section one-col">
-            <div class="indo-get-started">
-                <h3><?php esc_html_e('Let\'s Get Started', 'oneclick-whatsapp-order'); ?></h3>
-                <ul>
-                    <li><strong><?php esc_html_e('Step #1:', 'oneclick-whatsapp-order'); ?></strong> <?php esc_html_e('Start adding your WhatsApp number on WhatsApp Numbers post type. You can add unlimited numbers! Learn more or dismiss notice.', 'oneclick-whatsapp-order'); ?></li>
-                    <li><strong><?php esc_html_e('Step #2:', 'oneclick-whatsapp-order'); ?></strong> <?php esc_html_e('Show a fancy Floating Button with customized message and tooltip which you can customize easily on Floating Button setting panel.', 'oneclick-whatsapp-order'); ?></li>
-                    <li><strong><?php esc_html_e('Step #3:', 'oneclick-whatsapp-order'); ?></strong> <?php esc_html_e('Configure some options to display or hide buttons, including the WhatsApp button on Display Options setting panel.', 'oneclick-whatsapp-order'); ?></li>
-                    <li><strong><?php esc_html_e('Step #4:', 'oneclick-whatsapp-order'); ?></strong> <?php esc_html_e('Make your online store GDPR-ready by showing GDPR Notice right under the WhatsApp Order button on GDPR Notice setting panel.', 'oneclick-whatsapp-order'); ?></li>
-                    <li><strong><?php esc_html_e('Step #5:', 'oneclick-whatsapp-order'); ?></strong> <?php esc_html_e('Display WhatsApp button anywhere you like with a single shortcode. You can generate it with a customized message and a nice text on button on Generate Shortcode setting panel.', 'oneclick-whatsapp-order'); ?></li>
-                    <li><strong><?php esc_html_e('Step #6:', 'oneclick-whatsapp-order'); ?></strong> <?php esc_html_e('Have an inquiry? Find out how to reach me out on Support panel.', 'oneclick-whatsapp-order'); ?></li>
-                </ul>
-            </div>
-        </div>
-        <hr>
-        <div class="feature-section two-col">
-            <div class="col">
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/images/simple-chat-button.png'); ?>" alt="<?php esc_attr_e('Simple Chat Button', 'oneclick-whatsapp-order'); ?>" />
-                <h3><?php esc_html_e('Simple Chat to Order Button', 'oneclick-whatsapp-order'); ?></h3>
-                <p><?php esc_html_e('Replace the default Add to Cart button or simply show both. Once the Chat to Order button is clicked, the message along with the product details are sent to you through WhatsApp.', 'oneclick-whatsapp-order'); ?></p>
-            </div>
-            <div class="col">
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/images/fancy-floating-button.png'); ?>" alt="<?php esc_attr_e('Fancy Floating Button', 'oneclick-whatsapp-order'); ?>" />
-                <h3><?php esc_html_e('Fancy Floating Button', 'oneclick-whatsapp-order'); ?></h3>
-                <p><?php esc_html_e('Make it easy for any customers/visitors to reach you out through a click of a floating WhatsApp button, displayed on the left of right with tons of customization options.', 'oneclick-whatsapp-order'); ?></p>
-            </div>
-        </div>
-        <div class="feature-section two-col">
-            <div class="col">
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/images/display-this-or-hide-that.png'); ?>" alt="<?php esc_attr_e('Display or Hide Elements', 'oneclick-whatsapp-order'); ?>" />
-                <h3><?php esc_html_e('Display This or Hide That', 'oneclick-whatsapp-order'); ?></h3>
-                <p><?php esc_html_e('Wanna hide some buttons or elements you don\'t like? You have the command to rule them all. Just visit the panel and all of the options are there to configure.', 'oneclick-whatsapp-order'); ?></p>
-            </div>
-            <div class="col">
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/images/gdpr-ready.png'); ?>" alt="<?php esc_attr_e('GDPR Ready', 'oneclick-whatsapp-order'); ?>" />
-                <h3><?php esc_html_e('Make It GDPR-Ready', 'oneclick-whatsapp-order'); ?></h3>
-                <p><?php esc_html_e('The regulations are real and it\'s time to make your site ready for them. Make your site GDPR-ready with some simple configurations, really easy!', 'oneclick-whatsapp-order'); ?></p>
-            </div>
-        </div>
-        <div class="feature-section two-col">
-            <div class="col">
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/images/shortcode.png'); ?>" alt="<?php esc_attr_e('Shortcode Generator', 'oneclick-whatsapp-order'); ?>" />
-                <h3><?php esc_html_e('Shortcode Generator', 'oneclick-whatsapp-order'); ?></h3>
-                <p><?php esc_html_e('Are the previous options still not enough for you? You can extend the flexibility to display a WhatsApp button using a shortcode, which you can generate easily.', 'oneclick-whatsapp-order'); ?></p>
-            </div>
-            <div class="col">
-                <img src="<?php echo esc_url(plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/images/documentation.png'); ?>" alt="<?php esc_attr_e('Comprehensive Documentation', 'oneclick-whatsapp-order'); ?>" />
-                <h3><?php esc_html_e('Comprehensive Documentation', 'oneclick-whatsapp-order'); ?></h3>
-                <p><?php esc_html_e('You will not be left alone. My complete documentation or tutorial will always help and support all your needs to get started. Watch tutorial videos.', 'oneclick-whatsapp-order'); ?></p>
-            </div>
-        </div>
-        <br>
-        <hr>
-        <?php echo wa_order_donate_button_shortcode(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
-        <center>
-            <p><?php
-                echo wp_kses_post(
-                    sprintf(
-                        "Made with ❤ and ☕ in Central Jakarta, Indonesia by <a href=\"%s\" target=\"_blank\"><strong>Walter Pinem</strong></a>",
-                        esc_url(oskit_url('https://walterpinem.com/'))
-                    )
-                );
-                ?></p>
-        </center>
-    </div>
+    <?php endforeach; ?>
 </div>
-<br>
+
+<?php echo wa_order_donate_button_shortcode(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
+<?php wa_order_credit_line(); ?>

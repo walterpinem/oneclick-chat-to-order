@@ -296,170 +296,198 @@ function wa_order_get_settings()
 // Note: settings are never deleted on deactivation. Cleanup happens only in
 // uninstall.php, and only when "Delete data on uninstall" is checked.
 // Begin Building the Admin Tabs
-function wa_order_create_admin_page()
+// Since 1.3.0 the screen follows the Online Store Kit house layout: a brand
+// band, icon tabs and card stacks. Every option name, settings group and
+// `?tab=` key is unchanged, so saved settings and bookmarks keep working.
+
+/**
+ * The settings tabs: key => array( dashicon, label, file under admin/tabs/ ).
+ *
+ * "numbers" is a link to the WhatsApp Numbers list, not a tab of its own.
+ *
+ * @since 1.3.0
+ * @return array
+ */
+function wa_order_admin_tabs()
 {
-    // Define the valid tabs
-    $valid_tabs = [
-        'button_config',
-        'floating_button',
-        'display_option',
-        'shop_page',
-        'cart_button',
-        'thanks_page',
-        'gdpr_notice',
-        'generate_shortcode',
-        'tutorial_support',
-        'addons',
-        'welcome'
+    return [
+        'welcome'            => ['admin-home', __('Welcome', 'oneclick-whatsapp-order'), 'welcome.php'],
+        'numbers'            => ['phone', __('Numbers', 'oneclick-whatsapp-order'), ''],
+        'button_config'      => ['admin-generic', __('Basic', 'oneclick-whatsapp-order'), 'button-config.php'],
+        'shop_page'          => ['store', __('Shop', 'oneclick-whatsapp-order'), 'shop-page.php'],
+        'cart_button'        => ['cart', __('Cart', 'oneclick-whatsapp-order'), 'cart-button.php'],
+        'thanks_page'        => ['money-alt', __('Checkout', 'oneclick-whatsapp-order'), 'thanks-page.php'],
+        'floating_button'    => ['format-chat', __('Floating', 'oneclick-whatsapp-order'), 'floating-button.php'],
+        'display_option'     => ['admin-appearance', __('Display', 'oneclick-whatsapp-order'), 'display-option.php'],
+        'gdpr_notice'        => ['privacy', __('GDPR', 'oneclick-whatsapp-order'), 'gdpr-notice.php'],
+        'generate_shortcode' => ['shortcode', __('Shortcode', 'oneclick-whatsapp-order'), 'generate-shortcode.php'],
+        'addons'             => ['admin-plugins', __('Add-ons', 'oneclick-whatsapp-order'), 'add-ons.php'],
+        'tutorial_support'   => ['sos', __('Support', 'oneclick-whatsapp-order'), 'tutorial-support.php'],
     ];
-    // Sanitize and validate the 'tab' parameter
-    $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'welcome';
-    if (!in_array($active_tab, $valid_tabs, true)) {
-        $active_tab = 'welcome'; // default to the 'welcome' tab
-    }
+}
+
+/**
+ * Open a settings card: surface, header with dashicon and title, an optional
+ * description, and the content well. Close it with wa_order_card_close().
+ *
+ * @since 1.3.0
+ * @param string $icon  Dashicon slug without the "dashicons-" prefix.
+ * @param string $title Card title, already translated.
+ * @param string $desc  Optional description, already translated. Limited HTML.
+ * @param string $class Extra classes for the card.
+ */
+function wa_order_card_open($icon, $title, $desc = '', $class = '')
+{
 ?>
-    <div class="wrap OCWAORDER_pluginpage_title">
-        <h1><?php esc_html_e('OneClick Chat to Order', 'oneclick-whatsapp-order'); ?></h1>
-        <hr>
-        <h2 class="nav-tab-wrapper">
-            <a href="?page=wa-order&tab=welcome" class="nav-tab <?php echo esc_attr('welcome' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Welcome', 'oneclick-whatsapp-order'); ?></a>
-            <a href="edit.php?post_type=wa-order-numbers" class="nav-tab <?php echo esc_attr('phone-numbers' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Numbers', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=button_config" class="nav-tab <?php echo esc_attr('button_config' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Basic', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=shop_page" class="nav-tab <?php echo esc_attr('shop_page' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Shop', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=cart_button" class="nav-tab <?php echo esc_attr('cart_button' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Cart', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=thanks_page" class="nav-tab <?php echo esc_attr('thanks_page' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Checkout', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=floating_button" class="nav-tab <?php echo esc_attr('floating_button' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Floating', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=display_option" class="nav-tab <?php echo esc_attr('display_option' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Display', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=gdpr_notice" class="nav-tab <?php echo esc_attr('gdpr_notice' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('GDPR', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=generate_shortcode" class="nav-tab <?php echo esc_attr('generate_shortcode' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Shortcode', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=addons" class="nav-tab <?php echo esc_attr('addons' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Add-ons', 'oneclick-whatsapp-order'); ?></a>
-            <a href="?page=wa-order&tab=tutorial_support" class="nav-tab <?php echo esc_attr('tutorial_support' === $active_tab ? 'nav-tab-active' : ''); ?>"><?php esc_html_e('Support', 'oneclick-whatsapp-order'); ?></a>
-        </h2>
-        <?php if ($active_tab == 'generate_shortcode') {
-            // Render content for the active tab
-            $generate_shortcode = OCTO_DIR . 'admin/tabs/generate-shortcode.php';
-            if (file_exists($generate_shortcode)) {
-                include_once $generate_shortcode;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        } elseif ($active_tab == 'button_config') {
-            // Render content for the active tab
-            $button_config = OCTO_DIR . 'admin/tabs/button-config.php';
-            if (file_exists($button_config)) {
-                include_once $button_config;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-
-
-        <?php } elseif ($active_tab == 'floating_button') {
-            // Render content for the active tab
-            $floating_button = OCTO_DIR . 'admin/tabs/floating-button.php';
-            if (file_exists($floating_button)) {
-                include_once $floating_button;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-        <?php } elseif ($active_tab == 'display_option') { ?>
-            <?php
-            // Render content for the active tab
-            $display_option = OCTO_DIR . 'admin/tabs/display-option.php';
-            if (file_exists($display_option)) {
-                include_once $display_option;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-            ?>
-        <?php } elseif ($active_tab == 'shop_page') {
-            // Render content for the active tab
-            $shop_page = OCTO_DIR . 'admin/tabs/shop-page.php';
-            if (file_exists($shop_page)) {
-                include_once $shop_page;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-        <?php } elseif ($active_tab == 'cart_button') {
-            // Render content for the active tab
-            $cart_button = OCTO_DIR . 'admin/tabs/cart-button.php';
-            if (file_exists($cart_button)) {
-                include_once $cart_button;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-        <?php } elseif ($active_tab == 'thanks_page') {
-            // Render content for the active tab
-            $thanks_page = OCTO_DIR . 'admin/tabs/thanks-page.php';
-            if (file_exists($thanks_page)) {
-                include_once $thanks_page;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-        <?php } elseif ($active_tab == 'gdpr_notice') {
-            // Render content for the active tab
-            $gdpr_notice = OCTO_DIR . 'admin/tabs/gdpr-notice.php';
-            if (file_exists($gdpr_notice)) {
-                include_once $gdpr_notice;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-
-        <?php
-        } elseif ($active_tab == 'addons') {
-            // Render content for the active tab
-            $addons = OCTO_DIR . 'admin/tabs/add-ons.php';
-            if (file_exists($addons)) {
-                include_once $addons;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-        <?php } elseif ($active_tab == 'tutorial_support') {
-            // Render content for the active tab
-            $tutorial_support = OCTO_DIR . 'admin/tabs/tutorial-support.php';
-            if (file_exists($tutorial_support)) {
-                include_once $tutorial_support;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
-        <?php } elseif ($active_tab == 'welcome') {
-            // Render content for the active tab
-            $welcome = OCTO_DIR . 'admin/tabs/welcome.php';
-            if (file_exists($welcome)) {
-                include_once $welcome;
-            } else {
-                echo '<div class="error"><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
-            }
-        ?>
+    <div class="octo-settings-card<?php echo '' !== $class ? ' ' . esc_attr($class) : ''; ?>">
+        <div class="octo-card-header">
+            <span class="dashicons dashicons-<?php echo esc_attr($icon); ?>" aria-hidden="true"></span>
+            <h2><?php echo esc_html($title); ?></h2>
+        </div>
+        <div class="octo-card-body">
+            <?php if ('' !== $desc) : ?>
+                <p class="octo-card-description"><?php echo wp_kses($desc, wa_order_card_kses()); ?></p>
+            <?php endif; ?>
 <?php
-        }
+}
+
+/**
+ * Close a card opened with wa_order_card_open().
+ *
+ * @since 1.3.0
+ */
+function wa_order_card_close()
+{
+    echo '</div></div>';
+}
+
+/**
+ * Tags allowed in card descriptions.
+ *
+ * @since 1.3.0
+ * @return array
+ */
+function wa_order_card_kses()
+{
+    return [
+        'a'      => ['href' => [], 'target' => [], 'rel' => []],
+        'b'      => [],
+        'br'     => [],
+        'code'   => [],
+        'strong' => [],
+    ];
+}
+
+/**
+ * The save bar under a settings form.
+ *
+ * @since 1.3.0
+ */
+function wa_order_save_bar()
+{
 ?>
+    <div class="octo-settings-footer">
+        <button type="submit" class="octo-button-primary"><?php esc_html_e('Save Changes', 'oneclick-whatsapp-order'); ?></button>
     </div>
 <?php
-    }
+}
 
-    // Donate box for the plugin's own admin tabs.
-    // Since 1.2.0 this is no longer registered as a [donate] shortcode, which
-    // printed the author's PayPal button on any store page using [donate].
-    function wa_order_donate_button_shortcode()
-    {
-        ob_start();
+/**
+ * Render the settings screen.
+ */
+function wa_order_create_admin_page()
+{
+    $tabs = wa_order_admin_tabs();
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only tab navigation.
+    $active_tab = isset($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'welcome';
+    if (!isset($tabs[$active_tab]) || '' === $tabs[$active_tab][2]) {
+        $active_tab = 'welcome';
+    }
 ?>
-<center>
+    <div class="wrap octo-settings-wrap">
+
+        <?php // Core moves admin notices to this marker, above the header. ?>
+        <hr class="wp-header-end" style="margin:0;border:0;">
+
+        <div class="octo-settings-header">
+            <div class="octo-settings-header-content">
+                <div class="octo-settings-header-left">
+                    <?php // Swap the dashicon for the brand mark once OneClick's new mark is drawn. ?>
+                    <div class="octo-settings-icon"><span class="dashicons dashicons-format-chat" aria-hidden="true"></span></div>
+                    <div>
+                        <h1><?php esc_html_e('OneClick Chat to Order', 'oneclick-whatsapp-order'); ?></h1>
+                        <p class="octo-settings-subtitle"><?php esc_html_e('Let customers order and ask through WhatsApp with one click.', 'oneclick-whatsapp-order'); ?></p>
+                    </div>
+                </div>
+                <span class="octo-version-badge">v<?php echo esc_html(OCTO_VERSION); ?></span>
+            </div>
+        </div>
+
+        <nav class="octo-tabs" aria-label="<?php esc_attr_e('OneClick Chat to Order settings', 'oneclick-whatsapp-order'); ?>">
+            <?php foreach ($tabs as $tab_key => $tab) : ?>
+                <?php
+                $tab_url   = 'numbers' === $tab_key
+                    ? admin_url('edit.php?post_type=wa-order-numbers')
+                    : add_query_arg(['page' => 'wa-order', 'tab' => $tab_key], admin_url('admin.php'));
+                $is_active = ($tab_key === $active_tab);
+                ?>
+                <a href="<?php echo esc_url($tab_url); ?>" class="octo-tabs__tab<?php echo $is_active ? ' octo-tabs__tab--active' : ''; ?>" <?php echo $is_active ? 'aria-current="page"' : ''; ?>>
+                    <span class="dashicons dashicons-<?php echo esc_attr($tab[0]); ?>" aria-hidden="true"></span><?php echo esc_html($tab[1]); ?>
+                </a>
+            <?php endforeach; ?>
+        </nav>
+
+        <div class="octo-settings-content">
+            <?php
+            $tab_file = OCTO_DIR . 'admin/tabs/' . $tabs[$active_tab][2];
+            if (file_exists($tab_file)) {
+                include_once $tab_file;
+            } else {
+                echo '<div class="octo-notice-error"><span class="dashicons dashicons-dismiss" aria-hidden="true"></span><p>' . esc_html__('Error: Settings file not found.', 'oneclick-whatsapp-order') . '</p></div>';
+            }
+            ?>
+        </div>
+    </div>
+<?php
+}
+
+/**
+ * Donate box for the plugin's own admin tabs.
+ *
+ * Since 1.2.0 this is no longer registered as a [donate] shortcode, which
+ * printed the author's PayPal button on any store page using [donate].
+ *
+ * @return string
+ */
+function wa_order_donate_button_shortcode()
+{
+    ob_start();
+?>
     <div class="donate-container">
         <p><?php esc_html_e('To keep this plugin free, I spent cups of coffee building it. If you love it and find it super helpful for your business, you can always', 'oneclick-whatsapp-order'); ?></p>
-        <a href="https://www.paypal.me/WalterPinem" target="_blank" rel="noopener noreferrer" class="donatebutton">
+        <a href="https://www.paypal.me/WalterPinem" target="_blank" rel="noopener noreferrer" class="octo-button-secondary">
             ☕ <?php esc_html_e('Buy Me a Coffee', 'oneclick-whatsapp-order'); ?>
         </a>
     </div>
-</center>
 <?php
-        return ob_get_clean();
-    }
+    return ob_get_clean();
+}
+
+/**
+ * The credit line under the Welcome and Support tabs.
+ *
+ * @since 1.3.0
+ */
+function wa_order_credit_line()
+{
+    printf(
+        '<p class="octo-credit">%s</p>',
+        wp_kses_post(
+            sprintf(
+                /* translators: %s: link to the author's website */
+                __('Made with ❤ and ☕ in Central Jakarta, Indonesia by %s', 'oneclick-whatsapp-order'),
+                '<a href="' . esc_url(oskit_url('https://walterpinem.com/')) . '" target="_blank" rel="noopener"><strong>Walter Pinem</strong></a>'
+            )
+        )
+    );
+}

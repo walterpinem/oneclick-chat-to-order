@@ -27,16 +27,16 @@ if (!defined('ABSPATH')) {
     <?php wp_enqueue_script('wp-color-picker-alpha'); ?>
     <?php wp_enqueue_script('wp-color-picker-init'); ?>
     <?php wp_enqueue_script('wa_order_js_admin'); ?>
-    <h2 class="section_wa_order"><?php esc_html_e('Display Options', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_open('visibility', __('Display Options', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php esc_html_e('Here, you can configure some options for hiding elements to convert customers phone number into clickable WhatsApp link.', 'oneclick-whatsapp-order'); ?>
         <br />
     </p>
-    <hr>
     <!-- Button Colors - Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('art', __('Button Colors', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h3 class="section_wa_order"><?php esc_html_e('Button Colors', 'oneclick-whatsapp-order'); ?></h3>
             <p><?php esc_html_e('Customize the WhatsApp button appearance however you like.', 'oneclick-whatsapp-order'); ?></p>
             <!-- Button Background Color -->
             <tr class="wa_order_remove_add_btn">
@@ -100,11 +100,11 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
     <!-- Button Box Shadow -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('image-filter', __('Button Box Shadow Color', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h3 class="section_wa_order"><?php esc_html_e('Button Box Shadow Color', 'oneclick-whatsapp-order'); ?></h3>
             <p><?php esc_html_e('Customize the box shadow color for the WhatsApp button.', 'oneclick-whatsapp-order'); ?></p>
             <!-- Button Box Shadow Settings -->
             <?php
@@ -204,11 +204,11 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END of Button Customizations - Display Options -->
-    <hr>
     <!-- Single Product Page Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('products', __('Single Product Page', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h3 class="section_wa_order"><?php esc_html_e('Single Product Page', 'oneclick-whatsapp-order'); ?></h3>
             <p><?php esc_html_e('The following options will be only effective on single product page.', 'oneclick-whatsapp-order'); ?></p>
             <!-- Hide Button on Desktop -->
             <tr class="wa_order_remove_add_btn">
@@ -387,11 +387,11 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END of Single Product Page Display Options -->
-    <hr>
     <!-- Shop Loop Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('grid-view', __('Shop Loop Page', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Shop Loop Page', 'oneclick-whatsapp-order'); ?></h2>
             <p><?php esc_html_e('The following options will be only effective on shop loop page.', 'oneclick-whatsapp-order'); ?></p>
             <!-- Hide Button on Desktop -->
             <tr class="wa_order_remove_add_btn">
@@ -493,11 +493,11 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END of Shop Loop Display Options -->
-    <hr>
     <!-- Cart Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('cart', __('Cart Page', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Cart Page', 'oneclick-whatsapp-order'); ?></h2>
             <p><?php esc_html_e('The following options will be only effective on cart page.', 'oneclick-whatsapp-order'); ?></p>
 
             <!-- Hide Button on Desktop -->
@@ -524,11 +524,11 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END of Cart Display Options -->
-    <hr>
     <!-- Checkout / Thank You Page Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('thumbs-up', __('Thank You Page', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Thank You Page', 'oneclick-whatsapp-order'); ?></h2>
             <p><?php esc_html_e('The following options will be only effective on thank you page.', 'oneclick-whatsapp-order'); ?></p>
 
             <!-- Hide Button on Desktop -->
@@ -555,11 +555,11 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END of Checkout / Thank You Page Display Options -->
-    <hr>
     <!-- Miscellaneous Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('admin-generic', __('Miscellaneous', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Miscellaneous', 'oneclick-whatsapp-order'); ?></h2>
             <p><?php esc_html_e('An additional option you might need.', 'oneclick-whatsapp-order'); ?></p>
 
             <!-- Convert Phone Number into WhatsApp in Order Details -->
@@ -597,6 +597,6 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END of Miscellaneous Display Options -->
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>

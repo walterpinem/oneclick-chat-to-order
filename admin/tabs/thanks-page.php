@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
     <?php settings_fields('wa-order-settings-group-order-completion'); ?>
     <?php do_settings_sections('wa-order-settings-group-order-completion'); ?>
 
-    <h2 class="section_wa_order"><?php echo esc_html__('Thank You Page Customization', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_open('thumbs-up', __('Thank You Page Customization', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php echo esc_html__('Add a WhatsApp button on Thank You / Order Received page. If enabled, it will add a new section under the Order Received or Thank You title and override default text by using below data, including adding a WhatsApp button to send order details.', 'oneclick-whatsapp-order'); ?>
         <br />
@@ -334,6 +334,6 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>

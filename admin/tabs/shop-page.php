@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
     <?php settings_errors(); ?>
     <?php settings_fields('wa-order-settings-group-shop-loop'); ?>
     <?php do_settings_sections('wa-order-settings-group-shop-loop'); ?>
-    <h2 class="section_wa_order"><?php esc_html_e('WhatsApp Button on Shop Page', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_open('store', __('WhatsApp Button on Shop Page', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php
         /* translators: 1. opening <strong> tag for "Shop", 2. closing </strong> tag, 3. opening <strong> tag for "Add to Cart", 4. closing </strong> tag */
@@ -38,9 +38,10 @@ if (!defined('ABSPATH')) {
         ?>
         <br />
     </p>
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('grid-view', __('Shop Loop Page', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <h2 class="section_wa_order"><?php esc_html_e('Shop Loop Page', 'oneclick-whatsapp-order'); ?></h2>
             <p><?php esc_html_e('The following options will be only effective on shop loop page.', 'oneclick-whatsapp-order'); ?></p>
 
             <!-- Display Button on Shop Page -->
@@ -186,6 +187,6 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>

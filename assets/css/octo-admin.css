@@ -1,0 +1,1082 @@
+/**
+ * OneClick Chat to Order admin components.
+ *
+ * The Online Store Kit house layout, ported verbatim from WP MyLinks
+ * (admin/css/wml-components.css, itself a port of the PixMapr reference) onto
+ * the --octo-* tokens: settings header, icon tabs, canvas content region,
+ * card grid, fields, toggles, buttons, pills, notices and the plugin grid.
+ * Values match the reference, not an approximation.
+ *
+ * Two deliberate changes from the reference, both about colour only: the
+ * active-tab underline and everything drawn on ink (header plate, version
+ * badge, primary button hover label) use the orange accent, so OneClick shows
+ * both of its colours. The OneClick-only section at the end adapts the
+ * existing settings tables to the cards without changing a single field.
+ *
+ * Logical properties are used where direction matters, so RTL needs no
+ * generated twin (HOUSE-STANDARD.md 11.3).
+ *
+ * @package OneClick Chat to Order
+ * @since   1.3.0
+ */
+
+/* ============================================================================
+   Settings page
+   ========================================================================= */
+
+.octo-settings-wrap {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  margin: 20px 20px 0 0;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.octo-settings-header {
+  background: var(--octo-gradient-brand);
+  border-radius: var(--octo-radius);
+  box-shadow: var(--octo-shadow-lg);
+  margin-block-end: 30px;
+  padding: 30px 40px;
+}
+
+.octo-settings-header-content {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.octo-settings-header-left {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+}
+
+/*
+ * The header sits on the brand teal, so everything on it is ink (8.0:1).
+ * White on teal lands around 1.7:1 and is unreadable.
+ */
+.octo-settings-icon {
+  align-items: center;
+  background: var(--octo-ink);
+  border-radius: var(--octo-radius);
+  box-shadow: var(--octo-shadow-ink);
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  width: 60px;
+}
+
+/* Until OneClick's new mark is drawn, the plate holds a dashicon in the
+   accent orange, which measures 5.3:1 on ink. */
+.octo-settings-icon .dashicons {
+  color: var(--octo-accent);
+  font-size: 32px;
+  height: 32px;
+  line-height: 32px;
+  width: 32px;
+}
+
+/* The brand mark's colours are baked into the SVG, not inherited. 44px is the
+   detail floor for a mark with fine detail. */
+.octo-settings-icon .octo-brand-mark {
+  height: 44px;
+  width: 44px;
+}
+
+.octo-settings-header h1 {
+  color: var(--octo-ink);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 0;
+}
+
+.octo-settings-subtitle {
+  color: rgba(38, 46, 51, 0.85); /* 0.75 in the reference: 4.0:1 on the darker teal, 0.85 keeps it above 4.5:1. */
+  font-size: 14px;
+  margin: 5px 0 0;
+}
+
+.octo-version-badge {
+  background: var(--octo-ink);
+  border-radius: 20px;
+  color: var(--octo-accent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 6px 16px;
+}
+
+/* Tabs -------------------------------------------------------------------- */
+
+.octo-tabs {
+  border-block-end: 2px solid var(--octo-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-end: 30px;
+}
+
+.octo-tabs__tab {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-block-end: 3px solid transparent;
+  color: var(--octo-muted);
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+  inset-block-end: -2px;
+  padding: 14px 24px;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.octo-tabs__tab .dashicons {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.octo-tabs__tab:hover {
+  background: var(--octo-brand-tint);
+  color: var(--octo-text);
+}
+
+.octo-tabs__tab:focus-visible {
+  border-radius: var(--octo-radius-sm) var(--octo-radius-sm) 0 0;
+  outline: 2px solid var(--octo-brand-strong);
+  outline-offset: -2px;
+}
+
+/* Ink label, orange underline: the accent carries the state, not the text. */
+.octo-tabs__tab--active {
+  background: var(--octo-brand-soft);
+  border-block-end-color: var(--octo-accent);
+  color: var(--octo-ink);
+  font-weight: 600;
+}
+
+.octo-tabs__tab--active .dashicons {
+  color: var(--octo-brand-deep);
+}
+
+/* Content region ---------------------------------------------------------- */
+
+.octo-settings-content {
+  background: var(--octo-canvas);
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.octo-settings-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  margin-block-end: 24px;
+}
+
+.octo-settings-grid > .octo-settings-card {
+  margin-block-end: 0;
+}
+
+.octo-card--wide {
+  grid-column: 1 / -1;
+}
+
+/* Fixed two-up layout (Welcome tab): always pairs, never 3+ across. */
+.octo-settings-grid--2col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 960px) {
+  .octo-settings-grid--2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards ------------------------------------------------------------------- */
+
+.octo-settings-card {
+  background: var(--octo-surface);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  margin-block-end: 24px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.octo-settings-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.octo-card-header {
+  align-items: center;
+  background: linear-gradient(135deg, var(--octo-canvas) 0%, var(--octo-surface) 100%);
+  border-block-end: 1px solid var(--octo-line);
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.octo-card-header .dashicons {
+  color: var(--octo-brand-deep);
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+.octo-card-header h2 {
+  color: var(--octo-text);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+
+.octo-card-body {
+  padding: 24px;
+}
+
+.octo-card-description {
+  color: var(--octo-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.octo-card-actions {
+  align-items: center;
+  border-block-start: 1px solid var(--octo-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 24px;
+  padding-block-start: 20px;
+}
+
+/* Fields ------------------------------------------------------------------ */
+
+.octo-field {
+  margin-block-end: 24px;
+}
+
+.octo-field:last-child {
+  margin-block-end: 0;
+}
+
+.octo-field__label {
+  color: var(--octo-text);
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-block-end: 8px;
+}
+
+.octo-field__required {
+  color: var(--octo-danger);
+}
+
+.octo-field__input,
+.octo-field textarea,
+.octo-field select {
+  background: var(--octo-surface);
+  border: 2px solid var(--octo-line);
+  border-radius: 8px;
+  box-shadow: none;
+  color: var(--octo-text);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 100%;
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.octo-field__input:focus,
+.octo-field textarea:focus,
+.octo-field select:focus {
+  border-color: var(--octo-brand-deep);
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+  outline: none;
+}
+
+.octo-field__input--key {
+  font-family: Consolas, Monaco, monospace;
+  letter-spacing: 0.12em;
+}
+
+.octo-field__help {
+  color: var(--octo-muted);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.octo-field__before {
+  border-block-end: 1px solid var(--octo-line);
+  color: var(--octo-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-block-end: 20px;
+  padding-block-end: 14px;
+}
+
+/* Radio groups. */
+
+.octo-field__radios {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.octo-field__radio {
+  display: block;
+  font-size: 14px;
+  margin-block-end: 6px;
+}
+
+.octo-field--radio-inline .octo-field__radio {
+  display: inline-block;
+  margin-block-end: 0;
+  margin-inline-end: 16px;
+}
+
+.octo-field__radio input[type="radio"]:focus {
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+}
+
+/* Toggle rows — a styled real checkbox in a soft boxed row, so the save
+   path is unchanged. Sizes match the reference (48×26 track, 22px knob). */
+
+.octo-toggle {
+  align-items: center;
+  background: var(--octo-canvas);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.octo-toggle:hover {
+  background: var(--octo-canvas-soft);
+}
+
+.octo-toggle input[type="checkbox"] {
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  width: 0;
+}
+
+.octo-toggle__track {
+  background: var(--octo-line-strong);
+  border-radius: 26px;
+  flex-shrink: 0;
+  height: 26px;
+  position: relative;
+  transition: all 0.3s ease;
+  width: 48px;
+}
+
+.octo-toggle__track::before {
+  background: var(--octo-surface);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  content: "";
+  height: 22px;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  position: absolute;
+  transition: all 0.3s ease;
+  width: 22px;
+}
+
+.octo-toggle input[type="checkbox"]:checked + .octo-toggle__track {
+  background: var(--octo-gradient-ink);
+}
+
+.octo-toggle input[type="checkbox"]:checked + .octo-toggle__track::before {
+  inset-inline-start: 24px;
+}
+
+.octo-toggle input[type="checkbox"]:focus-visible + .octo-toggle__track {
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+}
+
+.octo-toggle__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.octo-toggle__text strong {
+  color: var(--octo-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.octo-toggle__text small {
+  color: var(--octo-muted);
+  font-size: 13px;
+}
+
+/* Buttons ----------------------------------------------------------------- */
+
+/*
+ * Selectors are qualified with .wp-core-ui and .button so they outrank the
+ * per-user admin colour scheme, which styles .wp-core-ui .button-primary and
+ * would otherwise repaint these in whatever accent the user picked.
+ */
+.octo-button-primary,
+.wp-core-ui .button.octo-button-primary,
+.wp-core-ui input[type="submit"].octo-button-primary {
+  align-items: center;
+  background: var(--octo-gradient-ink);
+  border: none;
+  border-radius: 8px;
+  box-shadow: var(--octo-shadow-ink);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 15px;
+  font-weight: 600;
+  gap: 8px;
+  height: auto;
+  line-height: 1.4;
+  padding: 12px 32px;
+  text-decoration: none;
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+
+/* When these components are anchors, core's `a:visited` (0-1-1) outranks the
+   bare class (0-1-0) and paints the label link-blue. Pin the visited state. */
+a.octo-button-primary:visited {
+  color: #fff;
+}
+
+a.octo-button-secondary:visited {
+  color: var(--octo-text);
+}
+
+.octo-button-primary:hover,
+.octo-button-primary:focus,
+.wp-core-ui .button.octo-button-primary:hover,
+.wp-core-ui .button.octo-button-primary:focus,
+.wp-core-ui input[type="submit"].octo-button-primary:hover,
+.wp-core-ui input[type="submit"].octo-button-primary:focus {
+  background: var(--octo-ink-hover);
+  border: none;
+  box-shadow: var(--octo-shadow-ink);
+  color: var(--octo-accent);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.octo-button-primary:focus-visible,
+.wp-core-ui .button.octo-button-primary:focus-visible,
+.wp-core-ui input[type="submit"].octo-button-primary:focus-visible {
+  outline: 2px solid var(--octo-brand-strong);
+  outline-offset: 2px;
+}
+
+.octo-button-primary:active,
+.wp-core-ui .button.octo-button-primary:active {
+  transform: translateY(0);
+}
+
+.octo-button-secondary,
+.wp-core-ui .button.octo-button-secondary,
+.wp-core-ui input[type="button"].octo-button-secondary {
+  align-items: center;
+  background: var(--octo-surface);
+  border: 2px solid var(--octo-line);
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: var(--octo-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+  height: auto;
+  line-height: 1.4;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.octo-button-secondary:hover,
+.octo-button-secondary:focus,
+.wp-core-ui .button.octo-button-secondary:hover,
+.wp-core-ui .button.octo-button-secondary:focus,
+.wp-core-ui input[type="button"].octo-button-secondary:hover,
+.wp-core-ui input[type="button"].octo-button-secondary:focus {
+  background: var(--octo-brand-soft);
+  border-color: var(--octo-brand-strong);
+  color: var(--octo-ink);
+}
+
+/* More Plugins tab ---------------------------------------------------------
+   Ported from the house reference (Indonesian Banks admin.css), ibfw → wml → octo. */
+
+.octo-more-intro {
+  margin-block-end: 24px;
+}
+
+.octo-plugin-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.octo-plugin {
+  background: var(--octo-surface);
+  border: 1px solid var(--octo-line);
+  border-radius: var(--octo-radius);
+  box-shadow: var(--octo-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.octo-plugin__head {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.octo-plugin__icon {
+  border-radius: var(--octo-radius-sm);
+  flex: none;
+  height: 56px;
+  width: 56px;
+}
+
+.octo-plugin__title {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.octo-plugin__title h3 {
+  color: var(--octo-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.octo-plugin__description {
+  color: var(--octo-muted);
+  flex: 1 1 auto;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.octo-plugin__actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.octo-plugin__actions .dashicons {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+}
+
+/* Card buttons keep their hover colors but not the animation — no lift, no
+   eased transition (owner decision, Aug 2026). */
+.octo-plugin__actions .octo-button-primary,
+.octo-plugin__actions .octo-button-secondary {
+  transition: none;
+}
+
+.octo-plugin__actions .octo-button-primary:hover,
+.octo-plugin__actions .octo-button-primary:focus {
+  transform: none;
+}
+
+.octo-plugin__running {
+  align-items: center;
+  color: var(--octo-success);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 8px;
+}
+
+.octo-pill {
+  align-items: center;
+  background: var(--octo-canvas-soft);
+  border-radius: 999px;
+  color: var(--octo-muted);
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 4px;
+  letter-spacing: 0.04em;
+  padding: 2px 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.octo-pill--on {
+  background: var(--octo-success-soft);
+  color: var(--octo-success);
+}
+
+.octo-pill--brand {
+  background: var(--octo-brand-soft);
+  color: var(--octo-brand-deep);
+}
+
+/* Save footer ------------------------------------------------------------- */
+
+.octo-settings-footer {
+  background: var(--octo-surface);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px;
+}
+
+/* Notices ----------------------------------------------------------------- */
+
+.octo-notice-info,
+.octo-notice-success,
+.octo-notice-warning,
+.octo-notice-error {
+  border-radius: 8px;
+  display: flex;
+  font-size: 14px;
+  gap: 12px;
+  line-height: 1.5;
+  margin-block-start: 20px;
+  padding: 16px;
+}
+
+/*
+ * Informational notes use the brand tint rather than the usual admin blue, so
+ * the panel sits with the brand instead of reading as foreign next to it.
+ * Success, warning, and error keep their conventional colours, because those
+ * carry meaning that palette consistency should not override.
+ */
+.octo-notice-info {
+  background: var(--octo-brand-tint);
+  border: 1px solid var(--octo-brand-soft);
+  border-inline-start: 4px solid var(--octo-brand-strong);
+  color: var(--octo-text);
+}
+
+.octo-notice-info .dashicons {
+  color: var(--octo-brand-deep);
+}
+
+.octo-notice-success {
+  background: var(--octo-success-soft);
+  border: 1px solid var(--octo-success-line);
+  color: var(--octo-success);
+}
+
+.octo-notice-success .dashicons {
+  color: var(--octo-success);
+}
+
+.octo-notice-warning {
+  background: var(--octo-warning-soft);
+  border: 1px solid var(--octo-warning-line);
+  color: var(--octo-warning);
+}
+
+.octo-notice-warning .dashicons {
+  color: var(--octo-warning);
+}
+
+.octo-notice-error {
+  background: var(--octo-danger-soft);
+  border: 1px solid var(--octo-danger-line);
+  color: var(--octo-danger);
+}
+
+.octo-notice-error .dashicons {
+  color: var(--octo-danger);
+}
+
+/* Welcome-tab pieces ------------------------------------------------------ */
+
+.octo-steps {
+  margin: 0 0 20px;
+  padding-inline-start: 20px;
+}
+
+.octo-steps li {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-block-end: 10px;
+}
+
+.octo-check {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.octo-check li {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-block-end: 10px;
+  padding-inline-start: 28px;
+  position: relative;
+}
+
+.octo-check .dashicons {
+  color: var(--octo-success);
+  font-size: 18px;
+  height: 18px;
+  inset-block-start: 2px;
+  inset-inline-start: 0;
+  position: absolute;
+  width: 18px;
+}
+
+.octo-embed {
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.octo-embed iframe {
+  border: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* ============================================================================
+
+/* ============================================================================
+   OneClick: the existing settings tables inside cards
+   ========================================================================= */
+
+/*
+ * Every tab keeps its own <table class="form-table"> rows, field names and
+ * save path; these rules only dress them in the house field and toggle look.
+ * Scoped to the plugin's own screen through .octo-settings-content.
+ */
+
+.octo-settings-content .form-table {
+  margin: 0;
+}
+
+.octo-settings-content .form-table th {
+  color: var(--octo-text);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 18px 24px 18px 0;
+  width: 240px;
+}
+
+.octo-settings-content .form-table td {
+  color: var(--octo-text);
+  font-size: 14px;
+  padding: 14px 0;
+}
+
+.octo-settings-content .form-table tr + tr th,
+.octo-settings-content .form-table tr + tr td {
+  border-block-start: 1px solid var(--octo-canvas-soft);
+}
+
+.octo-settings-content .form-table th b,
+.octo-settings-content .form-table th strong {
+  font-weight: 600;
+}
+
+.octo-settings-content p.description,
+.octo-settings-content .form-table td p.description {
+  color: var(--octo-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-block-start: 8px;
+}
+
+/* Text inputs, selects and textareas: the house field (2px line, 8px radius,
+   brand-deep focus with the brand ring). Colour pickers keep the core size. */
+.octo-settings-content .form-table input[type="text"]:not(.wp-color-picker),
+.octo-settings-content .form-table input[type="number"],
+.octo-settings-content .form-table input[type="url"],
+.octo-settings-content .form-table input[type="email"],
+.octo-settings-content .form-table select,
+.octo-settings-content .form-table textarea {
+  background-color: var(--octo-surface); /* Not the shorthand: core draws the select arrow as a background image. */
+  border: 2px solid var(--octo-line);
+  border-radius: 8px;
+  box-shadow: none;
+  color: var(--octo-text);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  width: 480px;
+}
+
+.octo-settings-content .form-table textarea {
+  min-height: 96px;
+}
+
+.octo-settings-content .form-table select {
+  padding-inline-end: 32px;
+}
+
+.octo-settings-content .form-table input[type="text"]:not(.wp-color-picker):focus,
+.octo-settings-content .form-table input[type="number"]:focus,
+.octo-settings-content .form-table input[type="url"]:focus,
+.octo-settings-content .form-table input[type="email"]:focus,
+.octo-settings-content .form-table select:focus,
+.octo-settings-content .form-table textarea:focus {
+  border-color: var(--octo-brand-deep);
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+  outline: none;
+}
+
+/* The small margin/padding/shadow boxes on the Display tab stay compact. */
+.octo-settings-content .form-table li.box-control input {
+  min-height: 0;
+  padding: 2px 4px;
+  width: 100%;
+}
+
+/* Select2 boxes take the same frame. */
+.octo-settings-content .select2-container {
+  max-width: 100%;
+  min-width: 480px;
+}
+
+.octo-settings-content .select2-container--default .select2-selection--single,
+.octo-settings-content .select2-container--default .select2-selection--multiple {
+  border: 2px solid var(--octo-line);
+  border-radius: 8px;
+  min-height: 44px;
+}
+
+.octo-settings-content .select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 40px;
+  padding-inline-start: 12px;
+}
+
+.octo-settings-content .select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 40px;
+}
+
+.octo-settings-content .select2-container--default.select2-container--focus .select2-selection--multiple,
+.octo-settings-content .select2-container--default.select2-container--open .select2-selection--single {
+  border-color: var(--octo-brand-deep);
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+}
+
+.octo-settings-content .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background: var(--octo-brand-soft);
+  border: 1px solid var(--octo-brand-strong);
+  border-radius: 999px;
+}
+
+.octo-settings-content .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+  background: transparent;
+  color: var(--octo-ink);
+}
+
+/* Checkboxes become the house toggle. Still a real checkbox, so the saved
+   value ("yes", "_blank") is unchanged. Sizes match the reference toggle
+   (48x26 track, 22px knob, ink gradient when on). */
+.octo-settings-content .form-table input[type="checkbox"] {
+  appearance: none;
+  background: var(--octo-line-strong);
+  border: none;
+  border-radius: 26px;
+  box-shadow: none;
+  cursor: pointer;
+  height: 26px;
+  margin: 0;
+  margin-inline-end: 12px;
+  position: relative;
+  transition: all 0.3s ease;
+  vertical-align: middle;
+  width: 48px;
+}
+
+.octo-settings-content .form-table input[type="checkbox"]::before {
+  background: var(--octo-surface);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  content: "";
+  height: 22px;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  margin: 0;
+  position: absolute;
+  transition: all 0.3s ease;
+  width: 22px;
+}
+
+.octo-settings-content .form-table input[type="checkbox"]:checked {
+  background: var(--octo-gradient-ink);
+}
+
+.octo-settings-content .form-table input[type="checkbox"]:checked::before {
+  content: "";
+  inset-inline-start: 24px;
+}
+
+.octo-settings-content .form-table input[type="checkbox"]:focus,
+.octo-settings-content .form-table input[type="checkbox"]:focus-visible {
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+  outline: none;
+}
+
+.octo-settings-content .form-table input[type="radio"] {
+  accent-color: var(--octo-brand-deep);
+}
+
+.octo-settings-content .form-table input[type="radio"]:checked {
+  border-color: var(--octo-brand-deep);
+}
+
+.octo-settings-content .form-table input[type="radio"]:checked::before {
+  background-color: var(--octo-brand-deep);
+}
+
+.octo-settings-content .form-table input[type="radio"]:focus {
+  border-color: var(--octo-brand-deep);
+  box-shadow: 0 0 0 3px var(--octo-brand-ring);
+}
+
+/* Card body pieces on settings tabs. */
+.octo-card-body > .octo-card-description:last-child {
+  margin-block-end: 0;
+}
+
+.octo-card-body > .form-table:first-child tr:first-child th,
+.octo-card-body > .form-table:first-child tr:first-child td {
+  padding-block-start: 0;
+}
+
+.octo-card-body > .form-table:last-child tr:last-child th,
+.octo-card-body > .form-table:last-child tr:last-child td {
+  padding-block-end: 0;
+}
+
+/* Welcome and Add-ons tabs ------------------------------------------------ */
+
+/* A dashicon in place of a plugin's raster icon: the same 56px square. */
+.octo-plugin__icon--glyph {
+  align-items: center;
+  background: var(--octo-brand-soft);
+  color: var(--octo-brand-deep);
+  display: flex;
+  justify-content: center;
+}
+
+.octo-plugin__icon--glyph.dashicons::before {
+  font-size: 28px;
+}
+
+.octo-plugin__icon--accent {
+  background: var(--octo-accent-soft);
+  color: var(--octo-accent-deep);
+}
+
+/* Six features read as two rows of three, never four and an orphan pair. */
+.octo-plugin-grid--3col {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1280px) {
+  .octo-plugin-grid--3col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Donate box and credit line under the Welcome and Support tabs. */
+.octo-settings-content .donate-container {
+  margin: 30px auto 10px;
+  max-width: 560px;
+  text-align: center;
+}
+
+.octo-settings-content .donate-container p {
+  color: var(--octo-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.octo-credit {
+  color: var(--octo-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media screen and (max-width: 782px) {
+  .octo-settings-wrap {
+    margin-inline-end: 10px;
+  }
+
+  .octo-settings-header {
+    padding: 24px 20px;
+  }
+
+  .octo-settings-header-content {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .octo-settings-content {
+    padding: 16px;
+  }
+
+  .octo-settings-grid,
+  .octo-settings-grid--2col,
+  .octo-plugin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .octo-settings-content .form-table th {
+    padding-block-end: 4px;
+    width: auto;
+  }
+
+  /* The shadow colour picker drops under its four number boxes. */
+  .octo-settings-content li.box-color-control {
+    float: none;
+    clear: both;
+    padding-block-start: 8px;
+    width: 100%;
+  }
+
+  .octo-settings-content .form-table input[type="text"]:not(.wp-color-picker),
+  .octo-settings-content .form-table select,
+  .octo-settings-content .form-table textarea,
+  .octo-settings-content .select2-container {
+    min-width: 0;
+    width: 100%;
+  }
+}

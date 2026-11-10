@@ -100,10 +100,16 @@ function OCWAORDER_plugin_init()
     add_action('wp_enqueue_scripts', 'OCWAORDER_include_plugin_main_js');
 
     // Start calling admin css
-    function OCWAORDER_include_admin_css()
+    function OCWAORDER_include_admin_css($hook_suffix = '')
     {
         wp_enqueue_style('wa_order_style_admin',  OCTO_URL . 'assets/css/admin-style.css', array(), OCTO_VERSION);
         wp_register_style('wa_order_selet2_style',  OCTO_URL . 'assets/css/select2.min.css', array(), '4.1.0');
+        // The house layout (since 1.3.0), on the plugin's own screen only.
+        wp_register_style('octo-tokens', OCTO_URL . 'assets/css/octo-tokens.css', array(), OCTO_VERSION);
+        wp_register_style('octo-admin', OCTO_URL . 'assets/css/octo-admin.css', array('octo-tokens'), OCTO_VERSION);
+        if ('toplevel_page_wa-order' === $hook_suffix) {
+            wp_enqueue_style('octo-admin');
+        }
     }
     add_action('admin_enqueue_scripts', 'OCWAORDER_include_admin_css');
 

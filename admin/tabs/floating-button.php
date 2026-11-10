@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
     <?php settings_fields('wa-order-settings-group-floating'); ?>
     <?php do_settings_sections('wa-order-settings-group-floating'); ?>
     <!-- Floating Button -->
-    <h2 class="section_wa_order"><?php esc_html_e('Floating Button', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_open('format-chat', __('Floating Button', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php esc_html_e('Enable / disable a floating WhatsApp button on your entire pages. You can configure the floating button below.', 'oneclick-whatsapp-order'); ?>
         <br />
@@ -136,15 +136,14 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- Floating Button Display Options -->
+            <?php wa_order_card_close(); ?>
+            <?php wa_order_card_open('visibility', __('Display Options', 'oneclick-whatsapp-order')); ?>
     <table class="form-table">
         <tbody>
-            <hr />
-            <h2 class="section_wa_order"><?php esc_html_e('Display Options', 'oneclick-whatsapp-order'); ?></h2>
             <p>
                 <?php esc_html_e('Configure where and how you\'d like the floating button to be displayed..', 'oneclick-whatsapp-order'); ?>
                 <br />
             </p>
-            <hr />
             <tr class="wa_order_remove_add_btn">
                 <th scope="row">
                     <label>
@@ -494,6 +493,6 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
     <!-- END - Floating Button Display Options -->
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>

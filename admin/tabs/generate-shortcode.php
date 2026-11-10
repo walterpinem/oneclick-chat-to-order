@@ -17,21 +17,19 @@ if (!defined('ABSPATH')) {
  ********************************* Shortcode Tab ********************************* */
 ?>
 <?php wp_enqueue_script('wa_order_js_admin'); ?>
-<h2 class="section_wa_order"><?php esc_html_e('Generate Shortcode', 'oneclick-whatsapp-order'); ?></h2>
-<p>
+<?php wa_order_card_open('shortcode', __('Generate Shortcode', 'oneclick-whatsapp-order')); ?>
+<p class="octo-card-description">
     <?php esc_html_e('Use shortcode to display OneClick Chat to Order\'s WhatsApp button anywhere on your site. There are three options; single product, global and dynamic.', 'oneclick-whatsapp-order'); ?>
-    <br />
 </p>
+<?php wa_order_card_close(); ?>
 
-<hr />
-<h3 class="section_wa_order"><?php esc_html_e('Single Product Shortcode Generator', 'oneclick-whatsapp-order'); ?></h3>
+<?php wa_order_card_open('products', __('Single Product Shortcode Generator', 'oneclick-whatsapp-order')); ?>
 <p>
     <?php esc_html_e('Create a dynamic shortcode for a single product page. Note: This shortcode will only work for single products.', 'oneclick-whatsapp-order'); ?>
     <br />
     <?php echo esc_html__('All other options will be pulled from the Single Product Page settings under the ', 'oneclick-whatsapp-order') . ' <a href="admin.php?page=wa-order&tab=button_config"><b>' . esc_html__('Basic', 'oneclick-whatsapp-order') . '</b></a> tab.'; ?>
     <br />
 </p>
-<hr />
 <!-- Single Product Shortcode Generator -->
 <form onsubmit="return false;">
     <table class="form-table">
@@ -153,15 +151,14 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
 </form>
-<hr />
+<?php wa_order_card_close(); ?>
 <!-- End - Single Product Shortcode Generator -->
 
-<h3 class="section_wa_order"><?php esc_html_e('General Shortcode Generator', 'oneclick-whatsapp-order'); ?></h3>
+<?php wa_order_card_open('editor-code', __('General Shortcode Generator', 'oneclick-whatsapp-order')); ?>
 <p>
     <?php esc_html_e('Create a general purpose shortcode using the following generator.', 'oneclick-whatsapp-order'); ?>
     <br />
 </p>
-<hr />
 <form onsubmit="return false;">
     <!-- Shortcode Generator -->
     <table class="form-table">
@@ -246,14 +243,14 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
 </form>
-<hr />
+<?php wa_order_card_close(); ?>
 <!-- End - Shortcode Generator -->
 <!-- Start Global Shortcode -->
 <form method="post" action="options.php">
     <?php settings_errors(); ?>
     <?php settings_fields('wa-order-settings-group-shortcode'); ?>
     <?php do_settings_sections('wa-order-settings-group-shortcode'); ?>
-    <h3 class="section_wa_order"><?php echo esc_html__('Global Shortcode', 'oneclick-whatsapp-order'); ?></h3>
+    <?php wa_order_card_open('admin-site-alt3', __('Global Shortcode', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php echo esc_html__('You need to click the', 'oneclick-whatsapp-order') . ' <b>' . esc_html__('Save Changes', 'oneclick-whatsapp-order') . '</b> ' . esc_html__('button below in order to use the', 'oneclick-whatsapp-order') . ' <code>[wa-order]</code> ' . esc_html__('shortcode.', 'oneclick-whatsapp-order'); ?>
     </p>
@@ -334,7 +331,7 @@ if (!defined('ABSPATH')) {
             </tr>
         </tbody>
     </table>
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>
 <!-- End - Shortcode Tab Setting Page -->

@@ -16,104 +16,58 @@ if (!defined('ABSPATH')) {
  *
  ********************************* Support Tab ********************************* */
 ?>
-<!-- Begin creating Support tab admin page -->
-<div class="wrap">
-    <div class="feature-section one-col wrap about-wrap">
-        <div class="about-text">
-            <h4><?php
-                /* translators: 1. <strong> tag for "OneClick Chat to Order" */
-                echo sprintf(
-                    /* translators: 1. opening <strong> tag */
-                    esc_html__('%1$sOneClick Chat to Order%2$s is Waiting for Your Feedback', 'oneclick-whatsapp-order'),
-                    '<strong>', // opening <strong> tag
-                    '</strong>' // closing <strong> tag
-                );
-                ?></h4>
-        </div>
-        <div class="indo-about-description">
+<?php
+$wa_order_theme_info = '';
+if (function_exists('wp_get_theme')) {
+    $wa_order_theme      = wp_get_theme();
+    $wa_order_theme_info = urlencode($wa_order_theme->get('Name') . ' - v' . $wa_order_theme->get('Version'));
+}
+// Our own properties go through oskit_url(); third-party links stay raw.
+$wa_order_links = [
+    [oskit_url('https://www.onlinestorekit.com/support/?wpf1567_5=' . $wa_order_theme_info . '&wpf1567_4=' . sanitize_title(OCTO_NAME)), __('Support & Feature Request', 'oneclick-whatsapp-order')],
+    [oskit_url('https://www.onlinestorekit.com/docs/octo/'), __('Documentation', 'oneclick-whatsapp-order')],
+    ['https://www.youtube.com/watch?v=LuURM5vZyB8&list=PLwazGJFvaLnBTOw4pNvPcsFW1ls4tn1Uj', __('Complete Tutorial', 'oneclick-whatsapp-order')],
+    [oskit_url('https://walterpinem.me/'), __('walterpinem.me', 'oneclick-whatsapp-order')],
+    [oskit_url('https://walterpinem.com/'), __('walterpinem.com', 'oneclick-whatsapp-order')],
+    [oskit_url('https://www.onlinestorekit.com/'), __('Online Store Kit', 'oneclick-whatsapp-order')],
+    [oskit_url('https://walterpinem.me/projects/tools/'), __('75+ Free Online Tools', 'oneclick-whatsapp-order')],
+];
+?>
+<div class="octo-settings-grid">
+
+    <?php
+    wa_order_card_open(
+        'sos',
+        /* translators: 1: opening <strong> tag, 2: closing </strong> tag. Both are empty in a card title. */
+        sprintf(__('%1$sOneClick Chat to Order%2$s is Waiting for Your Feedback', 'oneclick-whatsapp-order'), '', '')
+    );
+    ?>
+        <p class="octo-card-description">
             <?php
-            /* translators: 1. <strong> tag for "OneClick Chat to Order", 2. <a> tag with href to the review page, 3. closing </a> tag */
             echo sprintf(
-                /* translators: 1. <strong> tag for "OneClick Chat to Order" */
-                /* translators: 2. opening <a> tag for "leaving a review" */
-                /* translators: 3. closing <a> tag */
+                /* translators: 1: opening <strong> tag, 2: closing </strong> tag, 3: opening <a> tag to the review page, 4: closing </a> tag */
                 esc_html__('%1$sOneClick Chat to Order%2$s is my second plugin and it\'s open source. I acknowledge that there are still a lot to fix, here and there, that\'s why I really need your feedback. Let\'s get in touch and show some love by %3$sleaving a review%4$s.', 'oneclick-whatsapp-order'),
-                '<strong>', // opening <strong> tag
-                '</strong>', // closing <strong> tag
-                '<a href="https://wordpress.org/support/plugin/oneclick-whatsapp-order/reviews/?rate=5#new-post" target="_blank"><strong>', // opening <a> and <strong> tag
-                '</strong></a>' // closing <a> and <strong> tag
+                '<strong>',
+                '</strong>',
+                '<a href="https://wordpress.org/support/plugin/oneclick-whatsapp-order/reviews/?rate=5#new-post" target="_blank" rel="noopener"><strong>',
+                '</strong></a>'
             );
             ?>
-        </div>
-        <table class="tg" style="table-layout: fixed; width: 100%;">
-            <colgroup>
-                <col style="width: 80px">
-                <col style="width: 500px">
-            </colgroup>
-            <tr>
-                <th class="tg-kiyi">
-                    <?php esc_html_e('Author:', 'oneclick-whatsapp-order'); ?></th>
-                <th class="tg-fymr">
-                    <?php esc_html_e('Walter Pinem | Online Store Kit', 'oneclick-whatsapp-order'); ?></th>
-            </tr>
-            <tr>
-                <td class="tg-kiyi">
-                    <?php esc_html_e('Website:', 'oneclick-whatsapp-order'); ?></td>
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/')); ?>" title="<?php esc_attr_e('Visit walterpinem.me', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('walterpinem.me', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-            <tr>
-                <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.com/')); ?>" title="<?php esc_attr_e('Visit walterpinem.com', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('walterpinem.com', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-            <tr>
-                <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/')); ?>" title="<?php esc_attr_e('Online Store Kit', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('Online Store Kit', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-            <tr>
-                <td class="tg-kiyi">
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://walterpinem.me/projects/tools/')); ?>" title="<?php esc_attr_e('75+ Free Online Tools', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('75+ Free Online Tools', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-            <tr>
-                <td class="tg-kiyi">
-                    <?php esc_html_e('Docs:', 'oneclick-whatsapp-order'); ?></td>
-                <td class="tg-fymr"><a href="<?php echo esc_url(oskit_url('https://www.onlinestorekit.com/docs/octo/')); ?>" title="<?php esc_attr_e('Read full documentation.', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('Documentation', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-            <tr>
-                <td class="tg-kiyi"><?php esc_html_e('More:', 'oneclick-whatsapp-order'); ?></td>
-                <td class="tg-fymr"><a href="https://www.youtube.com/watch?v=LuURM5vZyB8&list=PLwazGJFvaLnBTOw4pNvPcsFW1ls4tn1Uj" title="<?php esc_attr_e('Complete Youtube Tutorial', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('Complete Tutorial', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-            <tr>
-                <td class="tg-kiyi" rowspan="3"></td>
-                <td class="tg-fymr"><a href="<?php
-                                                if (function_exists('wp_get_theme')) {
-                                                    $current_theme = wp_get_theme();
-                                                    $theme_name = $current_theme->get('Name');
-                                                    $theme_ver = $current_theme->get('Version');
-                                                    $theme_info = urlencode($theme_name . ' - v' . $theme_ver);
-                                                }
-                                                echo esc_url(oskit_url('https://www.onlinestorekit.com/support/?wpf1567_5=' . $theme_info . '&wpf1567_4=' . sanitize_title(OCTO_NAME)));
-                                                ?>" title="<?php esc_attr_e('Support & Feature Request', 'oneclick-whatsapp-order'); ?>" target="_blank">
-                        <?php esc_html_e('Support & Feature Request', 'oneclick-whatsapp-order'); ?></a></td>
-            </tr>
-        </table>
-        <br>
-        <hr>
+        </p>
+        <ul class="octo-check">
+            <?php foreach ($wa_order_links as $wa_order_link) : ?>
+                <li>
+                    <span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
+                    <a href="<?php echo esc_url($wa_order_link[0]); ?>" target="_blank" rel="noopener"><?php echo esc_html($wa_order_link[1]); ?></a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <p class="octo-field__help"><?php esc_html_e('Author:', 'oneclick-whatsapp-order'); ?> <strong><?php esc_html_e('Walter Pinem | Online Store Kit', 'oneclick-whatsapp-order'); ?></strong></p>
+    <?php wa_order_card_close(); ?>
+
+    <?php wa_order_card_open('heart', __('Buy Me a Coffee', 'oneclick-whatsapp-order')); ?>
         <?php echo wa_order_donate_button_shortcode(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside. ?>
-        <center>
-            <p><?php
-                echo wp_kses_post(
-                    sprintf(
-                        "Made with ❤ and ☕ in Central Jakarta, Indonesia by <a href=\"%s\" target=\"_blank\"><strong>Walter Pinem</strong></a>",
-                        esc_url(oskit_url('https://walterpinem.com/'))
-                    )
-                );
-                ?></p>
-        </center>
-    </div>
+        <?php wa_order_credit_line(); ?>
+    <?php wa_order_card_close(); ?>
+
 </div>

@@ -27,7 +27,7 @@ if (!is_admin()) {
     <?php settings_fields('wa-order-settings-group-gdpr'); ?>
     <?php do_settings_sections('wa-order-settings-group-gdpr'); ?>
 
-    <h2 class="section_wa_order"><?php echo esc_html__('GDPR Notice', 'oneclick-whatsapp-order'); ?></h2>
+    <?php wa_order_card_open('privacy', __('GDPR Notice', 'oneclick-whatsapp-order')); ?>
     <p>
         <?php echo esc_html__('If you want to add a GDPR notice before the WhatsApp button, you can enable this option. This will add a checkbox that customers must check before they can use the WhatsApp button.', 'oneclick-whatsapp-order'); ?>
     </p>
@@ -78,6 +78,6 @@ if (!is_admin()) {
             </tr>
         </tbody>
     </table>
-    <hr>
-    <?php submit_button(); ?>
+    <?php wa_order_card_close(); ?>
+    <?php wa_order_save_bar(); ?>
 </form>
